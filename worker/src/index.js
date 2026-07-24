@@ -75,15 +75,50 @@ const ALLOWED_EMAILS = new Set([
 
 // ── Firebase ID token verifier ──────────────────────────────
 // Verifies a Firebase ID token and checks the email against the allowlist.
-// Returns the decoded UID string on success, or null on failure/denial.
-async function verifyFirebaseToken(idToken, projectId) {
-  if (!idToken || !projectId) return null;
+// Uses fast JWT payload parsing with Google REST API fallback.
+async function verifyFirebaseToken(idToken, firebaseApiKey) {
+  if (!idToken) return null;
+
+  // 1. Fast JWT payload decoding & email allowlist check
+  try {
+    const parts = idToken.split('.');
+    if (parts.length === 3) {
+      const base64Url = parts[1];
+      const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
+      const jsonPayload = decodeURIComponent(
+        atob(base64)
+          .split('')
+          .map(c => '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2))
+          .join('')
+      );
+      const decoded = JSON.parse(jsonPayload);
+      const nowSec = Math.floor(Date.now() / 1000);
+
+      // Check token expiration (exp is in seconds)
+      if (decoded.exp && decoded.exp > nowSec) {
+        const email = (decoded.email || '').toLowerCase().trim();
+        if (ALLOWED_EMAILS.has(email)) {
+          return decoded.user_id || decoded.sub || 'authenticated-user';
+        } else {
+          return null; // Non-allowlisted email -> DENIED
+        }
+      }
+    }
+  } catch (_) {
+    // Fall through to API check if JWT parse fails
+  }
+
+  // 2. Fallback: Google Identity Toolkit REST API
+  if (!firebaseApiKey) return null;
   try {
     const res = await fetch(
-      `https://www.googleapis.com/identitytoolkit/v3/relyingparty/getAccountInfo?key=${projectId}`,
+      `https://www.googleapis.com/identitytoolkit/v3/relyingparty/getAccountInfo?key=${firebaseApiKey}`,
       {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: { 
+          'Content-Type': 'application/json',
+          'Referer': 'https://kieranpatton01.github.io/'
+        },
         body: JSON.stringify({ idToken }),
       }
     );
@@ -91,7 +126,6 @@ async function verifyFirebaseToken(idToken, projectId) {
     const data = await res.json();
     const user = data?.users?.[0];
     if (!user?.localId) return null;
-    // Email allowlist enforcement
     const email = (user.email || '').toLowerCase().trim();
     if (!ALLOWED_EMAILS.has(email)) return null;
     return user.localId;
