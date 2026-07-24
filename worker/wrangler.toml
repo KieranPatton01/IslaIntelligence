@@ -1,0 +1,28 @@
+name            = "isla-intelligence-proxy"
+main            = "src/index.js"
+compatibility_date = "2024-09-01"
+
+# ── Non-secret vars ──
+# Secrets are set via: wrangler secret put SECRET_NAME
+# For local dev, create a .dev.vars file (gitignored) with:
+#   GEMINI_API_KEY=your_actual_key
+#   ALLOWED_ORIGIN=http://localhost:5173
+#   ISLA_SECRET=any_long_random_string_for_local_dev
+
+[vars]
+# Comma-separated list of allowed origins.
+# ⚠️  REMOVE http://localhost:5173 before final production deploy!
+ALLOWED_ORIGIN = "https://kieranpatton01.github.io,http://localhost:5173"
+
+# Firebase Web API key — used to verify Firebase ID tokens on the Worker.
+# This is intentionally a plain var (not a secret) because it is a public
+# project identifier by Firebase's own design — already exposed in the frontend bundle.
+FIREBASE_API_KEY = "AIzaSyBe0onZmo-5vJk5ocHD682ZzRzf3d93UJ8"
+
+# ISLA_SECRET must be set as a Cloudflare secret (not here):
+#   wrangler secret put ISLA_SECRET
+# Set VITE_ISLA_SECRET to the same value in your GitHub Actions / repo secrets
+# so the frontend can send it in X-Isla-Token header.
+
+[triggers]
+crons = ["*/15 * * * *"] # Scan eBay trackers every 15 minutes to match frontend

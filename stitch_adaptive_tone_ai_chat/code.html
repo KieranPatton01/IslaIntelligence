@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" name="viewport"/>
+<title>AI Assistant Chat</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@500&amp;family=Plus+Jakarta+Sans:wght@400;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+  tailwind.config = {
+    darkMode: "class",
+    theme: {
+      extend: {
+        "colors": {
+                "secondary-container": "#fdbec9",
+                "secondary-fixed-dim": "#f4b6c1",
+                "surface-bright": "#fcf9f8",
+                "surface": "#fcf9f8",
+                "on-secondary": "#ffffff",
+                "secondary-fixed": "#ffd9df",
+                "surface-tint": "#ac2471",
+                "on-primary-container": "#6e0044",
+                "surface-container": "#f0eded",
+                "on-tertiary": "#ffffff",
+                "on-surface": "#1c1b1b",
+                "surface-variant": "#e5e2e1",
+                "inverse-surface": "#313030",
+                "surface-container-high": "#eae7e7",
+                "on-primary": "#ffffff",
+                "secondary": "#81515a",
+                "on-tertiary-container": "#43009f",
+                "on-secondary-fixed": "#330f19",
+                "background": "#fcf9f8",
+                "on-error-container": "#93000a",
+                "error-container": "#ffdad6",
+                "primary-container": "#ff69b4",
+                "on-error": "#ffffff",
+                "inverse-primary": "#ffb0d0",
+                "outline-variant": "#dcbfc9",
+                "surface-dim": "#dcd9d9",
+                "tertiary-container": "#ae8bff",
+                "on-secondary-fixed-variant": "#663a43",
+                "on-surface-variant": "#564149",
+                "on-background": "#1c1b1b",
+                "primary": "#ac2471",
+                "surface-container-highest": "#e5e2e1",
+                "on-primary-fixed": "#3d0024",
+                "on-tertiary-fixed-variant": "#5700c9",
+                "on-tertiary-fixed": "#23005b",
+                "surface-container-lowest": "#ffffff",
+                "tertiary-fixed": "#e9ddff",
+                "inverse-on-surface": "#f3f0ef",
+                "on-primary-fixed-variant": "#8c0058",
+                "on-secondary-container": "#7a4a54",
+                "primary-fixed-dim": "#ffb0d0",
+                "outline": "#897179",
+                "tertiary": "#7212ff",
+                "tertiary-fixed-dim": "#d1bcff",
+                "surface-container-low": "#f6f3f2",
+                "primary-fixed": "#ffd8e6",
+                "error": "#ba1a1a"
+        },
+        "borderRadius": {
+                "DEFAULT": "0.25rem",
+                "lg": "0.5rem",
+                "xl": "0.75rem",
+                "full": "9999px"
+        },
+        "spacing": {
+                "xs": "8px",
+                "sm": "16px",
+                "xl": "80px",
+                "lg": "48px",
+                "margin-mobile": "16px",
+                "base": "4px",
+                "md": "24px",
+                "gutter": "24px",
+                "margin-desktop": "64px"
+        },
+        "fontFamily": {
+                "body-lg": [
+                        "Plus Jakarta Sans"
+                ],
+                "display-lg": [
+                        "Plus Jakarta Sans"
+                ],
+                "label-sm": [
+                        "Geist"
+                ],
+                "headline-md": [
+                        "Plus Jakarta Sans"
+                ],
+                "body-md": [
+                        "Plus Jakarta Sans"
+                ],
+                "display-lg-mobile": [
+                        "Plus Jakarta Sans"
+                ]
+        },
+        "fontSize": {
+                "body-lg": [
+                        "18px",
+                        {
+                                "lineHeight": "28px",
+                                "fontWeight": "400"
+                        }
+                ],
+                "display-lg": [
+                        "48px",
+                        {
+                                "lineHeight": "56px",
+                                "letterSpacing": "-0.02em",
+                                "fontWeight": "700"
+                        }
+                ],
+                "label-sm": [
+                        "12px",
+                        {
+                                "lineHeight": "16px",
+                                "letterSpacing": "0.05em",
+                                "fontWeight": "500"
+                        }
+                ],
+                "headline-md": [
+                        "24px",
+                        {
+                                "lineHeight": "32px",
+                                "fontWeight": "600"
+                        }
+                ],
+                "body-md": [
+                        "16px",
+                        {
+                                "lineHeight": "24px",
+                                "fontWeight": "400"
+                        }
+                ],
+                "display-lg-mobile": [
+                        "32px",
+                        {
+                                "lineHeight": "40px",
+                                "letterSpacing": "-0.01em",
+                                "fontWeight": "700"
+                        }
+                ]
+        }
+},
+    },
+  }
+</script>
+<style>
+        body { background-color: #f3f0ef; /* inverse-on-surface for the desktop background */ }
+        
+        /* Custom range slider styling */
+        input[type=range]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            background: #ffffff;
+            cursor: pointer;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            border: 1px solid rgba(0,0,0,0.05);
+            margin-top: -8px;
+            transition: transform 0.1s;
+        }
+        input[type=range]::-webkit-slider-thumb:active {
+            transform: scale(0.9);
+        }
+        input[type=range]::-webkit-slider-runnable-track {
+            width: 100%;
+            height: 8px;
+            cursor: pointer;
+            border-radius: 4px;
+            background: linear-gradient(to right, #ba1a1a, #ff69b4, #81515a); /* Ragebait to Serious */
+        }
+        input[type=range]:focus {
+            outline: none;
+        }
+
+        /* Typing indicator animation */
+        .typing-dot {
+            animation: typing 1.4s infinite ease-in-out both;
+        }
+        .typing-dot:nth-child(1) { animation-delay: -0.32s; }
+        .typing-dot:nth-child(2) { animation-delay: -0.16s; }
+        @keyframes typing {
+            0%, 80%, 100% { transform: scale(0); }
+            40% { transform: scale(1); }
+        }
+
+        /* Scrollbar hiding for clean UI */
+        .no-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+        .no-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+    </style>
+</head>
+<body class="h-screen w-full flex items-center justify-center font-body-md text-body-md text-on-background">
+<!-- Phone Simulator Container -->
+<main class="w-full h-full sm:h-[850px] sm:max-w-[400px] sm:rounded-[40px] sm:border-[8px] sm:border-inverse-surface sm:shadow-2xl overflow-hidden flex flex-col bg-background relative isolate">
+<!-- Background Tonal Layering -->
+<div class="absolute inset-0 bg-surface -z-10"></div>
+<!-- TopAppBar -->
+<header class="flex flex-col justify-between items-center w-full px-margin-mobile py-4 bg-surface/70 backdrop-blur-xl border-b border-white/20 shadow-sm docked full-width top-0 sticky z-50">
+<div class="flex items-center justify-between w-full">
+<div class="flex items-center gap-3"><button class="text-primary hover:opacity-80 transition-opacity mr-1"><span class="material-symbols-outlined">menu</span></button>
+<h1 class="text-headline-md font-headline-md font-bold text-primary">AI Assistant</h1>
+</div>
+<button class="text-primary hover:opacity-80 transition-opacity">
+<span class="material-symbols-outlined" data-weight="fill" style="font-variation-settings: 'FILL' 1;">tune</span>
+</button>
+</div>
+</header>
+<!-- Chat Content Area -->
+<div class="flex-1 overflow-y-auto no-scrollbar px-gutter py-6 flex flex-col space-y-6">
+<!-- AI Message (Left) -->
+<div class="flex w-full justify-start pr-12">
+<div class="bg-surface-container/80 backdrop-blur-sm shadow-[0_4px_12px_rgba(0,0,0,0.05)] rounded-2xl rounded-tl-sm p-4 text-on-surface font-body-md border border-white/40">
+<p>Hello! Adjust the slider above to change my personality. How can I help today?</p>
+</div>
+</div>
+<!-- User Message (Right) -->
+<div class="flex w-full justify-end pl-12">
+<div class="bg-primary-container text-on-primary-container shadow-[0_4px_12px_rgba(0,0,0,0.08)] rounded-2xl rounded-tr-sm p-4 font-body-md">
+<p>Show me a preview of an image I might upload.</p>
+</div>
+</div>
+<!-- User Image Message (Right) -->
+<div class="flex w-full justify-end pl-12">
+<div class="shadow-[0_4px_12px_rgba(0,0,0,0.08)] rounded-2xl rounded-tr-sm overflow-hidden border-2 border-primary-container bg-surface-container">
+<img alt="Uploaded preview" class="max-w-[200px] sm:max-w-[240px] h-auto object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuChlTg15WwoLu-QyyTRKtPf1bgclPBeh4QekF_0mvU5q5BlYxUfsW1WsoMeMP1vhiRfbbgnuqIWb0VT9-clSfuq-2c7qhSriLHLxuzRECQB-SG9oGat2zC6Kx4B5AZM6mEKhdcjCTy8Kg9zwkfbcr0uCU-tSl8hCvR_WcPnATFuOafZEzDsMVja3Adldl7ExE1cq-m9dWZbz7LXSXAnmc_mCzS1IvlpKV3pknWN8sbDbg5tocfoejks_A"/>
+</div>
+</div>
+<!-- Typing Indicator -->
+<div class="flex w-full justify-start pr-12 pt-2 pb-4">
+<div class="bg-surface-container-low/60 backdrop-blur-sm shadow-[0_2px_8px_rgba(0,0,0,0.03)] rounded-full px-4 py-3 flex gap-1 items-center border border-white/40">
+<div class="w-2 h-2 bg-primary rounded-full typing-dot"></div>
+<div class="w-2 h-2 bg-primary rounded-full typing-dot"></div>
+<div class="w-2 h-2 bg-primary rounded-full typing-dot"></div>
+</div>
+</div>
+<!-- Bottom spacing to prevent content from hiding behind sticky footer -->
+<div class="h-32 shrink-0"></div>
+</div>
+<!-- Sticky Footer Input Area -->
+<footer class="absolute bottom-0 left-0 w-full px-4 pb-6 pt-2 bg-surface/70 backdrop-blur-xl border-t border-white/20 z-50 flex flex-col gap-2">
+<!-- Staged Image Preview (Optional / Dynamic) -->
+<div class="flex px-2 mb-1">
+<div class="relative inline-block">
+<div class="w-12 h-12 rounded-lg bg-cover bg-center border border-white/50 shadow-sm" data-alt="A small square thumbnail image showing a scenic mountain landscape during a bright sunrise, warm golden light, minimalist photography style, warm natural tones." style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuBd_XM-D-Hx2W1EDYleFR2KRI6MedYpEnKh19aX2I5WvjNCZxWM2J6uroyf4WBsLCHnkjBA9P5Y-myDmvORhHoRPPhtEhDVjE4f5FooX0CvQkSIiY89fJIT79tayVKhb4iBPvodnM7CUn9VdIDFEdq5thxuz823RZ5P82FvEo9pyoOIuYg2zD_LwlL1rUJ2Wy8KWGwas8w4Rd6IlZHQ_Amne0J4wfBO53vBVCp8zz6Bxp8EElMySGS2yw')"></div>
+<button class="absolute -top-1 -right-1 bg-surface-container-high text-on-surface-variant rounded-full w-4 h-4 flex items-center justify-center shadow-sm hover:bg-surface-variant transition-colors">
+<span class="material-symbols-outlined text-[10px] font-bold">close</span>
+</button>
+</div>
+</div>
+<!-- Input Bar -->
+<div class="bg-white/70 backdrop-blur-[20px] rounded-xl flex flex-col shadow-[0_4px_12px_rgba(0,0,0,0.05)] border border-white/50 p-2">
+<!-- Tone Slider Inside Input Bar -->
+<div class="flex items-end"><button class="p-2 text-secondary hover:bg-secondary-container/30 rounded-lg transition-colors shrink-0 mb-1"><span class="material-symbols-outlined">attach_file</span></button><button class="p-2 text-secondary hover:bg-secondary-container/30 rounded-lg transition-colors shrink-0 mb-1"><span class="material-symbols-outlined">mic</span></button><textarea class="flex-1 bg-transparent border-none focus:ring-0 resize-none py-2 text-body-lg font-body-lg text-on-surface placeholder:text-outline-variant max-h-32 min-h-[44px]" placeholder="Type a message..." rows="1"></textarea><button class="p-2 text-secondary hover:bg-secondary-container/30 rounded-lg transition-colors shrink-0 mb-1"><span class="material-symbols-outlined">palette</span></button><button class="p-2 m-1 bg-primary text-on-primary rounded-lg hover:opacity-90 transition-opacity shadow-sm shrink-0 flex items-center justify-center"><span class="material-symbols-outlined" data-weight="fill" style="font-variation-settings: 'FILL' 1;">send</span></button></div>
+</div>
+</footer>
+</main>
+<script>
+        // Simple auto-resize textarea script for realism
+        const textarea = document.querySelector('textarea');
+        textarea.addEventListener('input', function() {
+            this.style.height = 'auto';
+            this.style.height = (this.scrollHeight) + 'px';
+        });
+    </script>
+</body></html>

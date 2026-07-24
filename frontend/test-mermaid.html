@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Mermaid Graph Compatibility Test Suite</title>
+  <!-- Beautiful Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['"Plus Jakarta Sans"', 'sans-serif'],
+            mono: ['"JetBrains Mono"', 'monospace'],
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    body {
+      background-color: #fcf9f8;
+      color: #1c1b1b;
+    }
+    .custom-shadow {
+      box-shadow: 0 4px 20px -2px rgba(172, 36, 113, 0.05), 0 2px 6px -1px rgba(0, 0, 0, 0.06);
+    }
+  </style>
+</head>
+<body class="min-h-screen py-10 px-4 sm:px-6 lg:px-8">
+  <div class="max-w-7xl mx-auto">
+    <!-- Header -->
+    <header class="mb-10 text-center sm:text-left flex flex-col sm:flex-row justify-between items-center border-b border-[#ac2471]/10 pb-6 gap-4">
+      <div>
+        <h1 class="text-3xl font-bold tracking-tight text-neutral-900 flex items-center justify-center sm:justify-start gap-2">
+          <span>Isla Mermaid Compatibility Test</span>
+          <span class="text-sm bg-[#ac2471]/10 text-[#ac2471] py-1 px-2.5 rounded-full font-medium">v11.16.0</span>
+        </h1>
+        <p class="mt-2 text-sm text-neutral-500">Renders every diagram type to detect which syntaxes trigger parser exceptions in the browser.</p>
+      </div>
+      <button id="run-tests-btn" class="px-5 py-2.5 bg-[#ac2471] text-white hover:bg-[#ac2471]/90 transition font-medium rounded-xl text-sm shadow-sm flex items-center gap-2">
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 1121.21 7.89M9 11l3 3L22 4"></path></svg>
+        Re-run Test Suite
+      </button>
+    </header>
+
+    <!-- Overview Stats -->
+    <div class="grid grid-cols-1 sm:grid-cols-3 gap-6 mb-10">
+      <div class="bg-white p-6 rounded-2xl custom-shadow border border-[#ac2471]/5 flex items-center justify-between">
+        <div>
+          <span class="text-xs text-neutral-400 font-semibold uppercase tracking-wider">Total Graph Types</span>
+          <h3 class="text-3xl font-bold text-neutral-800 mt-1" id="total-cnt">0</h3>
+        </div>
+        <div class="p-3 bg-neutral-50 rounded-xl text-neutral-500">
+          <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path></svg>
+        </div>
+      </div>
+      <div class="bg-white p-6 rounded-2xl custom-shadow border border-emerald-100 flex items-center justify-between">
+        <div>
+          <span class="text-xs text-emerald-500 font-semibold uppercase tracking-wider">Passed</span>
+          <h3 class="text-3xl font-bold text-emerald-600 mt-1" id="pass-cnt">0</h3>
+        </div>
+        <div class="p-3 bg-emerald-50 rounded-xl text-emerald-600">
+          <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+        </div>
+      </div>
+      <div class="bg-white p-6 rounded-2xl custom-shadow border border-rose-100 flex items-center justify-between">
+        <div>
+          <span class="text-xs text-rose-500 font-semibold uppercase tracking-wider">Failed</span>
+          <h3 class="text-3xl font-bold text-rose-600 mt-1" id="fail-cnt">0</h3>
+        </div>
+        <div class="p-3 bg-rose-50 rounded-xl text-rose-600">
+          <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path></svg>
+        </div>
+      </div>
+    </div>
+
+    <!-- Main Table View -->
+    <div class="bg-white rounded-2xl custom-shadow border border-neutral-100 overflow-hidden mb-10">
+      <table class="min-w-full divide-y divide-neutral-100">
+        <thead class="bg-neutral-50">
+          <tr>
+            <th class="px-6 py-4 text-left text-xs font-semibold text-neutral-500 uppercase tracking-wider">Diagram Type</th>
+            <th class="px-6 py-4 text-left text-xs font-semibold text-neutral-500 uppercase tracking-wider">Status</th>
+            <th class="px-6 py-4 text-left text-xs font-semibold text-neutral-500 uppercase tracking-wider">Render Output / Error Details</th>
+          </tr>
+        </thead>
+        <tbody id="test-tbody" class="divide-y divide-neutral-100 bg-white">
+          <!-- Populated by JS -->
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <script type="module">
+    import mermaid from 'mermaid';
+
+    mermaid.initialize({ startOnLoad: false, theme: 'neutral' });
+
+    const tests = [
+      {
+        name: 'Flowchart',
+        code: `graph TD\n  A["Start"] --> B["Process"]\n  B --> C["End"]`
+      },
+      {
+        name: 'Sequence Diagram',
+        code: `sequenceDiagram\n  Alice->>Bob: Hello Bob, how are you?\n  Bob-->>Alice: Jolly good!`
+      },
+      {
+        name: 'Gantt Chart',
+        code: `gantt\n  title Gantt Test\n  section Section\n  Task1 :a1, 2026-07-12, 10d`
+      },
+      {
+        name: 'Class Diagram',
+        code: `classDiagram\n  Class01 <|-- AveryLongClass\n  Class03 *-- Class04`
+      },
+      {
+        name: 'State Diagram',
+        code: `stateDiagram-v2\n  [*] --> Still\n  Still --> [*]`
+      },
+      {
+        name: 'Entity Relationship',
+        code: `erDiagram\n  CUSTOMER ||--o{ ORDER : places`
+      },
+      {
+        name: 'User Journey',
+        code: `journey\n  title My Journey\n  section Go to work\n    Make tea: 5: Me`
+      },
+      {
+        name: 'Pie Chart',
+        code: `pie title Pets\n  "Dogs" : 38\n  "Cats" : 20`
+      },
+      {
+        name: 'Quadrant Diagram',
+        code: `quadrantChart\n  x-axis Low Reach --> High Reach\n  y-axis Low Engage --> High Engage\n  Campaign A: [0.3, 0.6]`
+      },
+      {
+        name: 'Requirement Diagram',
+        code: `requirementDiagram\n  requirement req {\n    id: 1\n    text: some requirement\n    risk: medium\n    verifymethod: test\n  }`
+      },
+      {
+        name: 'Mindmap',
+        code: `mindmap\n  root((mindmap))\n    Origins\n      Long history\n    People`
+      },
+      {
+        name: 'Gitgraph',
+        code: `gitGraph\n  commit\n  branch hotfix\n  checkout hotfix\n  commit`
+      },
+      {
+        name: 'Sankey Diagram',
+        code: `sankey-beta\n  A,B,10\n  B,C,5`
+      },
+      {
+        name: 'Timeline',
+        code: `timeline\n  title Timeline\n  2024 : Feature A : Feature B`
+      },
+      {
+        name: 'Block Diagram',
+        code: `block-beta\n  columns 3\n  a b c`
+      }
+    ];
+
+    async function runTests() {
+      const tbody = document.getElementById('test-tbody');
+      tbody.innerHTML = '';
+      let passed = 0;
+      let failed = 0;
+
+      document.getElementById('total-cnt').textContent = tests.length;
+
+      for (let i = 0; i < tests.length; i++) {
+        const test = tests[i];
+        const tr = document.createElement('tr');
+        
+        // Col 1: Name & Code preview
+        const col1 = document.createElement('td');
+        col1.className = 'px-6 py-4 whitespace-nowrap align-top';
+        col1.innerHTML = `
+          <div class="font-semibold text-neutral-800">${test.name}</div>
+          <details class="mt-2 text-xs text-neutral-400 font-mono cursor-pointer">
+            <summary class="hover:text-neutral-600 transition">Show Code</summary>
+            <pre class="bg-neutral-50 p-2 rounded-lg border border-neutral-100 mt-1 max-w-xs overflow-auto">${test.code}</pre>
+          </details>
+        `;
+        tr.appendChild(col1);
+
+        // Col 2: Status tag
+        const col2 = document.createElement('td');
+        col2.className = 'px-6 py-4 whitespace-nowrap align-top';
+        col2.innerHTML = `<span class="text-xs font-semibold py-1 px-2.5 rounded-full bg-yellow-100 text-yellow-800">Testing...</span>`;
+        tr.appendChild(col2);
+
+        // Col 3: Render or Error area
+        const col3 = document.createElement('td');
+        col3.className = 'px-6 py-4 align-top';
+        const renderDiv = document.createElement('div');
+        renderDiv.id = `render-${i}`;
+        col3.appendChild(renderDiv);
+        tr.appendChild(col3);
+
+        tbody.appendChild(tr);
+
+        // Try render
+        const renderId = `svg-${i}`;
+        try {
+          const { svg } = await mermaid.render(renderId, test.code);
+          col2.innerHTML = `<span class="text-xs font-semibold py-1 px-2.5 rounded-full bg-emerald-100 text-emerald-800">Pass</span>`;
+          renderDiv.innerHTML = `<div class="max-w-md overflow-x-auto border border-neutral-100 p-3 rounded-xl bg-neutral-50/50">${svg}</div>`;
+          passed++;
+        } catch (err) {
+          col2.innerHTML = `<span class="text-xs font-semibold py-1 px-2.5 rounded-full bg-rose-100 text-rose-800">Fail</span>`;
+          renderDiv.innerHTML = `
+            <div class="bg-rose-50 border border-rose-100 text-rose-700 p-3 rounded-xl max-w-xl">
+              <div class="font-bold text-xs uppercase tracking-wider mb-1">Render Failure</div>
+              <div class="text-sm font-mono overflow-auto max-h-36">${err.message || err}</div>
+            </div>
+          `;
+          failed++;
+        }
+
+        document.getElementById('pass-cnt').textContent = passed;
+        document.getElementById('fail-cnt').textContent = failed;
+      }
+    }
+
+    document.getElementById('run-tests-btn').addEventListener('click', runTests);
+    window.addEventListener('load', runTests);
+  </script>
+</body>
+</html>
