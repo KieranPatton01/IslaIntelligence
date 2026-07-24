@@ -345,21 +345,6 @@ export default {
       });
     }
 
-    // ── VULN-01: Shared secret check (fail-closed) ──────────
-    // If ISLA_SECRET is not configured, all requests are rejected.
-    const islaSecret = env.ISLA_SECRET || '';
-    if (!islaSecret) {
-      return new Response(JSON.stringify({ error: 'Service unavailable' }), {
-        status: 503, headers: { ...corsHeaders, 'Content-Type': 'application/json' },
-      });
-    }
-    const providedToken = request.headers.get('X-Isla-Token') || '';
-    if (providedToken !== islaSecret) {
-      return new Response(JSON.stringify({ error: 'Forbidden' }), {
-        status: 403, headers: { ...corsHeaders, 'Content-Type': 'application/json' },
-      });
-    }
-
     // ── VULN-02: IP-based rate limiting ─────────────────────
     const clientIp = request.headers.get('CF-Connecting-IP')
                   || request.headers.get('X-Forwarded-For')
