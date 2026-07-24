@@ -20,7 +20,7 @@ import { auth } from './firebase.js';
 function getWorkerUrl() {
   const url = import.meta.env.VITE_WORKER_URL;
   if (!url || typeof url !== 'string' || !url.startsWith('http') || url.includes('VITE_WORKER_URL')) {
-    return 'https://isla-intelligence-proxy.kieranpatton01.workers.dev';
+    return 'https://isla-intelligence-proxy.isingingbanana.workers.dev';
   }
   return url;
 }
