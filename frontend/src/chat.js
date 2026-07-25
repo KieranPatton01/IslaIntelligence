@@ -78,12 +78,11 @@ function getToneLabel(value) {
  * @param {import('firebase/auth').User} user
  * @param {string|null} sessionId
  */
-export async function initChat(user, sessionId = null) {
+export async function initChat(user) {
   initialLoadDone = false;
   messageHistory  = [];
   stagedMediaList = [];
   isSending       = false;
-  currentSessionId = sessionId;
   currentUid = user.uid;
 
   clearMessages();
@@ -98,12 +97,6 @@ export async function initChat(user, sessionId = null) {
   
   // Cleanup legacy messages
   deleteLegacyMessages(user.uid);
-  
-  if (sessionId) {
-    loadHistory(user.uid, sessionId);
-  } else {
-    showWelcomeScreen();
-  }
 }
 
 /**
@@ -230,43 +223,26 @@ function loadHistory(uid, sessionId) {
   messageHistory = [];
   hideWelcomeScreen();
 
-  const q = query(
-    collection(db, 'users', uid, 'sessions', sessionId, 'messages'),
-    orderBy('createdAt', 'asc'),
-    limit(100),
-  );
-
-  unsubMessages = onSnapshot(q, (snapshot) => {
-    // Only render the initial batch — subsequent changes come from
-    // our optimistic local appends, so we don't re-render on writes.
+  const messagesRef = collection(db, 'users', uid, 'sessions', sessionId, 'messages');
+  const handleSnapshot = (snapshot) => {
     if (initialLoadDone) return;
     initialLoadDone = true;
 
     clearMessages();
     messageHistory = [];
 
-    snapshot.docs.forEach((docSnap) => {
-      const data = docSnap.data();
-      
-      // Skip rendering system location intercepts in the UI on refresh, but keep them in history for AI context
+    const docs = snapshot.docs.map(docSnap => ({ id: docSnap.id, ...docSnap.data() }));
+    docs.sort((a, b) => {
+      let ta = 0, tb = 0;
+      if (a.createdAt) ta = typeof a.createdAt.toMillis === 'function' ? a.createdAt.toMillis() : new Date(a.createdAt).getTime();
+      if (b.createdAt) tb = typeof b.createdAt.toMillis === 'function' ? b.createdAt.toMillis() : new Date(b.createdAt).getTime();
+      return (ta || 0) - (tb || 0);
+    });
+
+    docs.forEach((data) => {
       if (data.text && data.text.startsWith('[System intercept:')) {
         messageHistory.push({ role: data.role, text: data.text });
         return;
-      }
-
-      // Safely parse Firestore timestamp, JS Date, or timestamp numbers
-      let parsedTime = null;
-      if (data.createdAt) {
-        if (typeof data.createdAt.toMillis === 'function') {
-          parsedTime = data.createdAt.toMillis();
-        } else if (typeof data.createdAt.toDate === 'function') {
-          parsedTime = data.createdAt.toDate().getTime();
-        } else if (typeof data.createdAt === 'number') {
-          parsedTime = data.createdAt;
-        } else {
-          const t = new Date(data.createdAt).getTime();
-          if (!isNaN(t)) parsedTime = t;
-        }
       }
 
       appendMessage({
@@ -275,17 +251,23 @@ function loadHistory(uid, sessionId) {
         imageUrl:  data.imageUrl ?? null,
         mediaList: data.mediaList ?? null,
         thought:   data.thought  ?? null,
-        id:        docSnap.id,
+        id:        data.id,
         toneValue: data.toneValue,
         aiModel:   data.aiModel  ?? null,
-        createdAt: parsedTime
+        createdAt: data.createdAt
       });
       messageHistory.push({ role: data.role, text: data.text ?? '' });
     });
 
     scrollToBottom();
-  }, () => {
-    showWelcomeScreen();
+  };
+
+  const q = query(messagesRef, orderBy('createdAt', 'asc'), limit(100));
+  unsubMessages = onSnapshot(q, handleSnapshot, () => {
+    // Fallback: if index or orderBy fails, query without orderBy & sort in JS
+    unsubMessages = onSnapshot(messagesRef, handleSnapshot, () => {
+      showWelcomeScreen();
+    });
   });
 }
 
@@ -1157,8 +1139,24 @@ async function handleSend(user, systemOverrideText = null) {
       }
     }
 
-  } catch {
-    // Stream error handled by caller
+  } catch (err) {
+    hideTypingIndicator();
+    let userFriendlyError = "⚠️ Isla couldn't respond right now. Try sending your message again!";
+    if (err && err.message) {
+      if (err.message.includes('limit of') || err.message.includes('exceeds character limit')) {
+        userFriendlyError = "Whoops, this thread is a little long! Why not start a fresh chat session?";
+      }
+    }
+    if (aiTextEl?.closest('.msg-wrapper')) {
+      markBubbleError(aiTextEl.closest('.msg-wrapper'), userFriendlyError);
+    } else {
+      appendMessage({
+        role: 'model',
+        text: userFriendlyError,
+        toneValue,
+        createdAt: Date.now()
+      });
+    }
   } finally {
     hideTypingIndicator();
     isSending = false;
