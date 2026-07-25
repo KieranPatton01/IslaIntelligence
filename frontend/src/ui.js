@@ -921,6 +921,31 @@ export async function renderMermaidDiagrams(containerEl) {
 }
 
 /**
+ * Displays a dynamic single-line thought pill while the AI is thinking.
+ * @param {HTMLElement} textEl
+ * @param {string} thoughtText
+ */
+export function updateThinkingThought(textEl, thoughtText) {
+  if (!textEl || !thoughtText) return;
+  let thoughtBox = textEl.querySelector('.thought-container');
+  if (!thoughtBox) {
+    thoughtBox = document.createElement('div');
+    thoughtBox.className = 'thought-container flex items-center gap-2 py-1 px-2.5 rounded-lg mb-2 text-xs text-on-surface-variant/80 bg-black/5 dark:bg-white/5 border border-outline-variant/20 animate-pulse';
+    thoughtBox.innerHTML = `
+      <span class="material-symbols-outlined text-sm text-primary">psychology</span>
+      <span class="thought-text truncate font-mono text-[11px]">Thinking...</span>
+    `;
+    textEl.prepend(thoughtBox);
+  }
+  const label = thoughtBox.querySelector('.thought-text');
+  if (label) {
+    const cleanThought = thoughtText.replace(/[\n\r]+/g, ' ').trim();
+    const snippet = cleanThought.length > 50 ? cleanThought.slice(-50) : cleanThought;
+    label.textContent = snippet ? `Thinking: ${snippet}` : 'Thinking...';
+  }
+}
+
+/**
  * Updates a streaming message bubble in place as text arrives from the AI.
  * Holds back incomplete tables mid-stream so they don't render as raw pipes.
  * @param {HTMLElement} textEl
@@ -929,6 +954,12 @@ export async function renderMermaidDiagrams(containerEl) {
  */
 export function updateStreamingBubble(textEl, fullText, isComplete = false) {
   if (!textEl) return;
+
+  // Remove thought container the moment real response text begins
+  const thoughtBox = textEl.querySelector('.thought-container');
+  if (thoughtBox && fullText.trim()) {
+    thoughtBox.remove();
+  }
 
   // Manage text output independently
   let outputWrapper = textEl.querySelector('.output-content');

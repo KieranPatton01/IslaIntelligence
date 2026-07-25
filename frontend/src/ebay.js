@@ -737,8 +737,6 @@ function openEbayDrawer() {
   if (memoryDrawer) memoryDrawer.classList.remove('open');
 
   ebayDrawer.classList.add('open');
-  const themeMeta = document.querySelector('meta[name="theme-color"]');
-  if (themeMeta) themeMeta.content = '#09090b';
   drawerBackdrop.classList.remove('hidden');
   drawerBackdrop.offsetWidth;
   drawerBackdrop.classList.add('show');
@@ -1584,6 +1582,9 @@ export function closeReelsModalAndCleanWatched() {
   const reelsModal = document.getElementById('antique-reels-modal');
   if (reelsModal) reelsModal.classList.add('hidden');
 
+  const themeMeta = document.querySelector('meta[name="theme-color"]');
+  if (themeMeta) themeMeta.content = '#fcf9f8';
+
   // Filter out watched items from the feed
   lastFetchedFeedItems = lastFetchedFeedItems.filter(item => !watchedItemIds.has(item.itemId));
   reRenderFeedItems();
@@ -1601,6 +1602,9 @@ export async function openAntiqueReelsFeed() {
   const emptyDesc = document.getElementById('reels-empty-desc');
 
   if (!reelsModal) return;
+
+  const themeMeta = document.querySelector('meta[name="theme-color"]');
+  if (themeMeta) themeMeta.content = '#09090b';
 
   // Close drawers
   document.getElementById('ebay-drawer')?.classList.remove('open');

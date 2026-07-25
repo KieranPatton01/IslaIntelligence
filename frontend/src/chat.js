@@ -33,6 +33,7 @@ import {
   clearMessages,
   scrollToBottom,
   updateStreamingBubble,
+  updateThinkingThought,
   addDebugInfoToBubble,
   setupDynamicSpacer,
   setCurrentTone,
@@ -420,40 +421,40 @@ function setupEventListeners(user) {
 
       if (ocrContainer && ocrText) {
         ocrContainer.classList.remove('hidden');
-        ocrText.textContent = "Loading OCR engine... 0%";
+        ocrText.textContent = "Analyzing text with Isla Vision... 45%";
       }
 
       try {
-        const { default: Tesseract } = await import('tesseract.js');
+        const reader = new FileReader();
+        reader.onload = async (ev) => {
+          if (ocrCancelled) return;
+          const dataUrl = ev.target.result;
+          const base64 = dataUrl.split(',')[1];
 
-        if (ocrCancelled) return;
-        if (ocrText) {
-          ocrText.textContent = "Contacting the IDF... 67%";
-        }
+          if (ocrText) ocrText.textContent = "Extracting text... 90%";
 
-        const result = await Tesseract.recognize(
-          file,
-          'eng',
-          {
-            logger: m => {
-              if (ocrCancelled) return;
-              if (m.status === 'recognizing') {
-                const progress = Math.round(m.progress * 100);
-                if (ocrText) {
-                  ocrText.textContent = `Extracting text... ${progress}%`;
-                }
-              }
+          const { stream } = await streamChat({
+            messages: [{ role: 'user', text: 'Extract and transcribe all text visible in this document/image accurately. Output only the extracted text with clean line breaks.' }],
+            toneValue: 50,
+            userFacts: [],
+            mediaList: [{ mimeType: file.type, data: base64 }],
+            modelChoice: '3.1-lite'
+          });
+
+          let extractedText = '';
+          for await (const chunk of stream) {
+            if (chunk.type === 'text' && chunk.text) {
+              extractedText += chunk.text;
             }
           }
-        );
 
-        if (ocrCancelled) return;
-
-        const extractedText = result?.data?.text || '';
-        if (extractedText.trim()) {
-          openOcrDrawer(extractedText.trim());
-        }
-      } catch {
+          if (ocrCancelled) return;
+          if (extractedText.trim()) {
+            openOcrDrawer(extractedText.trim());
+          }
+        };
+        reader.readAsDataURL(file);
+      } catch (err) {
         // OCR failed silently
       } finally {
         ocrContainer?.classList.add('hidden');
@@ -737,7 +738,9 @@ function setupEventListeners(user) {
 
           let hasReceivedAnyText = false;
           for await (const chunk of stream) {
-            if (chunk.type === 'text') {
+            if (chunk.type === 'thought') {
+              updateThinkingThought(textEl, chunk.text);
+            } else if (chunk.type === 'text') {
               if (chunk.text) hasReceivedAnyText = true;
               fullResponse += chunk.text;
             }
@@ -1080,7 +1083,9 @@ async function handleSend(user, systemOverrideText = null) {
     let hasReceivedAnyText = false;
 
     for await (const chunk of stream) {
-      if (chunk.type === 'text') {
+      if (chunk.type === 'thought') {
+        updateThinkingThought(textEl, chunk.text);
+      } else if (chunk.type === 'text') {
         if (chunk.text) hasReceivedAnyText = true;
         fullResponse += chunk.text;
       }

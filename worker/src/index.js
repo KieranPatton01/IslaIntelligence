@@ -34,7 +34,7 @@ const MAX_MSG_CHARS = 10_000;
 const MAX_IMAGE_B64_CHARS = 6_800_000;
 // Allowed image MIME types for Gemini vision
 const ALLOWED_IMAGE_MIMES = new Set([
-  'image/jpeg', 'image/png', 'image/webp', 'image/gif', 'image/heic', 'image/heif',
+  'image/jpeg', 'image/png', 'image/webp', 'image/gif', 'image/heic', 'image/heif', 'application/pdf',
 ]);
 // Allowed audio/video MIME types for Gemini multimodal
 const ALLOWED_AUDIO_MIMES = new Set([
