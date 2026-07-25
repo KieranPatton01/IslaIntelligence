@@ -1110,8 +1110,8 @@ export function addDebugInfoToBubble(bubble, { toneValue, createdAt, aiModel, la
 
   let displayModel = aiModel || 'gemini-3.6-flash';
   if (displayModel === 'gemini-3.1-flash-lite') displayModel = '⚡ Stupid (3.1 Lite)';
-  else if (displayModel === 'gemini-3.6-flash') displayModel = '🚀 Silly (3.6 Low Thinking)';
-  else if (displayModel === 'gemini-3.5-flash') displayModel = '🚀 Silly (3.6 Low Thinking)';
+  else if (displayModel === 'gemini-3.6-flash') displayModel = '🚀 Silly (3.6 Low)';
+  else if (displayModel === 'gemini-3.5-flash') displayModel = '🚀 Silly (3.6 Low)';
 
   const latencyStr = latencyMs ? `${(latencyMs / 1000).toFixed(2)}s (${latencyMs}ms)` : null;
 

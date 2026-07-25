@@ -203,10 +203,10 @@ function setupThinkingToggle() {
         if (label) label.textContent = '⚡ Stupid (3.1 Lite)';
       } else if (choice === '3.6-extended') {
         if (icon) icon.textContent = 'psychology';
-        if (label) label.textContent = '🧠 Stinky-Pro (3.6 High Thinking)';
+        if (label) label.textContent = '🧠 Stinky-Pro (3.6 High)';
       } else {
         if (icon) icon.textContent = 'bolt';
-        if (label) label.textContent = '🚀 Silly (3.6 Low Thinking)';
+        if (label) label.textContent = '🚀 Silly (3.6 Low)';
       }
 
       menu.classList.add('hidden');

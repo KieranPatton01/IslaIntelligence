@@ -892,11 +892,9 @@ Format your response strictly as valid JSON, with no other text, no markdown blo
     const modelPayload = {
       ...geminiPayload,
       generationConfig: isModel20 ? {
-        maxOutputTokens: 4096,
-        // Only attach thinking config for 2.0-flash / 2.0-pro models
-        thinkingConfig: { thinkingLevel }
+        maxOutputTokens: 8192
       } : (isModel15 ? {
-        maxOutputTokens: 2048
+        maxOutputTokens: 8192
       } : geminiPayload.generationConfig)
     };
 
