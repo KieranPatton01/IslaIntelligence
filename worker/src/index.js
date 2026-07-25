@@ -860,18 +860,18 @@ Format your response strictly as valid JSON, with no other text, no markdown blo
     ...(tools.length > 0 ? { tools } : {})
   };
 
-  let PRIMARY_REQ_MODEL = 'gemini-3.6-flash';
-  let BACKUP_REQ_MODEL  = 'gemini-3.1-flash-lite';
+  let PRIMARY_REQ_MODEL = 'gemini-2.0-flash';
+  let BACKUP_REQ_MODEL  = 'gemini-1.5-flash';
 
   if (modelChoice === '3.1-lite') {
-    PRIMARY_REQ_MODEL = 'gemini-3.1-flash-lite';
-    BACKUP_REQ_MODEL  = 'gemini-3.6-flash';
+    PRIMARY_REQ_MODEL = 'gemini-2.0-flash-lite-preview-02-05';
+    BACKUP_REQ_MODEL  = 'gemini-1.5-flash-8b';
   } else if (modelChoice === '3.6-extended') {
-    PRIMARY_REQ_MODEL = 'gemini-3.6-flash';
-    BACKUP_REQ_MODEL  = 'gemini-3.1-flash-lite';
+    PRIMARY_REQ_MODEL = 'gemini-2.0-pro-exp-02-05';
+    BACKUP_REQ_MODEL  = 'gemini-2.0-flash';
   } else {
-    PRIMARY_REQ_MODEL = 'gemini-3.6-flash';
-    BACKUP_REQ_MODEL  = 'gemini-3.1-flash-lite';
+    PRIMARY_REQ_MODEL = 'gemini-2.0-flash';
+    BACKUP_REQ_MODEL  = 'gemini-2.0-flash-lite-preview-02-05';
   }
 
   const modelsToTry = [PRIMARY_REQ_MODEL, BACKUP_REQ_MODEL];
@@ -881,8 +881,8 @@ Format your response strictly as valid JSON, with no other text, no markdown blo
   let primaryErrorMsg = null;
 
   for (const model of modelsToTry) {
-    const isModel36 = model.includes('3.6');
-    const isModel31 = model.includes('3.1');
+    const isModel20 = model.includes('2.0');
+    const isModel15 = model.includes('1.5');
 
     let thinkingLevel = "low";
     if (modelChoice === '3.6-extended') {
@@ -891,10 +891,11 @@ Format your response strictly as valid JSON, with no other text, no markdown blo
 
     const modelPayload = {
       ...geminiPayload,
-      generationConfig: isModel36 ? {
+      generationConfig: isModel20 ? {
         maxOutputTokens: 4096,
+        // Only attach thinking config for 2.0-flash / 2.0-pro models
         thinkingConfig: { thinkingLevel }
-      } : (isModel31 ? {
+      } : (isModel15 ? {
         maxOutputTokens: 2048
       } : geminiPayload.generationConfig)
     };

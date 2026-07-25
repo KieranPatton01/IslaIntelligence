@@ -1192,17 +1192,23 @@ async function handleSend(user, systemOverrideText = null) {
  * Write a message document to Firestore.
  */
 async function saveMessage(uid, sessionId, { role, text, imageUrl, imageRef, mediaList, toneValue, aiModel }) {
-  await addDoc(collection(db, 'users', uid, 'sessions', sessionId, 'messages'), {
-    role,
-    text: text ?? null,
-    imageUrl: imageUrl ?? null,
-    imageRef: imageRef ?? null,
-    mediaList: mediaList ?? null,
-    toneValue: toneValue ?? null,
-    aiModel: aiModel ?? null,
-    createdAt: serverTimestamp(),
-    status: 'complete',
-  });
+  try {
+    await addDoc(collection(db, 'users', uid, 'sessions', sessionId, 'messages'), {
+      role,
+      text: text ?? null,
+      imageUrl: imageUrl ?? null,
+      imageRef: imageRef ?? null,
+      mediaList: mediaList ?? null,
+      toneValue: toneValue ?? null,
+      aiModel: aiModel ?? null,
+      createdAt: serverTimestamp(),
+      status: 'complete',
+    });
+  } catch (err) {
+    if (!err.message?.includes('Document already exists')) {
+      console.error('saveMessage failed:', err);
+    }
+  }
 }
 
 /**

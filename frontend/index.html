@@ -13,7 +13,9 @@
   <meta name="author" content="Isla Intelligence" />
 
   <!-- PWA Meta -->
-  <meta name="theme-color" content="#fcf9f8" />
+  <meta name="theme-color" media="(prefers-color-scheme: light)" content="#fcf9f8" />
+  <meta name="theme-color" media="(prefers-color-scheme: dark)" content="#fcf9f8" />
+  <meta name="color-scheme" content="light" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
   <meta name="apple-mobile-web-app-status-bar-style" content="default" />
   <meta name="apple-mobile-web-app-title" content="Isla" />
@@ -561,7 +563,7 @@
             aria-label="Trinkify camera input" />
 
           <!-- Hidden camera / gallery input for OCR -->
-          <input type="file" id="input-ocr" accept="image/*, application/pdf" class="hidden"
+          <input type="file" id="input-ocr" accept="image/*" capture="environment" class="hidden"
             aria-label="OCR camera input" />
 
           <!-- Message textarea -->

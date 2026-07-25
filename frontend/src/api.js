@@ -92,11 +92,13 @@ export async function streamChat({
   }
 
   if (!response.ok) {
+    let errText = '';
     try {
-      await response.text();
+      errText = await response.text();
     } catch (e) {
-      throw new Error(`Error: ${response.status} ${response.statusText}`);
+      errText = `Error: ${response.status} ${response.statusText}`;
     }
+    throw new Error(errText || `Error: ${response.status} ${response.statusText}`);
   }
 
   if (!response.body) {
