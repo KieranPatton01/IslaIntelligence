@@ -96,5 +96,5 @@ export function parseAuthError(code) {
     'auth/admin-restricted-operation':  'Account creation is currently disabled in Firebase Console. Please sign in.',
     'auth/operation-not-allowed':       'Email/Password sign-in or sign-up is disabled in Firebase Console.',
   };
-  return map[code] ?? `Authentication error [${code || 'Unknown'}]. Please try again.`;
+  return map[code] ?? 'Authentication failed. Please check your credentials or network and try again.';
 }

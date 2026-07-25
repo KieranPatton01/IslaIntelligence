@@ -23,16 +23,16 @@ export function getCurrentToneValue() { return currentToneValue; }
 
 // Reaction map: key → { emoji, label, animation CSS class }
 const REACTION_MAP = {
-  'eye-roll':       { emoji: '🙄', label: 'eye roll',       anim: 'reaction-spin'   },
-  'table-flip':     { emoji: '🤬', label: 'table flip',     anim: 'reaction-shake'  },
-  'facepalm':       { emoji: '🤦', label: 'facepalm',       anim: 'reaction-drop'   },
-  'sarcastic-clap': { emoji: '👏', label: 'sarcastic clap', anim: 'reaction-clap'   },
-  'gasp':           { emoji: '😱', label: 'gasp',           anim: 'reaction-bounce' },
-  'popcorn':        { emoji: '🍿', label: 'popcorn',        anim: 'reaction-bounce' },
-  'shrug':          { emoji: '🤷', label: 'shrug',          anim: 'reaction-shake'  },
-  'bored':          { emoji: '😑', label: 'bored',          anim: 'reaction-drop'   },
-  'dramatic-cry':   { emoji: '😭', label: 'crying',         anim: 'reaction-bounce' },
-  'mind-blown':     { emoji: '🤯', label: 'mind blown',     anim: 'reaction-spin'   },
+  'eye-roll': { emoji: '🙄', label: 'eye roll', anim: 'reaction-spin' },
+  'table-flip': { emoji: '🤬', label: 'table flip', anim: 'reaction-shake' },
+  'facepalm': { emoji: '🤦', label: 'facepalm', anim: 'reaction-drop' },
+  'sarcastic-clap': { emoji: '👏', label: 'sarcastic clap', anim: 'reaction-clap' },
+  'gasp': { emoji: '😱', label: 'gasp', anim: 'reaction-bounce' },
+  'popcorn': { emoji: '🍿', label: 'popcorn', anim: 'reaction-bounce' },
+  'shrug': { emoji: '🤷', label: 'shrug', anim: 'reaction-shake' },
+  'bored': { emoji: '😑', label: 'bored', anim: 'reaction-drop' },
+  'dramatic-cry': { emoji: '😭', label: 'crying', anim: 'reaction-bounce' },
+  'mind-blown': { emoji: '🤯', label: 'mind blown', anim: 'reaction-spin' },
 };
 
 /** Helper to parse markdown safely, preprocess to fix missing code block newlines */
@@ -41,7 +41,7 @@ function parseMarkdown(text) {
   let cleaned = text;
   // Ensure there is a newline before starting a code block (e.g. text```mermaid -> text\n```mermaid)
   cleaned = cleaned.replace(/([^\n])(```[a-zA-Z]*)/g, '$1\n$2');
-  
+
   // Replace [[GIF: key]] tags with self-contained animated emoji reaction cards
   cleaned = cleaned.replace(/\[\[GIF:\s*(.+?)\]\]/gi, (match, key) => {
     const reaction = REACTION_MAP[key.trim().toLowerCase()];
@@ -185,7 +185,7 @@ export function renderGeoMaps(containerEl) {
     }
 
     const markersData = Array.isArray(data.markers) ? data.markers : [];
-    
+
     // Determine map center coordinates
     let centerLat = Number(data.centerLat || data.lat);
     let centerLng = Number(data.centerLng || data.lng);
@@ -273,8 +273,8 @@ export function renderGeoMaps(containerEl) {
           const mLabel = m.label || 'Location';
           if (isNaN(mLat) || isNaN(mLng)) return;
 
-          const mapsUrl = isApple 
-            ? `https://maps.apple.com/?q=${encodeURIComponent(mLabel)}&ll=${mLat},${mLng}` 
+          const mapsUrl = isApple
+            ? `https://maps.apple.com/?q=${encodeURIComponent(mLabel)}&ll=${mLat},${mLng}`
             : `https://www.google.com/maps/search/?api=1&query=${mLat},${mLng}`;
 
           const marker = L.marker([mLat, mLng]).addTo(map);
@@ -289,8 +289,8 @@ export function renderGeoMaps(containerEl) {
         }
       } else {
         // Fallback to single marker
-        const mapsUrl = isApple 
-          ? `https://maps.apple.com/?q=${encodeURIComponent(singleLabel)}&ll=${centerLat},${centerLng}` 
+        const mapsUrl = isApple
+          ? `https://maps.apple.com/?q=${encodeURIComponent(singleLabel)}&ll=${centerLat},${centerLng}`
           : `https://www.google.com/maps/search/?api=1&query=${centerLat},${centerLng}`;
 
         const marker = L.marker([centerLat, centerLng]).addTo(map);
@@ -336,15 +336,15 @@ marked.setOptions({ gfm: true, breaks: true });
 
 const DOMPURIFY_CONFIG = {
   ALLOWED_TAGS: [
-    'p','br','strong','em','b','i','u','s','del','ins',
-    'h1','h2','h3','h4','h5','h6',
-    'ul','ol','li',
-    'blockquote','pre','code',
-    'a','img',
-    'table','thead','tbody','tfoot','tr','th','td','colgroup','col',
-    'hr','span','div','details','summary',
+    'p', 'br', 'strong', 'em', 'b', 'i', 'u', 's', 'del', 'ins',
+    'h1', 'h2', 'h3', 'h4', 'h5', 'h6',
+    'ul', 'ol', 'li',
+    'blockquote', 'pre', 'code',
+    'a', 'img',
+    'table', 'thead', 'tbody', 'tfoot', 'tr', 'th', 'td', 'colgroup', 'col',
+    'hr', 'span', 'div', 'details', 'summary',
   ],
-  ALLOWED_ATTR: ['href','src','alt','title','class','target','rel','colspan','rowspan','scope','style','open'],
+  ALLOWED_ATTR: ['href', 'src', 'alt', 'title', 'class', 'target', 'rel', 'colspan', 'rowspan', 'scope', 'style', 'open'],
 };
 
 /** Sanitise with table support */
@@ -380,7 +380,7 @@ export function setupDynamicSpacer() {
       container.style.paddingBottom = `${height + 20}px`;
     }
   });
-  
+
   observer.observe(footer);
 }
 
@@ -396,7 +396,7 @@ export function scrollToMessageTop(wrapperEl) {
   const c = getContainer();
   if (!c || !wrapperEl) return;
   const wrapper = wrapperEl.closest('.msg-wrapper') || wrapperEl;
-  
+
   const header = document.querySelector('header');
   if (!header) return;
 
@@ -429,12 +429,12 @@ function addLongPressCopy(bubbleEl) {
       const text = bubbleEl.innerText;
       if (!text.trim()) return;
       await navigator.clipboard.writeText(text);
-      
+
       // Visual feedback: brief flash
       const originalBg = bubbleEl.style.backgroundColor;
       bubbleEl.style.transition = 'background-color 0.2s ease';
       bubbleEl.style.backgroundColor = 'rgba(76, 175, 80, 0.4)'; // green flash
-      
+
       setTimeout(() => {
         bubbleEl.style.backgroundColor = originalBg;
         setTimeout(() => { bubbleEl.style.transition = ''; }, 200);
@@ -469,14 +469,14 @@ function setupEditBubbleHandler(bubble, div, initialText, role) {
   editBtn.className = 'edit-btn';
   editBtn.title = 'Edit text';
   editBtn.innerHTML = '<span class="material-symbols-outlined" style="font-size:16px;">edit</span>';
-  
+
   // Make space for absolute positioned edit button
   bubble.style.paddingBottom = '28px';
 
   editBtn.addEventListener('click', (e) => {
     e.stopPropagation();
     if (bubble.classList.contains('editing-mode')) return;
-    
+
     bubble.classList.add('editing-mode');
     editBtn.style.display = 'none';
     div.style.display = 'none';
@@ -524,7 +524,7 @@ function setupEditBubbleHandler(bubble, div, initialText, role) {
       if (newText.trim() && newText.trim() !== currentText) {
         currentText = newText.trim();
         div.innerHTML = sanitise(parseMarkdown(currentText));
-        
+
         if (role === 'model') {
           renderMermaidDiagrams(div);
           renderDeskMaps(div);
@@ -621,10 +621,10 @@ export function appendMessage({ role, text, imageUrl, file, mediaList, id, toneV
         mediaContainer.appendChild(audioWrapper);
       } else if (isImage) {
         const img = document.createElement('img');
-        img.src       = item.url || (item.file ? URL.createObjectURL(item.file) : '');
-        img.alt       = role === 'user' ? 'Your uploaded image' : 'Image';
+        img.src = item.url || (item.file ? URL.createObjectURL(item.file) : '');
+        img.alt = role === 'user' ? 'Your uploaded image' : 'Image';
         img.className = 'message-image shrink-0';
-        img.loading   = 'lazy';
+        img.loading = 'lazy';
         mediaContainer.appendChild(img);
       } else {
         // File pill
@@ -632,12 +632,12 @@ export function appendMessage({ role, text, imageUrl, file, mediaList, id, toneV
         pill.className = 'file-pill shrink-0';
         pill.title = 'Click to open file';
         pill.style.cursor = 'pointer';
-        
+
         const name = item.name || 'file';
         const ext = name.split('.').pop().toUpperCase();
         const sizeStr = item.file ? `${(item.file.size / 1024).toFixed(1)} KB` : '';
         const metaStr = ext + (sizeStr ? ` &bull; ${sizeStr}` : '');
-        
+
         pill.innerHTML = `
           <span class="file-pill-icon material-symbols-outlined">description</span>
           <div class="file-pill-info">
@@ -645,7 +645,7 @@ export function appendMessage({ role, text, imageUrl, file, mediaList, id, toneV
             <span class="file-pill-meta">${metaStr}</span>
           </div>
           <span class="file-pill-icon material-symbols-outlined" style="font-size:16px;opacity:0.6;margin-left:4px;">open_in_new</span>`;
-          
+
         pill.addEventListener('click', () => {
           if (item.file) {
             const objectUrl = URL.createObjectURL(item.file);
@@ -657,7 +657,7 @@ export function appendMessage({ role, text, imageUrl, file, mediaList, id, toneV
         mediaContainer.appendChild(pill);
       }
     });
-    
+
     bubble.appendChild(mediaContainer);
   }
 
@@ -665,7 +665,7 @@ export function appendMessage({ role, text, imageUrl, file, mediaList, id, toneV
   if (text) {
     const div = document.createElement('div');
     div.className = 'markdown-content';
-    
+
     let thoughtHtml = '';
     if (thought) {
       thoughtHtml = `
@@ -678,7 +678,7 @@ export function appendMessage({ role, text, imageUrl, file, mediaList, id, toneV
         </details>
       `;
     }
-    
+
     div.innerHTML = thoughtHtml + `<div class="output-content">${sanitise(parseMarkdown(text))}</div>`;
     bubble.appendChild(div);
     if (role === 'model') {
@@ -729,7 +729,7 @@ export function showTypingIndicator() {
   const container = getContainer();
 
   const wrapper = document.createElement('div');
-  wrapper.id        = 'typing-indicator';
+  wrapper.id = 'typing-indicator';
   wrapper.className = 'msg-wrapper model';
 
   wrapper.innerHTML = `
@@ -848,7 +848,7 @@ export async function renderMermaidDiagrams(containerEl) {
     const preEl = codeEl.parentElement;
     if (preEl && preEl.tagName === 'PRE') {
       let graphText = codeEl.textContent;
-      
+
       // Clean trailing markdown syntax leaks (like closing backticks or post-block text)
       if (graphText.includes('```')) {
         graphText = graphText.split('```')[0];
@@ -971,7 +971,7 @@ export function updateStreamingBubble(textEl, fullText, isComplete = false) {
   }
 
   outputWrapper.innerHTML = outputHtml;
-  
+
   if (isComplete) {
     const c = getContainer();
     if (c) c.style.paddingBottom = '';
@@ -1007,7 +1007,7 @@ export function updateStreamingBubble(textEl, fullText, isComplete = false) {
 export function markBubbleError(bubbleEl, message = '⚠️ Something went wrong. Try again.') {
   if (!bubbleEl) return;
   bubbleEl.style.background = 'rgba(255, 218, 214, 0.7)';
-  bubbleEl.style.color      = '#93000a';
+  bubbleEl.style.color = '#93000a';
   const div = bubbleEl.querySelector('.markdown-content');
   if (div) {
     div.innerHTML = sanitise(parseMarkdown(message));
@@ -1034,7 +1034,7 @@ export function clearMessages() {
  * @param {boolean} loading
  */
 export function setSendLoading(loading) {
-  const btn  = document.getElementById('btn-send');
+  const btn = document.getElementById('btn-send');
   const icon = btn?.querySelector('.material-symbols-outlined');
   if (!btn) return;
   btn.disabled = loading;
@@ -1062,14 +1062,14 @@ export function addDebugInfoToBubble(bubble, { toneValue, createdAt, aiModel, la
   const infoBtn = document.createElement('div');
   infoBtn.className = 'debug-info-btn';
   infoBtn.innerHTML = '<span class="material-symbols-outlined">info</span>';
-  
+
   // Popup container
   const popup = document.createElement('div');
   popup.className = 'debug-info-popup hidden';
-  
+
   // Format time
   const timeStr = new Date(createdAt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
-  
+
   // Format tone string
   let toneStr = 'Princess Mode';
   if (toneValue <= 20) toneStr = 'Ragebait Mode';
@@ -1086,9 +1086,9 @@ export function addDebugInfoToBubble(bubble, { toneValue, createdAt, aiModel, la
     <div class="debug-row"><strong>Mode:</strong> ${toneStr} (${toneValue}/100)</div>
     ${latencyStr ? `<div class="debug-row"><strong>Response Time:</strong> ${latencyStr}</div>` : ''}
   `;
-  
+
   infoBtn.appendChild(popup);
-  
+
   infoBtn.addEventListener('click', (e) => {
     e.stopPropagation();
     popup.classList.toggle('hidden');
@@ -1130,7 +1130,7 @@ export function scrollElementToTop(element) {
   const container = getContainer();
   if (!container || !element) return;
   const wrapper = element.closest('.msg-wrapper') || element;
-  
+
   // Calculate top position relative to container viewport boundary
   const containerRect = container.getBoundingClientRect();
   const wrapperRect = wrapper.getBoundingClientRect();

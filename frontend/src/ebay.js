@@ -1,17 +1,17 @@
 // ebay.js - Dedicated eBay Antique Tracker Logic for Isla Intelligence
 import { auth, db } from './firebase.js';
-import { 
-  collection, 
-  addDoc, 
-  deleteDoc, 
+import {
+  collection,
+  addDoc,
+  deleteDoc,
   updateDoc,
   setDoc,
-  doc, 
-  query, 
-  where, 
-  onSnapshot, 
-  orderBy, 
-  serverTimestamp 
+  doc,
+  query,
+  where,
+  onSnapshot,
+  orderBy,
+  serverTimestamp
 } from 'firebase/firestore';
 
 function getWorkerUrl() {
@@ -22,7 +22,7 @@ function getWorkerUrl() {
   return url;
 }
 
-const WORKER_URL  = getWorkerUrl();
+const WORKER_URL = getWorkerUrl();
 const WORKER_BASE = WORKER_URL.replace(/\/$/, '');
 const ISLA_SECRET = import.meta.env.VITE_ISLA_SECRET || '';
 
@@ -56,7 +56,7 @@ let savedItemsList = [];
 let lastFetchedFeedItems = [];
 let lastFeedFetchTime = 0;
 
-window._handleLikeClick = function(btn, itemId, encodedItem) {
+window._handleLikeClick = function (btn, itemId, encodedItem) {
   const icon = btn.querySelector('span');
   if (icon) {
     const isCurrentlyLiked = icon.textContent === 'favorite';
@@ -93,7 +93,7 @@ function getItemPhotos(item) {
 
   let addImgs = item.additionalImages || item.additional_images || item.additionalImageUrls || item.images || item.thumbnailImages || item.pictureURL || item.pictureURLSuperSize || item.pictureURLExternal || [];
   if (typeof addImgs === 'string') addImgs = [addImgs];
-  
+
   if (Array.isArray(addImgs)) {
     addImgs.forEach(imgObj => {
       let url = '';
@@ -102,7 +102,7 @@ function getItemPhotos(item) {
       } else if (typeof imgObj === 'object' && imgObj !== null) {
         url = imgObj.imageUrl || imgObj.imageURL || imgObj.url || extractImageUrl({ image: imgObj });
       }
-      
+
       if (url) {
         const highRes = getHighResEbayImgUrl(url);
         if (!photos.includes(highRes)) {
@@ -207,9 +207,9 @@ function getHighResEbayImgUrl(url) {
 
 function extractImageUrl(item) {
   if (!item) return 'https://images.unsplash.com/photo-1509048191080-d2984bad6ae5?auto=format&fit=crop&q=80&w=400';
-  
+
   let found = '';
-  
+
   if (typeof item.imageUrl === 'string' && item.imageUrl.startsWith('http')) found = item.imageUrl;
   else if (typeof item.image_url === 'string' && item.image_url.startsWith('http')) found = item.image_url;
   else if (typeof item.imageURL === 'string' && item.imageURL.startsWith('http')) found = item.imageURL;
@@ -416,7 +416,7 @@ export function initEbayView() {
         emptyState.classList.remove('hidden');
         if (spinner) spinner.classList.remove('hidden');
         if (emptyTitle) emptyTitle.textContent = 'Refreshing Antiques';
-        if (emptyDesc) emptyDesc.textContent = 'Searching eBay for updated listings...';
+        if (emptyDesc) emptyDesc.textContent = 'Bot searching eBay for updated listings...';
       }
 
       await refreshMatchedListingsFeed();
@@ -428,7 +428,7 @@ export function initEbayView() {
         if (emptyState) {
           if (spinner) spinner.classList.add('hidden');
           if (emptyTitle) emptyTitle.textContent = 'No Matches Sourced';
-          if (emptyDesc) emptyDesc.textContent = 'No active matching items found on eBay. Go back and create some trackers with different keywords!';
+          if (emptyDesc) emptyDesc.textContent = 'No active matching items found on eBay. Go back and create some trackers with different keywords mate';
         }
       }
     });
@@ -644,7 +644,7 @@ export function initEbayView() {
     }
   });
 
-    // Smooth Wheel Navigation with cooldown to prevent rapid repeats
+  // Smooth Wheel Navigation with cooldown to prevent rapid repeats
   let reelsWheelCooldown = false;
   window.addEventListener('wheel', e => {
     if (reelsModal && !reelsModal.classList.contains('hidden')) {
@@ -729,7 +729,7 @@ export function initEbayView() {
 function openEbayDrawer() {
   const ebayDrawer = document.getElementById('ebay-drawer');
   const drawerBackdrop = document.getElementById('drawer-backdrop');
-  
+
   // Close any other open drawers
   const uvDrawer = document.getElementById('uv-drawer');
   const memoryDrawer = document.getElementById('memory-drawer');
@@ -747,7 +747,7 @@ function openEbayDrawer() {
     favoritesUnsubscribe = onSnapshot(favQuery, (snapshot) => {
       savedItemIds = new Set();
       savedItemsList = [];
-    snapshot.forEach(doc => {
+      snapshot.forEach(doc => {
         const data = doc.data();
 
         savedItemIds.add(data.itemId);
@@ -785,7 +785,7 @@ function closeEbayDrawer() {
   const ebayDrawer = document.getElementById('ebay-drawer');
   const drawerBackdrop = document.getElementById('drawer-backdrop');
   ebayDrawer.classList.remove('open');
-  
+
   const isMemoryOpen = document.getElementById('memory-drawer')?.classList.contains('open');
   const isUvOpen = document.getElementById('uv-drawer')?.classList.contains('open');
   if (!isMemoryOpen && !isUvOpen) {
@@ -898,7 +898,7 @@ async function handleFileSelected(file) {
     }
   } catch (err) {
 
-    alert('Oops! Isla had trouble recognizing this image. Please try again!');
+    alert('Oops! We had trouble recognizing this image. Please try again!');
   } finally {
     if (loader) loader.classList.add('hidden');
   }
@@ -934,7 +934,7 @@ async function searchSimilarOnEbay(query) {
 
     if (items.length === 0) {
       grid.innerHTML = `
-        <p class="col-span-2 text-center text-xs text-on-surface-variant py-4 italic">No matching products found on eBay.</p>
+        <p class="col-span-2 text-center text-xs text-on-surface-variant py-4 italic">No matching products found on Bob's Bay.</p>
       `;
       return;
     }
@@ -1016,7 +1016,7 @@ async function handleCreateAlert() {
         freeShipping: shippingVal,
         frequency: frequencyVal
       });
-      
+
       delete formEbayAlert.dataset.editId;
       const submitBtn = formEbayAlert.querySelector('button[type="submit"]');
       if (submitBtn) submitBtn.textContent = 'Save Filter Alert';
@@ -1047,7 +1047,7 @@ async function handleCreateAlert() {
     document.getElementById('ebay-alert-format').value = '';
     document.getElementById('ebay-alert-shipping').checked = false;
     document.getElementById('ebay-alert-frequency').value = 'never';
-    
+
     // Collapse advanced content if expanded
     const advancedFiltersContent = document.getElementById('advanced-filters-content');
     const chevronAdvancedFilters = document.getElementById('chevron-advanced-filters');
@@ -1180,7 +1180,7 @@ function syncTrackersList() {
 }
 
 async function deleteTrackerAlert(id) {
-  if (confirm('Are you sure you want to delete this price alert?')) {
+  if (confirm('Are you sure you want to delete this price alert tart?')) {
     try {
       await deleteDoc(doc(db, 'trackers', id));
     } catch (err) {
@@ -1401,7 +1401,7 @@ function makeInstagramCardHTML(item, isLiked, showDetails = false) {
   const rawImgUrl = extractImageUrl(item);
   const imgUrl = getHighResEbayImgUrl(rawImgUrl);
   const title = item.title || 'Antique Item';
-  
+
   let price = 'Price N/A';
   if (item.price) {
     if (typeof item.price === 'object' && item.price.value) {
@@ -1458,8 +1458,8 @@ function makeInstagramCardHTML(item, isLiked, showDetails = false) {
             <span class="material-symbols-outlined text-2xl" style="color: ${heartColor}; font-variation-settings: 'FILL' ${heartFill}; transition: color 0.2s ease;">${heartIcon}</span>
           </button>
           
-          <a href="${url}" target="_blank" rel="noopener noreferrer" class="icon-btn hover:scale-110 active:scale-95 transition-transform flex items-center justify-center" title="Open on eBay" style="border:none; background:none; cursor:pointer; padding:4px; text-decoration:none; color:#ac2471;">
-            <span class="material-symbols-outlined text-2xl">open_in_new</span>
+          <a href="${url}" target="_blank" rel="noopener noreferrer" class="icon-btn hover:scale-110 active:scale-95 transition-transform flex items-center justify-center text-[#1a1523] hover:text-[#ac2471]" title="Open on eBay" style="border:none; background:none; cursor:pointer; padding:4px; text-decoration:none; transition: color 0.2s ease;">
+            <span class="material-symbols-outlined text-2xl">shopping_bag</span>
           </a>
         </div>
         ${showDetails ? `<span class="text-sm font-extrabold text-[#ac2471]">${price}</span>` : ''}
@@ -1838,7 +1838,7 @@ function changeReelsCard(newIndex, direction) {
       activeCard.classList.add(direction === 'up' ? 'anim-slide-up-in' : 'anim-slide-down-in');
       void activeCard.offsetWidth; // reflow
       activeCard.classList.add('active');
-      
+
       setTimeout(() => {
         activeCard.classList.remove('anim-slide-up-in', 'anim-slide-down-in');
         reelsScrollCooldown = false;

@@ -11,16 +11,16 @@
 const TOUR_STEPS = [
   {
     targetId: 'input-bar-container',
-    title: '✨ Meet Isla AI Assistant',
-    desc: 'Ask Isla anything about antiques, silver hallmarks, maker marks, valuations, or historical provenance. Pro-tip: You can also type "help" in the chat or tap the compass 🧭 button in the header anytime you need a guide!',
+    title: '✨ Meet Isla Intellgence ',
+    desc: 'Ask anything, upload anything for answers faster and better than poopy GPT. You can also type "help" in the chat or tap the compass 🧭 button at the top if you are a retard',
     action: () => {
       closeAllDrawers();
     }
   },
   {
     targetId: 'tone-slider',
-    title: '👑 AI Personality Mode Slider',
-    desc: 'Adjust Isla\'s personality in real time. Move left for raw Ragebait critiques, right for flattering Princess treatment, or keep it Balanced!',
+    title: 'AI Personality Mode Slider',
+    desc: 'Adjust Isla\'s personality in real time. Move left for raw Ragebait critiques, right for flattering Princess treatment, or keep it Balanced',
     action: () => {
       closeAllDrawers();
     }
@@ -35,7 +35,7 @@ const TOUR_STEPS = [
   },
   {
     targetId: 'btn-trinkify',
-    title: '🪄 Trinkify Room Scan',
+    title: 'Trinkify Room Scan',
     desc: 'Uses your device camera to scan your physical room/shelf and recommend matching antique trinket coordinates.',
     action: () => {
       closeAllDrawers();
@@ -43,7 +43,7 @@ const TOUR_STEPS = [
   },
   {
     targetId: 'btn-ocr',
-    title: '📝 Document Scanner (OCR)',
+    title: ' Document Scanner (OCR)',
     desc: 'Scans printed labels, certificates, or registry catalogs to extract text and signatures instantly.',
     action: () => {
       closeAllDrawers();
@@ -51,15 +51,15 @@ const TOUR_STEPS = [
   },
   {
     targetId: 'btn-gemini-model-selector',
-    title: '⚡ Select AI Engine',
-    desc: 'Switch between ⚡ Speedy Isla (3.1 Lite - Sub-second replies), 🚀 Daily Queen (3.5 Flash - Standard chat), and 🧠 Brainiac Isla (3.6 Extended - Deep antique reasoning)!',
+    title: 'Select AI Engine',
+    desc: 'Switch between differnt AI engines depending on your needs.',
     action: () => {
       closeAllDrawers();
     }
   },
   {
     targetId: 'btn-open-sidebar',
-    title: '💬 Chat History & Sidebar',
+    title: 'Chat History & Sidebar',
     desc: 'Open the sidebar menu to view your past chats, start fresh conversations, or check Isla\'s memory bank.',
     action: () => {
       closeAllDrawers();
@@ -67,8 +67,8 @@ const TOUR_STEPS = [
   },
   {
     targetId: 'isla-tour-full-screen',
-    title: '🧠 Isla Memories & Shelf',
-    desc: 'View collected trinkets and check the profile of facts Isla learns about your tastes, preferences, and habits over time.',
+    title: 'Isla Memories & Shelf',
+    desc: 'View collected twinkets and check the profile of facts Isla learns about your tastes, preferences, and habits over time.',
     action: () => {
       // 1. Close UV drawer & eBay drawer if open
       const uvDrawer = document.getElementById('uv-drawer');
@@ -92,8 +92,8 @@ const TOUR_STEPS = [
   },
   {
     targetId: 'btn-header-uv',
-    title: '☀️ UV Sunshine Index Tracker',
-    desc: 'Track sunshine levels, get AI-backed skin safety advice, and optimize your tanning duration based on your location.',
+    title: 'UV Sunshine Index Tracker',
+    desc: 'Track sunshine levels so kieran can look at your tan lines',
     action: () => {
       // 1. Close Memory drawer & eBay drawer if open
       const memoryDrawer = document.getElementById('memory-drawer');
@@ -117,8 +117,8 @@ const TOUR_STEPS = [
   },
   {
     targetId: 'btn-toggle-create-alert',
-    title: '🔔 Alert Trackers & Sourcing',
-    desc: 'Configure automated real-time eBay search alerts with custom target prices & frequencies.',
+    title: 'Alert Trackers & Sourcing',
+    desc: 'Configure automated real-time eBay search alerts with custom target prices babe.',
     action: () => {
       // 1. Close UV drawer & Memory drawer
       const uvDrawer = document.getElementById('uv-drawer');
@@ -152,8 +152,8 @@ const TOUR_STEPS = [
   },
   {
     targetId: 'btn-open-reels',
-    title: '🎬 Antique Reels Feed',
-    desc: 'Watch sourced antique listings like TikTok or Instagram Reels! Double-tap screen to like, and tap sides to view photos.',
+    title: 'Antique Reels Feed',
+    desc: 'Watch sourced antique listings like TikTok or Instagram weels! Double-tap screen to like, and tap sides to view photos.',
     action: () => {
       // Close Memory drawer & UV drawer
       const memoryDrawer = document.getElementById('memory-drawer');
@@ -177,7 +177,7 @@ const TOUR_STEPS = [
   },
   {
     targetId: 'btn-show-saved',
-    title: '💖 Saved Trinkets & Search',
+    title: 'Saved Trinkets & Search',
     desc: 'View all your liked items in your saved trinkets shelf and filter them instantly using the sticky search bar.',
     action: () => {
       // 1. Close Reels modal if open
@@ -283,7 +283,7 @@ export function startTour(forced = true) {
 
   isTourActive = true;
   currentStepIndex = 0;
-  
+
   const overlay = document.getElementById('isla-tour-overlay');
   if (overlay) {
     overlay.style.position = 'fixed';
@@ -415,7 +415,7 @@ function renderStep(index) {
       // Scroll target into view
       try {
         targetEl.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-      } catch (e) {}
+      } catch (e) { }
 
       const rect = targetEl.getBoundingClientRect();
       const padding = 8;

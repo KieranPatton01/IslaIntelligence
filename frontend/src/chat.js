@@ -12,7 +12,7 @@
  *  • Tear down listeners when the user signs out
  */
 
-import { db, storage, auth }   from './firebase.js';
+import { db, storage, auth } from './firebase.js';
 import {
   collection, addDoc, query, orderBy, limit,
   onSnapshot, serverTimestamp, getDocs, deleteDoc,
@@ -20,7 +20,7 @@ import {
 } from 'firebase/firestore';
 import { ref, uploadBytes, getDownloadURL } from 'firebase/storage';
 
-import { streamChat }        from './api.js';
+import { streamChat } from './api.js';
 import { createSession, generateSessionTitle } from './sessions.js';
 import {
   appendMessage,
@@ -46,7 +46,7 @@ let unsubMessages = null;       // Firestore onSnapshot unsubscribe fn
 let messageHistory = [];        // Local context window sent to Gemini
 let initialLoadDone = false;    // Flag: first Firestore batch loaded
 let stagedMediaList = [];       // Array of staged files: { file: File, base64: string, dataUrl: string }
-let isSending       = false;    // Guard against double-sends
+let isSending = false;    // Guard against double-sends
 export let currentSessionId = null; // Exposed so main.js can read it
 export function getCurrentSessionId() { return currentSessionId; }
 let userFacts = [];             // Memory bank facts (loaded on login)
@@ -55,16 +55,16 @@ let currentUid = null;          // UID of signed-in user
 
 // ── Voice Recording State ──────────────────────────────────
 let mediaRecorder = null;
-let audioChunks   = [];
-let isRecording   = false;
+let audioChunks = [];
+let isRecording = false;
 
 // ── Tone label map ─────────────────────────────────────────
 const TONE_LABELS = [
-  { max:  20, label: '😤 Full chaos',       color: '#ba1a1a' },
-  { max:  40, label: '😏 Slightly teasing', color: '#d44000' },
-  { max:  60, label: '🤖 Formal AI mode',   color: '#ac2471' },
-  { max:  80, label: '🥰 Slightly sooky',   color: '#7212ff' },
-  { max: 100, label: '👑 Princess mode',    color: '#5700c9' },
+  { max: 20, label: '😤 Full Wagebait', color: '#ba1a1a' },
+  { max: 40, label: '😏 Slightly Teasing', color: '#d44000' },
+  { max: 60, label: 'Formal AI', color: '#ac2471' },
+  { max: 80, label: '🥰 Slightly Sooky', color: '#7212ff' },
+  { max: 100, label: '👑 Princess Mode', color: '#5700c9' },
 ];
 
 function getToneLabel(value) {
@@ -80,9 +80,9 @@ function getToneLabel(value) {
  */
 export async function initChat(user) {
   initialLoadDone = false;
-  messageHistory  = [];
+  messageHistory = [];
   stagedMediaList = [];
-  isSending       = false;
+  isSending = false;
   currentUid = user.uid;
 
   clearMessages();
@@ -90,11 +90,11 @@ export async function initChat(user) {
   setupToneSlider();
   setupThinkingToggle();
   setupEventListeners(user);
-  
+
   // Load memory bank facts and trinkets for this user
   userFacts = await loadFacts(user.uid);
   userTrinkets = await loadTrinkets(user.uid);
-  
+
   // Cleanup legacy messages
   deleteLegacyMessages(user.uid);
 }
@@ -125,7 +125,7 @@ export function teardownChat() {
     unsubMessages();
     unsubMessages = null;
   }
-  messageHistory  = [];
+  messageHistory = [];
   initialLoadDone = false;
   currentSessionId = null;
   currentUid = null;
@@ -137,24 +137,24 @@ export function teardownChat() {
 // ── Private helpers ────────────────────────────────────────
 
 function setupToneSlider() {
-  const slider  = document.getElementById('tone-slider');
-  const label   = document.getElementById('tone-label');
+  const slider = document.getElementById('tone-slider');
+  const label = document.getElementById('tone-label');
   const welcome = document.getElementById('welcome-message');
-  
+
   if (!slider || !label) return;
 
   const update = () => {
-    const v    = parseInt(slider.value, 10);
+    const v = parseInt(slider.value, 10);
     const info = getToneLabel(v);
     label.textContent = `${info.label}`;
     label.style.color = info.color;
-    
+
     if (welcome) {
       if (v <= 20) welcome.textContent = 'WHAT DO YOU WANT?';
       else if (v <= 40) welcome.textContent = 'Oh, you again?';
       else if (v <= 60) welcome.textContent = 'Welcome.';
-      else if (v <= 80) welcome.textContent = 'Hello my love 💕';
-      else welcome.textContent = 'Hello my pretty queen';
+      else if (v <= 80) welcome.textContent = 'Hello my crush';
+      else welcome.textContent = 'Miss Isla, my queen';
     }
     setCurrentTone(v);
   };
@@ -246,14 +246,14 @@ function loadHistory(uid, sessionId) {
       }
 
       appendMessage({
-        role:      data.role,
-        text:      data.text     ?? null,
-        imageUrl:  data.imageUrl ?? null,
+        role: data.role,
+        text: data.text ?? null,
+        imageUrl: data.imageUrl ?? null,
         mediaList: data.mediaList ?? null,
-        thought:   data.thought  ?? null,
-        id:        data.id,
+        thought: data.thought ?? null,
+        id: data.id,
         toneValue: data.toneValue,
-        aiModel:   data.aiModel  ?? null,
+        aiModel: data.aiModel ?? null,
         createdAt: data.createdAt
       });
       messageHistory.push({ role: data.role, text: data.text ?? '' });
@@ -283,13 +283,13 @@ function hideWelcomeScreen() {
 
 function setupEventListeners(user) {
   const textarea = document.getElementById('input-message');
-  
+
   if (!textarea.dataset.listenerAttached) {
     const inputBarContainer = document.getElementById('input-bar-container');
     textarea.addEventListener('input', () => {
       textarea.style.height = 'auto';
       textarea.style.height = Math.min(textarea.scrollHeight, 128) + 'px';
-      
+
       const hasText = textarea.value.trim().length > 0;
       if (hasText) {
         inputBarContainer?.classList.add('input-bar-typing');
@@ -310,7 +310,7 @@ function setupEventListeners(user) {
     // Close Drawer handlers
     document.getElementById('btn-close-drawer')?.addEventListener('click', () => closeMemoryDrawer());
     document.getElementById('drawer-backdrop')?.addEventListener('click', () => closeMemoryDrawer());
-    
+
     // Add facts handler inside drawer
     const drawerAddInput = document.getElementById('drawer-add-input');
     const drawerAddBtn = document.getElementById('drawer-add-btn');
@@ -335,9 +335,9 @@ function setupEventListeners(user) {
       }
     });
 
-    const btnAttach  = document.getElementById('btn-attach');
-    const inputFile  = document.getElementById('input-file');
-    const btnRemove  = document.getElementById('btn-remove-image');
+    const btnAttach = document.getElementById('btn-attach');
+    const inputFile = document.getElementById('input-file');
+    const btnRemove = document.getElementById('btn-remove-image');
 
     btnAttach?.addEventListener('click', () => inputFile?.click());
 
@@ -385,7 +385,7 @@ function setupEventListeners(user) {
         // Auto-fill and submit
         const textarea = document.getElementById('input-message');
         if (textarea) {
-          textarea.value = "Trinkify this space! ✨";
+          textarea.value = "Trinkify this space perhaps";
         }
         handleSend(user);
       };
@@ -425,10 +425,10 @@ function setupEventListeners(user) {
 
       try {
         const { default: Tesseract } = await import('tesseract.js');
-        
+
         if (ocrCancelled) return;
         if (ocrText) {
-          ocrText.textContent = "Recognizing text... 0%";
+          ocrText.textContent = "Contacting the IDF... 67%";
         }
 
         const result = await Tesseract.recognize(
@@ -467,7 +467,7 @@ function setupEventListeners(user) {
     const btnCloseOcrDrawer = document.getElementById('btn-close-ocr-drawer');
     const btnOcrCopy = document.getElementById('btn-ocr-copy');
     const ocrCopyText = document.getElementById('ocr-copy-text');
-     const btnOcrInsert = document.getElementById('btn-ocr-insert');
+    const btnOcrInsert = document.getElementById('btn-ocr-insert');
     const btnOcrSummarize = document.getElementById('btn-ocr-summarize');
     const btnOcrReword = document.getElementById('btn-ocr-reword');
     const ocrDefaultActions = document.getElementById('ocr-default-actions');
@@ -477,7 +477,7 @@ function setupEventListeners(user) {
     function openOcrDrawer(text) {
       if (!ocrDrawer || !ocrDrawerContent || !ocrDrawerText) return;
       ocrDrawerText.value = text;
-      
+
       // Reset copy button status
       if (ocrCopyText) ocrCopyText.textContent = "Copy Text";
       const copyIcon = btnOcrCopy?.querySelector('.material-symbols-outlined');
@@ -503,7 +503,7 @@ function setupEventListeners(user) {
       ocrDrawer.classList.add('opacity-0');
       ocrDrawerContent.classList.remove('translate-y-0');
       ocrDrawerContent.classList.add('translate-y-full');
-      
+
       setTimeout(() => {
         ocrDrawer.style.display = 'none';
       }, 300);
@@ -523,7 +523,7 @@ function setupEventListeners(user) {
         if (ocrCopyText) ocrCopyText.textContent = "Copied!";
         const copyIcon = btnOcrCopy?.querySelector('.material-symbols-outlined');
         if (copyIcon) copyIcon.textContent = "check";
-        
+
         setTimeout(() => {
           if (ocrCopyText) ocrCopyText.textContent = "Copy Text";
           if (copyIcon) copyIcon.textContent = "content_copy";
@@ -591,7 +591,7 @@ function setupEventListeners(user) {
     });
 
     btnRemove?.addEventListener('click', clearStagedImage);
-    
+
     // Voice Recording
     const btnMic = document.getElementById('btn-mic');
     btnMic?.addEventListener('click', handleMicClick);
@@ -638,7 +638,7 @@ function setupEventListeners(user) {
     const messagesContainer = document.getElementById('messages-container');
     messagesContainer?.addEventListener('message-reprompt', async (e) => {
       if (isSending) return;
-      
+
       const { messageId, text } = e.detail;
       isSending = true;
       setSendLoading(true);
@@ -668,10 +668,10 @@ function setupEventListeners(user) {
             const messagesColl = collection(db, 'users', user.uid, 'sessions', currentSessionId, 'messages');
             const q = query(messagesColl, orderBy('createdAt', 'asc'));
             const querySnapshot = await getDocs(q);
-            
+
             let foundEdited = false;
             const docsToDelete = [];
-            
+
             for (const docSnap of querySnapshot.docs) {
               if (foundEdited) {
                 docsToDelete.push(docSnap.ref);
@@ -680,7 +680,7 @@ function setupEventListeners(user) {
                 foundEdited = true;
               }
             }
-            
+
             // Update edited message document
             const msgDocRef = doc(db, 'users', user.uid, 'sessions', currentSessionId, 'messages', messageId);
             await updateDoc(msgDocRef, { text });
@@ -706,7 +706,7 @@ function setupEventListeners(user) {
         let fullResponse = '';
 
         const toneSlider = document.getElementById('tone-slider');
-        const toneValue  = parseInt(toneSlider?.value ?? '50', 10);
+        const toneValue = parseInt(toneSlider?.value ?? '50', 10);
 
         try {
           hideTypingIndicator();
@@ -714,9 +714,9 @@ function setupEventListeners(user) {
           aiTextEl = textEl;
 
           let requestedLocation = false;
-          
+
           const { stream, model: aiModel } = await streamChat({
-            messages:      messageHistory,
+            messages: messageHistory,
             toneValue,
             userFacts,
             onNewMemory: async (fact) => {
@@ -732,12 +732,12 @@ function setupEventListeners(user) {
           for await (const chunk of stream) {
             if (chunk) hasReceivedAnyText = true;
             fullResponse += chunk;
-            
+
             if (fullResponse.includes('[REQUEST_LOCATION]')) {
               requestedLocation = true;
               fullResponse = fullResponse.replace('[REQUEST_LOCATION]', '');
             }
-            
+
             updateStreamingBubble(textEl, fullResponse);
             scrollToBottom();
           }
@@ -754,10 +754,10 @@ function setupEventListeners(user) {
             }
           } else {
             if (aiTextEl) {
-              addDebugInfoToBubble(aiTextEl.closest('.bubble'), { 
-                toneValue, 
-                createdAt: Date.now(), 
-                aiModel 
+              addDebugInfoToBubble(aiTextEl.closest('.bubble'), {
+                toneValue,
+                createdAt: Date.now(),
+                aiModel
               });
               scrollToBottom();
             }
@@ -766,10 +766,10 @@ function setupEventListeners(user) {
             const cleanResponse = fullResponse.replace(/\[\[MEMORY:[^\]]*\]\]/gi, '').trim();
 
             await saveMessage(user.uid, currentSessionId, {
-              role:      'model',
-              text:      cleanResponse,
-              imageUrl:  null,
-              imageRef:  null,
+              role: 'model',
+              text: cleanResponse,
+              imageUrl: null,
+              imageRef: null,
               toneValue,
               aiModel,
             });
@@ -808,10 +808,10 @@ async function handleMicClick() {
     try {
       const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
       // Use webm if available, otherwise mp4 (safari) or whatever is default
-      const options = MediaRecorder.isTypeSupported('audio/webm') 
-        ? { mimeType: 'audio/webm' } 
+      const options = MediaRecorder.isTypeSupported('audio/webm')
+        ? { mimeType: 'audio/webm' }
         : undefined;
-        
+
       mediaRecorder = new MediaRecorder(stream, options);
       audioChunks = [];
 
@@ -822,10 +822,10 @@ async function handleMicClick() {
       mediaRecorder.onstop = () => {
         const mimeType = mediaRecorder.mimeType || 'audio/webm';
         const audioBlob = new Blob(audioChunks, { type: mimeType });
-        
+
         const ext = mimeType.includes('mp4') ? 'mp4' : 'webm';
         const stagedVoiceFile = new File([audioBlob], `voice_note.${ext}`, { type: mimeType });
-        
+
         const reader = new FileReader();
         reader.onload = (ev) => {
           const dataUrl = ev.target.result;
@@ -838,7 +838,7 @@ async function handleMicClick() {
           renderStagedPreviews();
         };
         reader.readAsDataURL(audioBlob);
-        
+
         // Stop all tracks to turn off the red dot in browser tab
         stream.getTracks().forEach(track => track.stop());
       };
@@ -859,14 +859,14 @@ async function handleMicClick() {
 function renderStagedPreviews() {
   const strip = document.getElementById('image-preview-strip');
   if (!strip) return;
-  
+
   strip.innerHTML = '';
-  
+
   if (stagedMediaList.length === 0) {
     strip.classList.add('hidden');
     return;
   }
-  
+
   stagedMediaList.forEach((media, idx) => {
     const isImg = media.file.type.startsWith('image/');
     const isAud = media.file.type.startsWith('audio/');
@@ -888,18 +888,18 @@ function renderStagedPreviews() {
       box.className = 'w-14 h-14 rounded-xl bg-white border-2 flex flex-col items-center justify-center p-1 text-center';
       box.style.borderColor = 'rgba(172,36,113,0.2)';
       box.style.boxShadow = '0 2px 8px rgba(0,0,0,0.06)';
-      
+
       const icon = document.createElement('span');
       icon.className = 'material-symbols-outlined text-primary';
       icon.style.fontSize = '18px';
       icon.textContent = isAud ? 'volume_up' : 'description';
-      
+
       const extLabel = document.createElement('span');
       extLabel.style.fontSize = '9px';
       extLabel.style.fontWeight = '700';
       extLabel.className = 'text-primary truncate max-w-full uppercase';
       extLabel.textContent = ext;
-      
+
       box.appendChild(icon);
       box.appendChild(extLabel);
       itemWrapper.appendChild(box);
@@ -912,7 +912,7 @@ function renderStagedPreviews() {
     closeBtn.style.border = 'none';
     closeBtn.setAttribute('aria-label', `Remove ${media.file.name}`);
     closeBtn.innerHTML = '<span class="material-symbols-outlined" style="font-size:12px; font-variation-settings:\'FILL\' 1;">close</span>';
-    
+
     closeBtn.addEventListener('click', (e) => {
       e.stopPropagation();
       stagedMediaList.splice(idx, 1);
@@ -922,7 +922,7 @@ function renderStagedPreviews() {
     itemWrapper.appendChild(closeBtn);
     strip.appendChild(itemWrapper);
   });
-  
+
   strip.classList.remove('hidden');
 }
 
@@ -938,20 +938,20 @@ function clearStagedMedia() {
 async function handleSend(user, systemOverrideText = null) {
   if (isSending) return;
 
-  const textarea  = document.getElementById('input-message');
+  const textarea = document.getElementById('input-message');
   const toneSlider = document.getElementById('tone-slider');
-  const text       = systemOverrideText !== null ? systemOverrideText : (textarea?.value.trim() ?? '');
-  const toneValue  = parseInt(toneSlider?.value ?? '50', 10);
+  const text = systemOverrideText !== null ? systemOverrideText : (textarea?.value.trim() ?? '');
+  const toneValue = parseInt(toneSlider?.value ?? '50', 10);
 
   // Must have text or at least one file
   if (!text && stagedMediaList.length === 0) return;
 
   isSending = true;
   setSendLoading(true);
-  
-  if (systemOverrideText === null && textarea) { 
-    textarea.value = ''; 
-    textarea.style.height = 'auto'; 
+
+  if (systemOverrideText === null && textarea) {
+    textarea.value = '';
+    textarea.style.height = 'auto';
     textarea.blur(); // Dismiss mobile keyboard
     document.getElementById('input-bar-container')?.classList.remove('input-bar-typing');
   }
@@ -977,10 +977,10 @@ async function handleSend(user, systemOverrideText = null) {
   let userBubble = null;
   if (systemOverrideText === null) {
     userBubble = appendMessage({
-      role:     'user',
-      text:     text || null,
+      role: 'user',
+      text: text || null,
       mediaList: optimisticMediaList,
-      sending:  true,
+      sending: true,
       toneValue: toneValue,
       createdAt: Date.now()
     });
@@ -988,7 +988,7 @@ async function handleSend(user, systemOverrideText = null) {
 
   const cleanInput = (text || '').trim().toLowerCase();
   const isHelpQuery = cleanInput === 'help' || cleanInput === '/help';
-  const apiPromptText = isHelpQuery 
+  const apiPromptText = isHelpQuery
     ? "Provide a clear, fun, and easy-to-read user guide to all 7 features of Isla Intelligence for Isla (1. 🗺️ Interactive Leaflet Maps & Cabinet Blueprints, 2. 📊 Flowcharts & Timelines, 3. 🎬 Antique Reels Feed, 4. 🔔 Alert Trackers & Email Notifications, 5. 📚 Memories & Virtual Trinket Shelf, 6. 📎 Media Attachments & 📝 OCR Scanner, 7. 👑 Mood/Tone Slider). Explain what each feature does clearly so she knows how to use them. Write this guide in character matching your CURRENT personality mode (whether sarcastic/ragebait, formal, or princess), but ALWAYS list and explain all 7 features clearly in rendered Markdown with headers and bullet points!"
     : (text || '');
 
@@ -1020,8 +1020,8 @@ async function handleSend(user, systemOverrideText = null) {
   }
 
   saveMessage(user.uid, currentSessionId, {
-    role:      'user',
-    text:      text       || null,
+    role: 'user',
+    text: text || null,
     mediaList: uploadedMediaList.length > 0 ? uploadedMediaList : null,
     toneValue,
   });
@@ -1036,7 +1036,7 @@ async function handleSend(user, systemOverrideText = null) {
     aiTextEl = textEl;
 
     let requestedLocation = false;
-    
+
     // Prepare media payload for Gemini Worker
     const mediaListPayload = currentStagedList.map(m => ({
       data: m.base64,
@@ -1045,11 +1045,11 @@ async function handleSend(user, systemOverrideText = null) {
 
     const streamStartTime = Date.now();
     const { stream, model: aiModel } = await streamChat({
-      messages:      messageHistory,
+      messages: messageHistory,
       toneValue,
       userFacts,
-      mediaList:     mediaListPayload,
-      modelChoice:   currentModelChoice,
+      mediaList: mediaListPayload,
+      modelChoice: currentModelChoice,
       onNewMemory: async (fact) => {
         const saved = await saveFact(currentUid, fact, userFacts);
         if (saved) {
@@ -1074,12 +1074,12 @@ async function handleSend(user, systemOverrideText = null) {
         if (chunk.text) hasReceivedAnyText = true;
         fullResponse += chunk.text;
       }
-      
+
       if (fullResponse.includes('[REQUEST_LOCATION]')) {
         requestedLocation = true;
         fullResponse = fullResponse.replace('[REQUEST_LOCATION]', '');
       }
-      
+
       updateStreamingBubble(textEl, fullResponse, false);
     }
 
@@ -1098,9 +1098,9 @@ async function handleSend(user, systemOverrideText = null) {
       }
     } else {
       if (aiTextEl) {
-        addDebugInfoToBubble(aiTextEl.closest('.bubble'), { 
-          toneValue, 
-          createdAt: Date.now(), 
+        addDebugInfoToBubble(aiTextEl.closest('.bubble'), {
+          toneValue,
+          createdAt: Date.now(),
           aiModel,
           latencyMs
         });
@@ -1112,10 +1112,10 @@ async function handleSend(user, systemOverrideText = null) {
       const cleanResponse = fullResponse.replace(/\[\[MEMORY:[^\]]*\]\]/gi, '').trim();
 
       await saveMessage(user.uid, currentSessionId, {
-        role:      'model',
-        text:      cleanResponse,
-        imageUrl:  null,
-        imageRef:  null,
+        role: 'model',
+        text: cleanResponse,
+        imageUrl: null,
+        imageRef: null,
         toneValue,
         aiModel,
       });
@@ -1143,10 +1143,10 @@ async function handleSend(user, systemOverrideText = null) {
   } catch (err) {
     // Suppressed
     hideTypingIndicator();
-    let userFriendlyError = "⚠️ Isla couldn't respond right now. Try sending your message again!";
+    let userFriendlyError = "Shit, couldn't respond right now.";
     if (err && err.message) {
       if (err.message.includes('limit of') || err.message.includes('exceeds character limit')) {
-        userFriendlyError = "Whoops, this thread is a little long! Why not start a fresh chat session?";
+        userFriendlyError = "Whoops, this thread is a little long! Why not start a fresh chat session dumbass?";
       }
     }
     if (aiTextEl?.closest('.msg-wrapper')) {
@@ -1172,14 +1172,14 @@ async function handleSend(user, systemOverrideText = null) {
 async function saveMessage(uid, sessionId, { role, text, imageUrl, imageRef, mediaList, toneValue, aiModel }) {
   await addDoc(collection(db, 'users', uid, 'sessions', sessionId, 'messages'), {
     role,
-    text:      text      ?? null,
-    imageUrl:  imageUrl  ?? null,
-    imageRef:  imageRef  ?? null,
+    text: text ?? null,
+    imageUrl: imageUrl ?? null,
+    imageRef: imageRef ?? null,
     mediaList: mediaList ?? null,
     toneValue: toneValue ?? null,
-    aiModel:   aiModel   ?? null,
+    aiModel: aiModel ?? null,
     createdAt: serverTimestamp(),
-    status:    'complete',
+    status: 'complete',
   });
 }
 
