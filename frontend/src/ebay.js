@@ -785,8 +785,9 @@ function closeEbayDrawer() {
   const ebayDrawer = document.getElementById('ebay-drawer');
   const drawerBackdrop = document.getElementById('drawer-backdrop');
   ebayDrawer.classList.remove('open');
-  const themeMeta = document.querySelector('meta[name="theme-color"]');
-  if (themeMeta) themeMeta.content = '#fcf9f8';
+  document.querySelectorAll('meta[name="theme-color"]').forEach(el => el.content = '#fcf9f8');
+  const appleMeta = document.querySelector('meta[name="apple-mobile-web-app-status-bar-style"]');
+  if (appleMeta) appleMeta.content = 'default';
 
   const isMemoryOpen = document.getElementById('memory-drawer')?.classList.contains('open');
   const isUvOpen = document.getElementById('uv-drawer')?.classList.contains('open');
@@ -1582,8 +1583,9 @@ export function closeReelsModalAndCleanWatched() {
   const reelsModal = document.getElementById('antique-reels-modal');
   if (reelsModal) reelsModal.classList.add('hidden');
 
-  const themeMeta = document.querySelector('meta[name="theme-color"]');
-  if (themeMeta) themeMeta.content = '#fcf9f8';
+  document.querySelectorAll('meta[name="theme-color"]').forEach(el => el.content = '#fcf9f8');
+  const appleMetaClose = document.querySelector('meta[name="apple-mobile-web-app-status-bar-style"]');
+  if (appleMetaClose) appleMetaClose.content = 'default';
 
   // Filter out watched items from the feed
   lastFetchedFeedItems = lastFetchedFeedItems.filter(item => !watchedItemIds.has(item.itemId));
@@ -1603,8 +1605,9 @@ export async function openAntiqueReelsFeed() {
 
   if (!reelsModal) return;
 
-  const themeMeta = document.querySelector('meta[name="theme-color"]');
-  if (themeMeta) themeMeta.content = '#09090b';
+  document.querySelectorAll('meta[name="theme-color"]').forEach(el => el.content = '#09090b');
+  const appleMetaOpen = document.querySelector('meta[name="apple-mobile-web-app-status-bar-style"]');
+  if (appleMetaOpen) appleMetaOpen.content = 'black-translucent';
 
   // Close drawers
   document.getElementById('ebay-drawer')?.classList.remove('open');
