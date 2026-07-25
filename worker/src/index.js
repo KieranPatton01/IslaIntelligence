@@ -34,7 +34,7 @@ const MAX_MSG_CHARS = 10_000;
 const MAX_IMAGE_B64_CHARS = 6_800_000;
 // Allowed image MIME types for Gemini vision
 const ALLOWED_IMAGE_MIMES = new Set([
-  'image/jpeg', 'image/png', 'image/webp', 'image/gif', 'image/heic', 'image/heif', 'application/pdf',
+  'image/jpeg', 'image/png', 'image/webp', 'image/gif', 'image/heic', 'image/heif', 'application/pdf', 'application/x-pdf',
 ]);
 // Allowed audio/video MIME types for Gemini multimodal
 const ALLOWED_AUDIO_MIMES = new Set([
@@ -542,9 +542,9 @@ async function executeToolCallAndStream(geminiResponse, geminiPayload, model, en
                 functionCallInfo = fCallPart.functionCall;
               }
 
-              // Check for normal text (non-thought text)
-              const normalTextPart = parts.find(p => p.text && !p.thought);
-              if (normalTextPart) {
+              // Check for text or thought chunks to start streaming immediately
+              const textPart = parts.find(p => p.text);
+              if (textPart) {
                 hasNormalText = true;
               }
             }
@@ -685,6 +685,9 @@ async function handleChat(body, env, corsHeaders) {
   // Reject unknown MIME types and oversized payloads to prevent token abuse.
   if (Array.isArray(mediaList)) {
     for (const media of mediaList) {
+      if (!media.mimeType || media.mimeType === 'application/x-pdf' || (media.name && media.name.toLowerCase().endsWith('.pdf'))) {
+        media.mimeType = 'application/pdf';
+      }
       const mimeOk = ALLOWED_IMAGE_MIMES.has(media.mimeType) || ALLOWED_AUDIO_MIMES.has(media.mimeType);
       if (!mimeOk) {
         return new Response(JSON.stringify({ error: `Unsupported media type: ${media.mimeType}` }), {

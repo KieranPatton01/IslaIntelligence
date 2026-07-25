@@ -1051,7 +1051,7 @@
 .drawer-backdrop {
   position: fixed;
   inset: 0;
-  background: rgba(28, 27, 27, 0.4);
+  background: rgba(252, 249, 248, 0.55);
   backdrop-filter: blur(4px);
   -webkit-backdrop-filter: blur(4px);
   z-index: 9998;

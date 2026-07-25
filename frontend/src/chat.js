@@ -1051,10 +1051,17 @@ async function handleSend(user, systemOverrideText = null) {
     let requestedLocation = false;
 
     // Prepare media payload for Gemini Worker
-    const mediaListPayload = currentStagedList.map(m => ({
-      data: m.base64,
-      mimeType: m.file.type
-    }));
+    const mediaListPayload = currentStagedList.map(m => {
+      let mime = m.file.type || 'application/pdf';
+      if (m.file.name && m.file.name.toLowerCase().endsWith('.pdf')) {
+        mime = 'application/pdf';
+      }
+      return {
+        name: m.file.name,
+        data: m.base64,
+        mimeType: mime
+      };
+    });
 
     const streamStartTime = Date.now();
     const { stream, model: aiModel } = await streamChat({
