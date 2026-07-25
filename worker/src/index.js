@@ -867,11 +867,11 @@ Format your response strictly as valid JSON, with no other text, no markdown blo
     PRIMARY_REQ_MODEL = 'gemini-2.0-flash-lite-preview-02-05';
     BACKUP_REQ_MODEL  = 'gemini-1.5-flash-8b';
   } else if (modelChoice === '3.6-extended') {
-    PRIMARY_REQ_MODEL = 'gemini-2.0-pro-exp-02-05';
-    BACKUP_REQ_MODEL  = 'gemini-2.0-flash';
+    PRIMARY_REQ_MODEL = 'gemini-2.0-flash';
+    BACKUP_REQ_MODEL  = 'gemini-1.5-pro';
   } else {
     PRIMARY_REQ_MODEL = 'gemini-2.0-flash';
-    BACKUP_REQ_MODEL  = 'gemini-2.0-flash-lite-preview-02-05';
+    BACKUP_REQ_MODEL  = 'gemini-1.5-flash';
   }
 
   const modelsToTry = [PRIMARY_REQ_MODEL, BACKUP_REQ_MODEL];
@@ -883,11 +883,6 @@ Format your response strictly as valid JSON, with no other text, no markdown blo
   for (const model of modelsToTry) {
     const isModel20 = model.includes('2.0');
     const isModel15 = model.includes('1.5');
-
-    let thinkingLevel = "low";
-    if (modelChoice === '3.6-extended') {
-      thinkingLevel = "high";
-    }
 
     const modelPayload = {
       ...geminiPayload,
@@ -914,13 +909,13 @@ Format your response strictly as valid JSON, with no other text, no markdown blo
         break; // Stop at first successful model
       } else {
         const errText = await geminiResponse.clone().text();
-        if (model === PRIMARY_MODEL) {
+        if (model === PRIMARY_REQ_MODEL) {
           primaryStatus = geminiResponse.status;
           primaryErrorMsg = errText;
         }
       }
     } catch (networkErr) {
-      if (model === PRIMARY_MODEL) {
+      if (model === PRIMARY_REQ_MODEL) {
         primaryErrorMsg = networkErr.message;
       }
     }
