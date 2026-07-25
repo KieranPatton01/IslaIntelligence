@@ -952,6 +952,7 @@ async function handleSend(user, systemOverrideText = null) {
   if (systemOverrideText === null && textarea) { 
     textarea.value = ''; 
     textarea.style.height = 'auto'; 
+    textarea.blur(); // Dismiss mobile keyboard
     document.getElementById('input-bar-container')?.classList.remove('input-bar-typing');
   }
 

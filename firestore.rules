@@ -17,6 +17,12 @@ service cloud.firestore {
       allow create: if request.auth != null && request.resource.data.uid == request.auth.uid;
     }
 
+    // ── eBay Favorites ──
+    match /favorites/{favoriteId} {
+      allow read, update, delete: if request.auth != null && resource.data.userId == request.auth.uid;
+      allow create: if request.auth != null && request.resource.data.userId == request.auth.uid;
+    }
+
     // ── Default deny for all other paths ──
     match /{document=**} {
       allow read, write: if false;
