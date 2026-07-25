@@ -369,68 +369,75 @@ export default {
     const allowedOrigin = env.ALLOWED_ORIGIN || 'https://kieranpatton01.github.io';
     const corsHeaders   = getCorsHeaders(requestOrigin, allowedOrigin);
 
-    // ── Preflight (OPTIONS) — allow before any auth checks ──
-    if (request.method === 'OPTIONS') {
-      return new Response(null, { status: 204, headers: corsHeaders });
-    }
-    if (request.method !== 'POST') {
-      return new Response('Method Not Allowed', {
-        status: 405, headers: { ...corsHeaders, Allow: 'POST, OPTIONS' },
-      });
-    }
+    try {
+      // ── Preflight (OPTIONS) — allow before any auth checks ──
+      if (request.method === 'OPTIONS') {
+        return new Response(null, { status: 204, headers: corsHeaders });
+      }
+      if (request.method !== 'POST') {
+        return new Response('Method Not Allowed', {
+          status: 405, headers: { ...corsHeaders, Allow: 'POST, OPTIONS' },
+        });
+      }
 
-    // ── VULN-02: IP-based rate limiting ─────────────────────
-    const clientIp = request.headers.get('CF-Connecting-IP')
-                  || request.headers.get('X-Forwarded-For')
-                  || 'unknown';
-    if (isRateLimited(clientIp)) {
-      return new Response(JSON.stringify({ error: 'Too many requests. Please slow down.' }), {
-        status: 429,
-        headers: {
-          ...corsHeaders,
-          'Content-Type': 'application/json',
-          'Retry-After': '60',
-        },
-      });
-    }
+      // ── VULN-02: IP-based rate limiting ─────────────────────
+      const clientIp = request.headers.get('CF-Connecting-IP')
+                    || request.headers.get('X-Forwarded-For')
+                    || 'unknown';
+      if (isRateLimited(clientIp)) {
+        return new Response(JSON.stringify({ error: 'Too many requests. Please slow down.' }), {
+          status: 429,
+          headers: {
+            ...corsHeaders,
+            'Content-Type': 'application/json',
+            'Retry-After': '60',
+          },
+        });
+      }
 
-    // ── VULN-03: Firebase UID verification (fail-closed + email allowlist) ──
-    // If FIREBASE_API_KEY is not configured, all requests are rejected.
-    const firebaseApiKey = env.VITE_FIREBASE_API_KEY || env.FIREBASE_API_KEY || '';
-    if (!firebaseApiKey) {
-      return new Response(JSON.stringify({ error: 'Service unavailable' }), {
-        status: 503, headers: { ...corsHeaders, 'Content-Type': 'application/json' },
-      });
-    }
-    const authHeader = request.headers.get('Authorization') || '';
-    const idToken = authHeader.startsWith('Bearer ') ? authHeader.slice(7) : '';
-    const verifiedUid = await verifyFirebaseToken(idToken, firebaseApiKey);
-    if (!verifiedUid) {
-      return new Response(JSON.stringify({ error: 'Unauthorized' }), {
-        status: 401, headers: { ...corsHeaders, 'Content-Type': 'application/json' },
-      });
-    }
+      // ── VULN-03: Firebase UID verification (fail-closed + email allowlist) ──
+      // If FIREBASE_API_KEY is not configured, all requests are rejected.
+      const firebaseApiKey = env.VITE_FIREBASE_API_KEY || env.FIREBASE_API_KEY || '';
+      if (!firebaseApiKey) {
+        return new Response(JSON.stringify({ error: 'Service unavailable' }), {
+          status: 503, headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+        });
+      }
+      const authHeader = request.headers.get('Authorization') || '';
+      const idToken = authHeader.startsWith('Bearer ') ? authHeader.slice(7) : '';
+      const verifiedUid = await verifyFirebaseToken(idToken, firebaseApiKey);
+      if (!verifiedUid) {
+        return new Response(JSON.stringify({ error: 'Unauthorized' }), {
+          status: 401, headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+        });
+      }
 
-    let body;
-    try { body = await request.json(); }
-    catch {
-      return new Response(JSON.stringify({ error: 'Invalid JSON body' }), {
-        status: 400, headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+      let body;
+      try { body = await request.json(); }
+      catch {
+        return new Response(JSON.stringify({ error: 'Invalid JSON body' }), {
+          status: 400, headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+        });
+      }
+
+      // Route: title generation vs normal chat vs eBay tools
+      const url = new URL(request.url);
+      if (url.pathname === '/api/ebay/search') {
+        return handleEbaySearch(body, env, corsHeaders);
+      }
+      if (url.pathname === '/api/ebay/identify') {
+        return handleEbayIdentify(body, env, corsHeaders);
+      }
+      if (url.pathname === '/title' || body.generateTitle === true) {
+        return handleTitleGeneration(body, env, corsHeaders);
+      }
+      return handleChat(body, env, corsHeaders);
+    } catch (globalErr) {
+      return new Response(JSON.stringify({ error: globalErr.message || 'Internal Worker Error' }), {
+        status: 500,
+        headers: { ...corsHeaders, 'Content-Type': 'application/json' }
       });
     }
-
-    // Route: title generation vs normal chat vs eBay tools
-    const url = new URL(request.url);
-    if (url.pathname === '/api/ebay/search') {
-      return handleEbaySearch(body, env, corsHeaders);
-    }
-    if (url.pathname === '/api/ebay/identify') {
-      return handleEbayIdentify(body, env, corsHeaders);
-    }
-    if (url.pathname === '/title' || body.generateTitle === true) {
-      return handleTitleGeneration(body, env, corsHeaders);
-    }
-    return handleChat(body, env, corsHeaders);
   },
 
   async scheduled(event, env, ctx) {
@@ -886,9 +893,9 @@ Format your response strictly as valid JSON, with no other text, no markdown blo
 
     const modelPayload = {
       ...geminiPayload,
-      generationConfig: isModel20 ? {
+      generationConfig: isModel36 ? {
         maxOutputTokens: 8192
-      } : (isModel15 ? {
+      } : (isModel31 ? {
         maxOutputTokens: 8192
       } : geminiPayload.generationConfig)
     };
