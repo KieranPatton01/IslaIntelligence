@@ -15,11 +15,11 @@ function safeEnv(val, fallback) {
 
 const firebaseConfig = {
   apiKey:            safeEnv(import.meta.env.VITE_FIREBASE_API_KEY, 'AIzaSyBe0onZmo-5vJk5ocHD682ZzRzf3d93UJ8'),
-  authDomain:        safeEnv(import.meta.env.VITE_FIREBASE_AUTH_DOMAIN, 'islaintelligence.firebaseapp.com'),
-  projectId:         safeEnv(import.meta.env.VITE_FIREBASE_PROJECT_ID, 'islaintelligence'),
-  storageBucket:     safeEnv(import.meta.env.VITE_FIREBASE_STORAGE_BUCKET, 'islaintelligence.appspot.com'),
-  messagingSenderId: safeEnv(import.meta.env.VITE_FIREBASE_MESSAGING_SENDER_ID, '1063462947936'),
-  appId:             safeEnv(import.meta.env.VITE_FIREBASE_APP_ID, '1:1063462947936:web:86e409c91ee30ce6f671ca'),
+  authDomain:        safeEnv(import.meta.env.VITE_FIREBASE_AUTH_DOMAIN, 'islaintelligence-78abb.firebaseapp.com'),
+  projectId:         safeEnv(import.meta.env.VITE_FIREBASE_PROJECT_ID, 'islaintelligence-78abb'),
+  storageBucket:     safeEnv(import.meta.env.VITE_FIREBASE_STORAGE_BUCKET, 'islaintelligence-78abb.firebasestorage.app'),
+  messagingSenderId: safeEnv(import.meta.env.VITE_FIREBASE_MESSAGING_SENDER_ID, '230027769175'),
+  appId:             safeEnv(import.meta.env.VITE_FIREBASE_APP_ID, '1:230027769175:web:1f7cb8877320aeb6bbba12'),
 };
 
 const app = initializeApp(firebaseConfig);
