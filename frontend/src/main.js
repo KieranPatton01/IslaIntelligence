@@ -12,6 +12,17 @@
 
 import './styles/main.css';
 
+// --- SERVICE WORKER NUKE ---
+// Forcibly clear any stale service workers caching broken offline states
+if ('serviceWorker' in navigator) {
+  navigator.serviceWorker.getRegistrations().then(function(registrations) {
+    for (let registration of registrations) {
+      registration.unregister();
+      console.warn('[SW Diagnostic] Nuked stale service worker to clear offline cache state.');
+    }
+  });
+}
+// ---------------------------
 import { watchAuthState, signIn, signOutUser, parseAuthError, sendPasswordReset } from './auth.js';
 import { initChat, teardownChat, switchSession, getCurrentSessionId, openMemoryModal, updateMemoryBadge } from './chat.js';
 import { listSessions, renameSession, deleteSession } from './sessions.js';
