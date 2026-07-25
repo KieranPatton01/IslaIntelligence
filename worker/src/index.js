@@ -860,29 +860,29 @@ Format your response strictly as valid JSON, with no other text, no markdown blo
     ...(tools.length > 0 ? { tools } : {})
   };
 
-  let PRIMARY_REQ_MODEL = 'gemini-2.0-flash';
-  let BACKUP_REQ_MODEL  = 'gemini-1.5-flash';
+  let PRIMARY_REQ_MODEL = 'gemini-3.6-flash';
+  let BACKUP_REQ_MODEL  = 'gemini-3.1-flash-lite';
 
   if (modelChoice === '3.1-lite') {
-    PRIMARY_REQ_MODEL = 'gemini-2.0-flash-lite-preview-02-05';
-    BACKUP_REQ_MODEL  = 'gemini-1.5-flash-8b';
+    PRIMARY_REQ_MODEL = 'gemini-3.1-flash-lite';
+    BACKUP_REQ_MODEL  = 'gemini-3.6-flash';
   } else if (modelChoice === '3.6-extended') {
-    PRIMARY_REQ_MODEL = 'gemini-2.0-flash';
-    BACKUP_REQ_MODEL  = 'gemini-1.5-pro';
+    PRIMARY_REQ_MODEL = 'gemini-3.6-pro';
+    BACKUP_REQ_MODEL  = 'gemini-3.6-flash';
   } else {
-    PRIMARY_REQ_MODEL = 'gemini-2.0-flash';
-    BACKUP_REQ_MODEL  = 'gemini-1.5-flash';
+    PRIMARY_REQ_MODEL = 'gemini-3.6-flash';
+    BACKUP_REQ_MODEL  = 'gemini-3.1-flash-lite';
   }
 
-  const modelsToTry = [PRIMARY_REQ_MODEL, BACKUP_REQ_MODEL];
+  const modelsToTry = [PRIMARY_REQ_MODEL, BACKUP_REQ_MODEL, 'gemini-2.0-flash'];
   let geminiResponse;
   let successfulModel = null;
   let primaryStatus = null;
   let primaryErrorMsg = null;
 
   for (const model of modelsToTry) {
-    const isModel20 = model.includes('2.0');
-    const isModel15 = model.includes('1.5');
+    const isModel36 = model.includes('3.6');
+    const isModel31 = model.includes('3.1');
 
     const modelPayload = {
       ...geminiPayload,
