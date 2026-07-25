@@ -60,14 +60,12 @@ export async function streamChat({
     try {
       idToken = await currentUser.getIdToken(true); // Force fresh token
     } catch (tokenErr) {
-      console.error('[streamChat Diagnostic] Failed to get fresh ID token:', tokenErr);
+      // Token fetch failed
     }
   }
 
   if (!idToken) {
-    const userState = currentUser ? `${currentUser.email} (UID: ${currentUser.uid})` : 'Not Signed In';
-    console.error('[streamChat Diagnostic] Unauthenticated request blocked:', userState);
-    throw new Error(`Authentication Token Error [User: ${userState}]. Please sign out and sign in again.`);
+    throw new Error('Unauthenticated');
   }
 
   const headers = {
@@ -90,15 +88,15 @@ export async function streamChat({
       }),
     });
   } catch (netErr) {
-    console.error('[streamChat Diagnostic] Network fetch failed to Worker:', netErr);
-    throw new Error(`Network Error connecting to AI Worker [${WORKER_URL}]: ${netErr.message}`);
+    throw netErr;
   }
 
   if (!response.ok) {
-    let bodyText = '';
-    try { bodyText = await response.text(); } catch { /* ignore */ }
-    console.error(`[streamChat Diagnostic] Worker HTTP ${response.status} Error:`, bodyText);
-    throw new Error(`Worker API Error [HTTP ${response.status}]: ${bodyText || response.statusText}`);
+    try {
+      await response.text();
+    } catch (e) {
+      throw new Error(`Error: ${response.status} ${response.statusText}`);
+    }
   }
 
   if (!response.body) {

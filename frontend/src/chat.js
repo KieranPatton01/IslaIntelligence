@@ -1140,7 +1140,7 @@ async function handleSend(user, systemOverrideText = null) {
     }
 
   } catch (err) {
-    console.error('[ISLA CHAT DIAGNOSTIC ERROR]', err);
+    // Suppressed
     hideTypingIndicator();
     let userFriendlyError = "⚠️ Isla couldn't respond right now. Try sending your message again!";
     if (err && err.message) {

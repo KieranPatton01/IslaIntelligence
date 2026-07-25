@@ -182,7 +182,7 @@ async function loadUvDashboard() {
     // Trigger AI Tanning Forecast analysis asynchronously
     generateAiTanningSummary();
   } catch (err) {
-    console.error('UV Dashboard Load Error:', err);
+    // Suppressed
     if (loadingEl) loadingEl.classList.add('hidden');
     if (errorEl) errorEl.classList.remove('hidden');
   }
@@ -596,7 +596,7 @@ In exactly 3 sentences, provide a cozy, cute tanning outlook summary in the voic
       }
     }
   } catch (err) {
-    console.error('AI Tanning summary load error:', err);
+    // Suppressed
     if (aiSummaryLoading) aiSummaryLoading.classList.add('hidden');
     if (aiSummaryText) {
       aiSummaryText.innerHTML = "Isla is having trouble connecting to the clouds today! Check back in a bit for your custom sun advice. ☁️✨";
