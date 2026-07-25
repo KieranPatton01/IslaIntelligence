@@ -83,16 +83,18 @@ export async function sendPasswordReset(email) {
  */
 export function parseAuthError(code) {
   const map = {
-    'auth/invalid-email':          'Please enter a valid email address.',
-    'auth/not-authorised':         'Access denied.',
-    'auth/user-not-found':         'Invalid email or password.',
-    'auth/wrong-password':         'Invalid email or password.',
-    'auth/invalid-credential':     'Invalid email or password.',
-    'auth/email-already-in-use':   'An account with this email already exists. Try signing in.',
-    'auth/weak-password':          'Password must be at least 6 characters.',
-    'auth/too-many-requests':      'Too many attempts. Please wait a moment and try again.',
-    'auth/network-request-failed': 'Network error. Please check your connection.',
-    'auth/user-disabled':          'This account has been disabled.',
+    'auth/invalid-email':               'Please enter a valid email address.',
+    'auth/not-authorised':              'Access denied. Email not on allowlist.',
+    'auth/user-not-found':              'Invalid email or password.',
+    'auth/wrong-password':              'Invalid email or password.',
+    'auth/invalid-credential':          'Invalid email or password.',
+    'auth/email-already-in-use':        'An account with this email already exists. Try signing in.',
+    'auth/weak-password':               'Password must be at least 6 characters.',
+    'auth/too-many-requests':           'Too many attempts. Please wait a moment and try again.',
+    'auth/network-request-failed':      'Network error. Please check your connection.',
+    'auth/user-disabled':               'This account has been disabled.',
+    'auth/admin-restricted-operation':  'Account creation is currently disabled in Firebase Console. Please sign in.',
+    'auth/operation-not-allowed':       'Email/Password sign-in or sign-up is disabled in Firebase Console.',
   };
-  return map[code] ?? 'Something went wrong. Please try again.';
+  return map[code] ?? `Authentication error [${code || 'Unknown'}]. Please try again.`;
 }

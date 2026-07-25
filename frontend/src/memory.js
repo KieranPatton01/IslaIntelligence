@@ -24,7 +24,7 @@ export async function loadFacts(uid) {
     if (!snap.exists()) return [];
     return snap.data().facts ?? [];
   } catch (err) {
-
+    console.error('[Memory Bank Diagnostic] loadFacts Error for UID:', uid, err);
     return [];
   }
 }

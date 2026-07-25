@@ -55,37 +55,50 @@ export async function streamChat({
   onNewTrinket = null,
 }) {
   let idToken = '';
-  try {
-    const currentUser = auth.currentUser;
-    if (currentUser) {
-      idToken = await currentUser.getIdToken();
+  const currentUser = auth.currentUser;
+  if (currentUser) {
+    try {
+      idToken = await currentUser.getIdToken(true); // Force fresh token
+    } catch (tokenErr) {
+      console.error('[streamChat Diagnostic] Failed to get fresh ID token:', tokenErr);
     }
-  } catch {
-    // Token fetch failed; request will be rejected by worker
+  }
+
+  if (!idToken) {
+    const userState = currentUser ? `${currentUser.email} (UID: ${currentUser.uid})` : 'Not Signed In';
+    console.error('[streamChat Diagnostic] Unauthenticated request blocked:', userState);
+    throw new Error(`Authentication Token Error [User: ${userState}]. Please sign out and sign in again.`);
   }
 
   const headers = {
     'Content-Type': 'application/json',
   };
   if (ISLA_SECRET) headers['X-Isla-Token'] = ISLA_SECRET;
-  if (idToken)    headers['Authorization'] = `Bearer ${idToken}`;
+  headers['Authorization'] = `Bearer ${idToken}`;
 
-  const response = await fetch(WORKER_URL, {
-    method:  'POST',
-    headers,
-    body:    JSON.stringify({
-      messages,
-      toneValue,
-      userFacts,
-      mediaList,
-      modelChoice,
-    }),
-  });
+  let response;
+  try {
+    response = await fetch(WORKER_URL, {
+      method:  'POST',
+      headers,
+      body:    JSON.stringify({
+        messages,
+        toneValue,
+        userFacts,
+        mediaList,
+        modelChoice,
+      }),
+    });
+  } catch (netErr) {
+    console.error('[streamChat Diagnostic] Network fetch failed to Worker:', netErr);
+    throw new Error(`Network Error connecting to AI Worker [${WORKER_URL}]: ${netErr.message}`);
+  }
 
   if (!response.ok) {
-    let errMsg = `HTTP ${response.status}`;
-    try { errMsg = await response.text(); } catch { /* ignore */ }
-    throw new Error(errMsg);
+    let bodyText = '';
+    try { bodyText = await response.text(); } catch { /* ignore */ }
+    console.error(`[streamChat Diagnostic] Worker HTTP ${response.status} Error:`, bodyText);
+    throw new Error(`Worker API Error [HTTP ${response.status}]: ${bodyText || response.statusText}`);
   }
 
   if (!response.body) {

@@ -12,6 +12,8 @@ export default defineConfig({
       // We supply our own /public/manifest.json — don't let the plugin generate one
       manifest: false,
       workbox: {
+        skipWaiting: true,
+        clientsClaim: true,
         // Pre-cache the entire app shell
         globPatterns: ['**/*.{js,css,html,ico,png,svg,woff2,webp}'],
         // SPA fallback — any navigation goes to index.html
