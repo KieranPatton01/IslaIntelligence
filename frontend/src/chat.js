@@ -737,8 +737,10 @@ function setupEventListeners(user) {
 
           let hasReceivedAnyText = false;
           for await (const chunk of stream) {
-            if (chunk) hasReceivedAnyText = true;
-            fullResponse += chunk;
+            if (chunk.type === 'text') {
+              if (chunk.text) hasReceivedAnyText = true;
+              fullResponse += chunk.text;
+            }
 
             if (fullResponse.includes('[REQUEST_LOCATION]')) {
               requestedLocation = true;

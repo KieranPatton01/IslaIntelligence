@@ -880,11 +880,17 @@ Format your response strictly as valid JSON, with no other text, no markdown blo
   for (const model of modelsToTry) {
     const isModel36 = model.includes('3.6');
     const isModel31 = model.includes('3.1');
+
+    let thinkingLevel = "low";
+    if (modelChoice === '3.6-extended') {
+      thinkingLevel = "high";
+    }
+
     const modelPayload = {
       ...geminiPayload,
       generationConfig: isModel36 ? {
         maxOutputTokens: 4096,
-        thinkingConfig: { thinkingLevel: "high" }
+        thinkingConfig: { thinkingLevel }
       } : (isModel31 ? {
         maxOutputTokens: 2048
       } : geminiPayload.generationConfig)
