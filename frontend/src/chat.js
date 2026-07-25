@@ -199,13 +199,13 @@ function setupThinkingToggle() {
 
       if (choice === '3.1-lite') {
         if (icon) icon.textContent = 'speed';
-        if (label) label.textContent = 'Gemini 3.1 Flash-Lite';
+        if (label) label.textContent = '⚡ Stupid (3.1 Lite)';
       } else if (choice === '3.6-extended') {
         if (icon) icon.textContent = 'psychology';
-        if (label) label.textContent = 'Gemini 3.6 Extended';
+        if (label) label.textContent = '🧠 Stinky-Pro (3.6 High Thinking)';
       } else {
         if (icon) icon.textContent = 'bolt';
-        if (label) label.textContent = 'Gemini 3.5 Flash';
+        if (label) label.textContent = '🚀 Silly (3.6 Low Thinking)';
       }
 
       menu.classList.add('hidden');
@@ -614,12 +614,6 @@ function setupEventListeners(user) {
     // focus state is still restored correctly for the next interaction.
     const btnSend = document.getElementById('btn-send');
     if (btnSend) {
-      btnSend.addEventListener('touchstart', () => {
-        if (window.innerWidth <= 768) {
-          document.activeElement?.blur();
-        }
-      }, { passive: true });
-
       btnSend.addEventListener('click', () => {
         if (window.innerWidth > 768) {
           setTimeout(() => textarea?.focus(), 80);
@@ -965,14 +959,7 @@ async function handleSend(user, systemOverrideText = null) {
   if (systemOverrideText === null && textarea) {
     textarea.value = '';
     textarea.style.height = 'auto';
-
-    // Force Mobile Keyboard Dismissal via ReadOnly Trick
-    if (window.innerWidth <= 768) {
-      textarea.readOnly = true;
-      setTimeout(() => { textarea.readOnly = false; }, 150);
-    }
-
-    textarea.blur(); // Dismiss mobile keyboard
+    textarea.blur(); // Dismiss mobile soft keyboard on single tap
     document.activeElement?.blur();
     document.getElementById('input-bar-container')?.classList.remove('input-bar-typing');
   }
