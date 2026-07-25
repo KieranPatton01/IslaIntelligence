@@ -867,8 +867,8 @@ Format your response strictly as valid JSON, with no other text, no markdown blo
     PRIMARY_REQ_MODEL = 'gemini-3.1-flash-lite';
     BACKUP_REQ_MODEL  = 'gemini-3.6-flash';
   } else if (modelChoice === '3.6-extended') {
-    PRIMARY_REQ_MODEL = 'gemini-3.6-pro';
-    BACKUP_REQ_MODEL  = 'gemini-3.6-flash';
+    PRIMARY_REQ_MODEL = 'gemini-3.6-flash';
+    BACKUP_REQ_MODEL  = 'gemini-3.1-flash-lite';
   } else {
     PRIMARY_REQ_MODEL = 'gemini-3.6-flash';
     BACKUP_REQ_MODEL  = 'gemini-3.1-flash-lite';
