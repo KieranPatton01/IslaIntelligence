@@ -521,10 +521,19 @@ watchAuthState((user) => {
     document.getElementById('form-auth')?.reset();
     hideAuthError();
 
-    // Setup sessions
+    // Setup sessions & auto-load most recent chat
     showSessionsLoading();
+    let initialAutoLoadDone = false;
     unsubSessions = listSessions(user.uid, (sessions) => {
       renderSessions(sessions);
+      if (!initialAutoLoadDone) {
+        initialAutoLoadDone = true;
+        if (sessions.length > 0) {
+          switchSession(user, sessions[0].id);
+        } else {
+          switchSession(user, null);
+        }
+      }
     });
     
     initChat(user).then(() => {
