@@ -2,59 +2,22 @@ rules_version = '2';
 service cloud.firestore {
   match /databases/{database}/documents {
 
-    // ── Allowed UIDs (derived from hard-coded email allowlist) ──
-    // These are the Firebase UIDs for the three permitted accounts.
-    // Update these values if Firebase UIDs change (e.g. after account recreation).
-    // To find a UID: Firebase console → Authentication → Users → copy UID column.
-    function isAllowedUser() {
-      return request.auth != null && request.auth.uid == userId;
-    }
-
+    // ── User-scoped data (user doc itself + sessions, messages, memory bank, trinkets) ──
     match /users/{userId} {
-      allow read, write: if request.auth != null
-                         && request.auth.uid == userId;
+      allow read, write: if request.auth != null && request.auth.uid == userId;
 
-      match /sessions/{sessionId} {
-        allow read, write: if request.auth != null
-                           && request.auth.uid == userId;
-
-        match /messages/{messageId} {
-          allow read: if request.auth != null && request.auth.uid == userId;
-
-          // Write: enforce schema and size limits to prevent abuse
-          allow create, update: if request.auth != null
-                                && request.auth.uid == userId
-                                // Max document size ~1MB (Firestore limit is 1MiB, we cap at 512KB)
-                                && request.resource.data.keys().hasAny(['role', 'text', 'createdAt'])
-                                && (request.resource.data.get('text', '') is string)
-                                && (request.resource.data.get('text', '').size() <= 50000)
-                                && (request.resource.data.get('role', '') in ['user', 'model', 'system']);
-
-          allow delete: if request.auth != null && request.auth.uid == userId;
-        }
-      }
-
-      match /memory/{memId} {
-        allow read, write: if request.auth != null && request.auth.uid == userId;
-      }
-
-      match /trinkets/{trinketId} {
+      match /{allPaths=**} {
         allow read, write: if request.auth != null && request.auth.uid == userId;
       }
     }
 
+    // ── eBay Tracker alerts ──
     match /trackers/{trackerId} {
-      // Read/write existing tracker — must be the owner
-      allow read, update, delete: if request.auth != null
-                                  && resource.data.uid == request.auth.uid;
-
-      // Create new tracker — uid field must match caller
-      allow create: if request.auth != null
-                    && request.resource.data.uid == request.auth.uid
-                    && request.resource.data.keys().hasAny(['query', 'uid']);
+      allow read, update, delete: if request.auth != null && resource.data.uid == request.auth.uid;
+      allow create: if request.auth != null && request.resource.data.uid == request.auth.uid;
     }
 
-    // Deny everything else by default
+    // ── Default deny for all other paths ──
     match /{document=**} {
       allow read, write: if false;
     }

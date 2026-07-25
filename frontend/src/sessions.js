@@ -62,16 +62,26 @@ export async function createSession(uid) {
  */
 export function listSessions(uid, callback) {
   const sessionsRef = collection(db, 'users', uid, 'sessions');
-  const q = query(sessionsRef, orderBy('updatedAt', 'desc'));
   
-  return onSnapshot(q, (snapshot) => {
-    const sessions = snapshot.docs.map(doc => ({
-      id: doc.id,
-      ...doc.data()
-    }));
+  const handleSnapshot = (snapshot) => {
+    const sessions = snapshot.docs.map(doc => {
+      const data = doc.data();
+      let timeMs = 0;
+      if (data.updatedAt) {
+        timeMs = typeof data.updatedAt.toMillis === 'function' ? data.updatedAt.toMillis() : new Date(data.updatedAt).getTime();
+      } else if (data.createdAt) {
+        timeMs = typeof data.createdAt.toMillis === 'function' ? data.createdAt.toMillis() : new Date(data.createdAt).getTime();
+      }
+      return { id: doc.id, ...data, _timeMs: timeMs || 0 };
+    });
+    sessions.sort((a, b) => b._timeMs - a._timeMs);
     callback(sessions);
-  }, (error) => {
+  };
 
+  const q = query(sessionsRef, orderBy('updatedAt', 'desc'));
+  return onSnapshot(q, handleSnapshot, () => {
+    // Fallback: if orderBy fails or excludes docs without updatedAt, query without orderBy & sort in JS
+    return onSnapshot(sessionsRef, handleSnapshot);
   });
 }
 
