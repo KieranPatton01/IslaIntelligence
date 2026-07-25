@@ -1,12 +1,15 @@
 <!DOCTYPE html>
 <html lang="en" class="h-full">
+
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
+  <meta name="viewport"
+    content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
 
   <!-- Primary Meta -->
   <title>Isla Intelligence</title>
-  <meta name="description" content="Your hyper-personalised AI companion. Adjust the vibe from full chaos to princess treatment." />
+  <meta name="description"
+    content="Your hyper-personalised AI companion. Adjust the vibe from full chaos to princess treatment." />
   <meta name="author" content="Isla Intelligence" />
 
   <!-- PWA Meta -->
@@ -33,13 +36,11 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link
     href="https://fonts.googleapis.com/css2?family=Geist:wght@500&family=Plus+Jakarta+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap"
-    rel="stylesheet"
-  />
+    rel="stylesheet" />
   <!-- Material Symbols — font-display:block prevents FOUT on first load -->
   <link
     href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&display=block"
-    rel="stylesheet"
-  />
+    rel="stylesheet" />
   <!-- Override font-display for material icons to block (suppress FOUT) -->
   <style>
     @font-face {
@@ -47,48 +48,125 @@
       font-style: normal;
       font-display: block;
     }
-    
+
     /* Antique Reels Slide Animations */
     @keyframes slideUpOut {
-      0% { transform: translateY(0); opacity: 1; }
-      100% { transform: translateY(-100%); opacity: 0; }
+      0% {
+        transform: translateY(0);
+        opacity: 1;
+      }
+
+      100% {
+        transform: translateY(-100%);
+        opacity: 0;
+      }
     }
+
     @keyframes slideUpIn {
-      0% { transform: translateY(100%); opacity: 0; }
-      100% { transform: translateY(0); opacity: 1; }
+      0% {
+        transform: translateY(100%);
+        opacity: 0;
+      }
+
+      100% {
+        transform: translateY(0);
+        opacity: 1;
+      }
     }
+
     @keyframes slideDownOut {
-      0% { transform: translateY(0); opacity: 1; }
-      100% { transform: translateY(100%); opacity: 0; }
+      0% {
+        transform: translateY(0);
+        opacity: 1;
+      }
+
+      100% {
+        transform: translateY(100%);
+        opacity: 0;
+      }
     }
+
     @keyframes slideDownIn {
-      0% { transform: translateY(-100%); opacity: 0; }
-      100% { transform: translateY(0); opacity: 1; }
+      0% {
+        transform: translateY(-100%);
+        opacity: 0;
+      }
+
+      100% {
+        transform: translateY(0);
+        opacity: 1;
+      }
     }
-    
-    .anim-slide-up-out { animation: slideUpOut 0.35s cubic-bezier(0.25, 1, 0.5, 1) forwards; }
-    .anim-slide-up-in { animation: slideUpIn 0.35s cubic-bezier(0.25, 1, 0.5, 1) forwards; }
-    .anim-slide-down-out { animation: slideDownOut 0.35s cubic-bezier(0.25, 1, 0.5, 1) forwards; }
-    .anim-slide-down-in { animation: slideDownIn 0.35s cubic-bezier(0.25, 1, 0.5, 1) forwards; }
+
+    .anim-slide-up-out {
+      animation: slideUpOut 0.35s cubic-bezier(0.25, 1, 0.5, 1) forwards;
+    }
+
+    .anim-slide-up-in {
+      animation: slideUpIn 0.35s cubic-bezier(0.25, 1, 0.5, 1) forwards;
+    }
+
+    .anim-slide-down-out {
+      animation: slideDownOut 0.35s cubic-bezier(0.25, 1, 0.5, 1) forwards;
+    }
+
+    .anim-slide-down-in {
+      animation: slideDownIn 0.35s cubic-bezier(0.25, 1, 0.5, 1) forwards;
+    }
 
     /* Heart Pop & Double Tap Animations */
     @keyframes heartPop {
-      0% { transform: scale(1); }
-      35% { transform: scale(1.4); }
-      45% { transform: scale(0.9); }
-      60% { transform: scale(1.15); }
-      80% { transform: scale(0.95); }
-      100% { transform: scale(1); }
+      0% {
+        transform: scale(1);
+      }
+
+      35% {
+        transform: scale(1.4);
+      }
+
+      45% {
+        transform: scale(0.9);
+      }
+
+      60% {
+        transform: scale(1.15);
+      }
+
+      80% {
+        transform: scale(0.95);
+      }
+
+      100% {
+        transform: scale(1);
+      }
     }
+
     .anim-heart-pop {
       animation: heartPop 0.45s ease-in-out;
     }
+
     @keyframes doubleTapHeart {
-      0% { transform: scale(0) rotate(-15deg); opacity: 0; }
-      50% { transform: scale(1.2) rotate(0deg); opacity: 0.9; }
-      80% { transform: scale(1) rotate(0deg); opacity: 0.9; }
-      100% { transform: scale(0.8) rotate(15deg); opacity: 0; }
+      0% {
+        transform: scale(0) rotate(-15deg);
+        opacity: 0;
+      }
+
+      50% {
+        transform: scale(1.2) rotate(0deg);
+        opacity: 0.9;
+      }
+
+      80% {
+        transform: scale(1) rotate(0deg);
+        opacity: 0.9;
+      }
+
+      100% {
+        transform: scale(0.8) rotate(15deg);
+        opacity: 0;
+      }
     }
+
     .anim-doubletap-heart {
       animation: doubleTapHeart 0.65s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
     }
@@ -100,18 +178,17 @@
   <!-- ════════════════════════════════════════════════════════
        SPLASH SCREEN — shown while Firebase checks auth state
   ════════════════════════════════════════════════════════ -->
-  <div id="splash-screen" style="position:fixed;inset:0;z-index:9999;display:flex;align-items:center;justify-content:center;background:#fcf9f8;transition:opacity 0.3s ease;">
-    <div style="width:36px;height:36px;border:3px solid rgba(172,36,113,0.2);border-top-color:#ac2471;border-radius:50%;animation:spin 0.8s linear infinite;"></div>
+  <div id="splash-screen"
+    style="position:fixed;inset:0;z-index:9999;display:flex;align-items:center;justify-content:center;background:#fcf9f8;transition:opacity 0.3s ease;">
+    <div
+      style="width:36px;height:36px;border:3px solid rgba(172,36,113,0.2);border-top-color:#ac2471;border-radius:50%;animation:spin 0.8s linear infinite;">
+    </div>
   </div>
 
   <!-- ════════════════════════════════════════════════════════
        OFFLINE BANNER — shown when connectivity is lost
   ════════════════════════════════════════════════════════ -->
-  <div
-    id="offline-banner"
-    role="alert"
-    aria-live="assertive"
-    style="
+  <div id="offline-banner" role="alert" aria-live="assertive" style="
       display:none;
       position:fixed;
       top:0;
@@ -129,15 +206,15 @@
       -webkit-backdrop-filter:blur(8px);
       border-bottom:1px solid rgba(255,255,255,0.1);
       animation:fadeInUp 0.3s ease;
-    "
-  >
+    ">
     You're offline — messages will resume when you reconnect.
   </div>
 
   <!-- ════════════════════════════════════════════════════════
        AUTH VIEW
   ════════════════════════════════════════════════════════ -->
-  <div id="view-auth" style="display:none;" class="view h-full items-center justify-center p-4 relative overflow-hidden">
+  <div id="view-auth" style="display:none;"
+    class="view h-full items-center justify-center p-4 relative overflow-hidden">
 
     <!-- Animated background blobs -->
     <div class="absolute inset-0 -z-10 overflow-hidden pointer-events-none">
@@ -159,59 +236,37 @@
 
         <!-- Email -->
         <div>
-          <label for="input-email" class="block text-xs font-label-sm text-on-surface-variant uppercase tracking-wider mb-2">
+          <label for="input-email"
+            class="block text-xs font-label-sm text-on-surface-variant uppercase tracking-wider mb-2">
             Email
           </label>
-          <input
-            id="input-email"
-            type="email"
-            placeholder="you@example.com"
-            class="input-field"
-            autocomplete="email"
-            required
-            aria-label="Email address"
-          />
+          <input id="input-email" type="email" placeholder="you@example.com" class="input-field" autocomplete="email"
+            required aria-label="Email address" />
         </div>
 
         <!-- Password -->
         <div>
           <div class="flex items-center justify-between mb-2">
-            <label for="input-password" class="block text-xs font-label-sm text-on-surface-variant uppercase tracking-wider">
+            <label for="input-password"
+              class="block text-xs font-label-sm text-on-surface-variant uppercase tracking-wider">
               Password
             </label>
-            <button
-              type="button"
-              id="btn-forgot-password"
-              class="text-xs font-medium"
-              style="color:#ac2471;background:none;border:none;cursor:pointer;padding:0;"
-            >Forgot password?</button>
+            <button type="button" id="btn-forgot-password" class="text-xs font-medium"
+              style="color:#ac2471;background:none;border:none;cursor:pointer;padding:0;">Forgot password?</button>
           </div>
-          <input
-            id="input-password"
-            type="password"
-            placeholder="PeePeePassword"
-            class="input-field"
-            autocomplete="current-password"
-            required
-            aria-label="Password"
-          />
+          <input id="input-password" type="password" placeholder="PeePeePassword" class="input-field"
+            autocomplete="current-password" required aria-label="Password" />
         </div>
 
         <!-- Error message -->
         <p id="auth-error" class="hidden text-sm text-center text-error" role="alert" aria-live="assertive"></p>
 
         <!-- Submit -->
-        <button
-          id="btn-auth-submit"
-          type="submit"
-          class="btn-primary w-full py-3 text-sm flex items-center justify-center gap-2"
-        >
+        <button id="btn-auth-submit" type="submit"
+          class="btn-primary w-full py-3 text-sm flex items-center justify-center gap-2">
           <span id="btn-auth-text">Sign In</span>
-          <span
-            id="btn-auth-spinner"
-            class="hidden material-symbols-outlined text-lg"
-            style="font-size:18px;"
-          >autorenew</span>
+          <span id="btn-auth-spinner" class="hidden material-symbols-outlined text-lg"
+            style="font-size:18px;">autorenew</span>
         </button>
       </form>
     </div>
@@ -224,9 +279,12 @@
     <div id="particles-container" class="absolute inset-0 pointer-events-none overflow-hidden z-0"></div>
 
     <!-- ── SIDEBAR (Slide-over) ── -->
-    <div id="sidebar-overlay" class="hidden fixed inset-0 z-[60] bg-black/40 backdrop-blur-sm transition-opacity opacity-0"></div>
-    <div id="sidebar" class="fixed inset-y-0 left-0 z-[70] w-72 bg-surface shadow-2xl transform -translate-x-full transition-transform duration-300 flex flex-col border-r border-outline-variant/30">
-      <div class="p-4 flex items-center justify-between border-b border-outline-variant/30 relative overflow-hidden" style="height: 57px;">
+    <div id="sidebar-overlay"
+      class="hidden fixed inset-0 z-[60] bg-black/40 backdrop-blur-sm transition-opacity opacity-0"></div>
+    <div id="sidebar"
+      class="fixed inset-y-0 left-0 z-[70] w-72 bg-surface shadow-2xl transform -translate-x-full transition-transform duration-300 flex flex-col border-r border-outline-variant/30">
+      <div class="p-4 flex items-center justify-between border-b border-outline-variant/30 relative overflow-hidden"
+        style="height: 57px;">
         <div class="flex items-center gap-2.5">
           <h2 class="text-lg font-semibold">Chats</h2>
         </div>
@@ -236,30 +294,26 @@
             <span class="material-symbols-outlined" style="font-size:20px;">search</span>
           </button>
           <!-- Close button -->
-          <button id="btn-close-sidebar" class="icon-btn p-1"><span class="material-symbols-outlined">close</span></button>
+          <button id="btn-close-sidebar" class="icon-btn p-1"><span
+              class="material-symbols-outlined">close</span></button>
         </div>
 
         <!-- Sliding Search Overlay -->
-        <div
-          id="sidebar-search-overlay"
+        <div id="sidebar-search-overlay"
           class="absolute inset-0 bg-surface px-4 py-2.5 flex items-center gap-2 transition-all duration-200 transform translate-x-full opacity-0 pointer-events-none"
-          style="background: var(--color-surface, #fcf9f8);"
-        >
+          style="background: var(--color-surface, #fcf9f8);">
           <span class="material-symbols-outlined text-on-surface-variant/60" style="font-size:18px;">search</span>
-          <input
-            type="text"
-            id="input-session-search"
-            placeholder="Search chats..."
+          <input type="text" id="input-session-search" placeholder="Search chats..."
             class="flex-1 text-xs rounded-xl focus:outline-none placeholder-on-surface-variant/50 text-on-surface"
-            style="background: rgba(172,36,113,0.05); border: 1px solid rgba(172,36,113,0.1); height: 32px; padding: 0 10px; min-width: 0;"
-          />
+            style="background: rgba(172,36,113,0.05); border: 1px solid rgba(172,36,113,0.1); height: 32px; padding: 0 10px; min-width: 0;" />
           <button id="btn-search-collapse" class="icon-btn p-1" title="Close search">
             <span class="material-symbols-outlined" style="font-size:18px;">close</span>
           </button>
         </div>
       </div>
       <div class="p-3">
-        <button id="btn-new-chat" class="w-full btn-primary py-2.5 rounded-xl flex items-center justify-center gap-2 shadow-sm">
+        <button id="btn-new-chat"
+          class="w-full btn-primary py-2.5 rounded-xl flex items-center justify-center gap-2 shadow-sm">
           <span class="material-symbols-outlined text-sm">add</span> New Chat
         </button>
       </div>
@@ -268,21 +322,21 @@
       </div>
       <!-- Build number -->
       <div class="px-4 py-3 border-t border-outline-variant/20">
-        <p class="text-xs text-center font-mono" style="color: rgba(172,36,113,0.6); font-size:11px;">Build v1.4.2 (eBay UI Polish)</p>
+        <p class="text-xs text-center font-mono" style="color: rgba(172,36,113,0.6); font-size:11px;">Build v1.5.0 (Mobile Soft Keyboard Fix)</p>
       </div>
     </div>
 
     <!-- ── TOP APP BAR ── -->
-    <header
-      class="sticky top-0 z-50 flex flex-col w-full px-4 pt-4 pb-3"
-      style="background: rgba(252,249,248,0.80); backdrop-filter: blur(24px); -webkit-backdrop-filter: blur(24px); border-bottom: 1px solid rgba(255,255,255,0.3); padding-top: max(1rem, env(safe-area-inset-top));"
-    >
+    <header class="sticky top-0 z-50 flex flex-col w-full px-4 pt-4 pb-3"
+      style="background: rgba(252,249,248,0.80); backdrop-filter: blur(24px); -webkit-backdrop-filter: blur(24px); border-bottom: 1px solid rgba(255,255,255,0.3); padding-top: max(1rem, env(safe-area-inset-top));">
       <!-- Row 1: Branding + User controls -->
       <div class="flex items-center justify-between mb-3">
         <!-- Name -->
         <div class="flex items-center gap-2.5">
-          <button id="btn-open-sidebar" class="icon-btn p-1 mr-1" aria-label="Open sidebar"><span class="material-symbols-outlined">menu</span></button>
-          <button id="btn-title-new-chat" title="New chat" style="background:none;border:none;padding:0;cursor:pointer;">
+          <button id="btn-open-sidebar" class="icon-btn p-1 mr-1" aria-label="Open sidebar"><span
+              class="material-symbols-outlined">menu</span></button>
+          <button id="btn-title-new-chat" title="New chat"
+            style="background:none;border:none;padding:0;cursor:pointer;">
             <h1 class="text-xl font-display font-semibold tracking-wide isla-gradient-text">Isla Intelligence</h1>
           </button>
         </div>
@@ -290,32 +344,17 @@
         <!-- User controls -->
         <div class="flex items-center gap-2">
           <!-- Memory Bank button -->
-          <button
-            id="btn-memory"
-            class="icon-btn"
-            title="Memory Shelf"
-            aria-label="Open Memory Shelf"
-            style="position:relative;"
-          >
+          <button id="btn-memory" class="icon-btn" title="Memory Shelf" aria-label="Open Memory Shelf"
+            style="position:relative;">
             <span class="material-symbols-outlined" style="font-size:20px;">auto_stories</span>
           </button>
           <!-- Interactive Tour button -->
-          <button
-            id="btn-start-tour"
-            class="icon-btn hover:scale-110 active:scale-95 transition-transform"
-            title="Start Interactive Tour"
-            aria-label="Start Interactive Tour"
-            style="position:relative;"
-          >
+          <button id="btn-start-tour" class="icon-btn hover:scale-110 active:scale-95 transition-transform"
+            title="Start Interactive Tour" aria-label="Start Interactive Tour" style="position:relative;">
             <span class="material-symbols-outlined" style="font-size:20px;">explore</span>
           </button>
           <!-- Sign out button -->
-          <button
-            id="btn-signout"
-            class="icon-btn"
-            title="Sign out"
-            aria-label="Sign out"
-          >
+          <button id="btn-signout" class="icon-btn" title="Sign out" aria-label="Sign out">
             <span class="material-symbols-outlined" style="font-size:20px;">logout</span>
           </button>
         </div>
@@ -328,24 +367,14 @@
           <span id="tone-label" class="text-primary font-semibold">Balanced 50</span>
           <span>👑 Princess</span>
         </div>
-        <input
-          type="range"
-          id="tone-slider"
-          min="0"
-          max="100"
-          value="50"
-          class="tone-slider"
-          aria-label="Personality tone slider — 0 is ragebait, 100 is princess"
-        />
+        <input type="range" id="tone-slider" min="0" max="100" value="50" class="tone-slider"
+          aria-label="Personality tone slider — 0 is ragebait, 100 is princess" />
       </div>
     </header>
 
     <!-- ── INSTALL BANNER (hidden by default) ── -->
-    <div
-      id="install-banner"
-      class="hidden z-40 mx-4 mt-2 px-4 py-2.5 rounded-xl flex items-center gap-3 text-sm"
-      style="background: rgba(255,216,230,0.7); border: 1px solid rgba(255,105,180,0.3); backdrop-filter: blur(8px);"
-    >
+    <div id="install-banner" class="hidden z-40 mx-4 mt-2 px-4 py-2.5 rounded-xl flex items-center gap-3 text-sm"
+      style="background: rgba(255,216,230,0.7); border: 1px solid rgba(255,105,180,0.3); backdrop-filter: blur(8px);">
       <span class="material-symbols-outlined text-primary" style="font-size:18px;">download</span>
       <span class="text-on-primary-container flex-1 text-xs">Install Isla as an app for the best experience</span>
       <button id="btn-install" class="btn-primary px-3 py-1 text-xs rounded-lg">Install</button>
@@ -355,13 +384,19 @@
     </div>
 
     <!-- ── WELCOME SCREEN (Shown when no session is active) ── -->
-    <div id="view-welcome" class="flex-1 flex flex-col items-center justify-center p-6 text-center" style="display: none;">
-      <h2 id="welcome-message" class="text-3xl sm:text-4xl font-bold text-primary mb-2 transition-all duration-300">Welcome</h2>
-      <p class="text-base text-on-surface-variant max-w-sm mb-4">Adjust my personality slider above, say hi, or click the 🧭 compass icon to start! Type "help" in the chat anytime you need a guide.</p>
-      
-      <div id="welcome-recent-chat" class="hidden flex flex-col items-center mt-2 p-3 rounded-xl transition-colors mb-4" style="background: rgba(172,36,113,0.05); border: 1px solid rgba(172,36,113,0.1);">
+    <div id="view-welcome" class="flex-1 flex flex-col items-center justify-center p-6 text-center"
+      style="display: none;">
+      <h2 id="welcome-message" class="text-3xl sm:text-4xl font-bold text-primary mb-2 transition-all duration-300">
+        Welcome</h2>
+      <p class="text-base text-on-surface-variant max-w-sm mb-4">Adjust my personality slider above, say hi, or click
+        the 🧭 compass icon to start! Type "help" in the chat anytime you need a guide.</p>
+
+      <div id="welcome-recent-chat" class="hidden flex flex-col items-center mt-2 p-3 rounded-xl transition-colors mb-4"
+        style="background: rgba(172,36,113,0.05); border: 1px solid rgba(172,36,113,0.1);">
         <span class="text-xs text-on-surface-variant mb-1">Or return to your last chat:</span>
-        <button id="btn-welcome-recent" class="text-sm font-medium hover:underline cursor-pointer flex items-center gap-1" style="color: #ac2471; background:none;border:none;padding:0;">
+        <button id="btn-welcome-recent"
+          class="text-sm font-medium hover:underline cursor-pointer flex items-center gap-1"
+          style="color: #ac2471; background:none;border:none;padding:0;">
           <span class="material-symbols-outlined" style="font-size:16px;">history</span>
           <span id="welcome-recent-title" class="truncate max-w-[200px]">Last Chat Title</span>
         </button>
@@ -370,242 +405,180 @@
       <!-- Home screen widgets grid -->
       <div class="grid grid-cols-2 gap-4 w-full max-w-md mt-4 select-none px-2">
         <!-- UV Widget Card -->
-        <button
-          id="widget-uv"
-          type="button"
+        <button id="widget-uv" type="button"
           class="glass-surface rounded-2xl p-5 flex flex-col items-center justify-center text-center gap-3 hover:scale-[1.03] active:scale-[0.97] transition-all duration-200 border border-[#ac2471]/10 focus:outline-none"
-          style="cursor: pointer; box-shadow: 0 4px 18px rgba(172,36,113,0.04);"
-        >
+          style="cursor: pointer; box-shadow: 0 4px 18px rgba(172,36,113,0.04);">
           <div class="w-11 h-11 rounded-full flex items-center justify-center bg-yellow-400/10 text-yellow-500">
             <span class="material-symbols-outlined text-2xl" style="font-variation-settings:'FILL' 1;">wb_sunny</span>
           </div>
           <div class="flex flex-col gap-1">
             <span class="text-xs font-bold text-on-surface">UV Index</span>
-            <span class="text-[10px] text-on-surface-variant leading-normal opacity-75">Check sunshine & tanning outlook</span>
+            <span class="text-[10px] text-on-surface-variant leading-normal opacity-75">Check sunshine & tanning
+              outlook</span>
           </div>
         </button>
 
         <!-- eBay Widget Card -->
-        <button
-          id="widget-ebay"
-          type="button"
+        <button id="widget-ebay" type="button"
           class="glass-surface rounded-2xl p-5 flex flex-col items-center justify-center text-center gap-3 hover:scale-[1.03] active:scale-[0.97] transition-all duration-200 border border-[#ac2471]/10 focus:outline-none"
-          style="cursor: pointer; box-shadow: 0 4px 18px rgba(172,36,113,0.04);"
-        >
+          style="cursor: pointer; box-shadow: 0 4px 18px rgba(172,36,113,0.04);">
           <div class="w-11 h-11 rounded-full flex items-center justify-center bg-[#ac2471]/10 text-[#ac2471]">
-            <span class="material-symbols-outlined text-2xl" style="font-variation-settings:'FILL' 1;">track_changes</span>
+            <span class="material-symbols-outlined text-2xl"
+              style="font-variation-settings:'FILL' 1;">track_changes</span>
           </div>
           <div class="flex flex-col gap-1">
             <span class="text-xs font-bold text-on-surface">eBay Tracker</span>
-            <span class="text-[10px] text-on-surface-variant leading-normal opacity-75">Identify screenshots & price alerts</span>
+            <span class="text-[10px] text-on-surface-variant leading-normal opacity-75">Identify screenshots & price
+              alerts</span>
           </div>
         </button>
       </div>
     </div>
 
     <!-- ── MESSAGES SCROLL AREA ── -->
-    <div
-      id="messages-container"
-      class="flex-1 overflow-y-auto no-scrollbar px-4 pt-4 pb-44 flex flex-col gap-3"
-      aria-label="Chat messages"
-      aria-live="polite"
-    >
+    <div id="messages-container" class="flex-1 overflow-y-auto no-scrollbar px-4 pt-4 pb-44 flex flex-col gap-3"
+      aria-label="Chat messages" aria-live="polite">
       <!-- Messages appended here dynamically -->
     </div>
 
     <!-- ── STICKY FOOTER INPUT ── -->
     <!-- ── STICKY FOOTER INPUT ── -->
-    <footer
-      id="chat-footer"
-      class="absolute bottom-0 left-0 right-0 z-50 flex flex-col px-3 pb-5 pt-2"
-      style="background: rgba(252,249,248,0.96); backdrop-filter: blur(28px); -webkit-backdrop-filter: blur(28px); border-top: 1.5px solid rgba(172,36,113,0.15); box-shadow: 0 -8px 24px -10px rgba(172,36,113,0.14);"
-    >
+    <footer id="chat-footer" class="absolute bottom-0 left-0 right-0 z-50 flex flex-col px-3 pb-5 pt-2"
+      style="background: rgba(252,249,248,0.96); backdrop-filter: blur(28px); -webkit-backdrop-filter: blur(28px); border-top: 1.5px solid rgba(172,36,113,0.15); box-shadow: 0 -8px 24px -10px rgba(172,36,113,0.14);">
       <!-- Staged image preview strip -->
-      <div id="image-preview-strip" class="hidden mb-2 px-1 flex flex-row gap-2 overflow-x-auto no-scrollbar py-1"></div>
+      <div id="image-preview-strip" class="hidden mb-2 px-1 flex flex-row gap-2 overflow-x-auto no-scrollbar py-1">
+      </div>
 
       <!-- Voice synthesis waveform visualizer -->
-      <div id="voice-visualizer-container" class="hidden mb-2.5 px-1 w-full h-10 relative overflow-hidden rounded-xl border border-[#ac2471]/10 bg-white/35 backdrop-blur-md justify-center items-center">
+      <div id="voice-visualizer-container"
+        class="hidden mb-2.5 px-1 w-full h-10 relative overflow-hidden rounded-xl border border-[#ac2471]/10 bg-white/35 backdrop-blur-md justify-center items-center">
         <canvas id="voice-visualizer-canvas" class="w-full h-full block"></canvas>
       </div>
 
       <!-- Input bar -->
-      <div
-        id="input-bar-container"
-        class="glass-surface-strong rounded-2xl flex flex-col shadow-card"
-        style="border: 1px solid rgba(255,255,255,0.55);"
-      >
+      <div id="input-bar-container" class="glass-surface-strong rounded-2xl flex flex-col shadow-card"
+        style="border: 1px solid rgba(255,255,255,0.55);">
         <!-- OCR Progress Banner -->
-        <div id="ocr-status-container" class="hidden px-3 py-2 bg-[#7212ff]/5 border-b border-[#7212ff]/10 flex items-center justify-between gap-2 text-xs text-[#7212ff] select-none">
+        <div id="ocr-status-container"
+          class="hidden px-3 py-2 bg-[#7212ff]/5 border-b border-[#7212ff]/10 flex items-center justify-between gap-2 text-xs text-[#7212ff] select-none">
           <div class="flex items-center gap-2">
             <span class="material-symbols-outlined animate-spin text-[16px]">rotate_right</span>
             <span id="ocr-status-text">Scanning document... 0%</span>
           </div>
-          <button id="btn-cancel-ocr" type="button" class="font-semibold text-[#7212ff]/80 hover:text-[#7212ff]">Cancel</button>
+          <button id="btn-cancel-ocr" type="button"
+            class="font-semibold text-[#7212ff]/80 hover:text-[#7212ff]">Cancel</button>
         </div>
 
         <!-- Text row -->
         <div class="flex items-end gap-1 px-2 pt-2 pb-1.5">
           <!-- Attach image -->
-          <button
-            id="btn-attach"
-            type="button"
-            class="icon-btn shrink-0 mb-1 accessory-btn"
-            title="Attach file"
-            aria-label="Attach file"
-          >
+          <button id="btn-attach" type="button" class="icon-btn shrink-0 mb-1 accessory-btn" title="Attach file"
+            aria-label="Attach file">
             <span class="material-symbols-outlined" style="font-size:22px;">attach_file</span>
           </button>
 
           <!-- Trinkify -->
-          <button
-            id="btn-trinkify"
-            type="button"
-            class="icon-btn shrink-0 mb-1 accessory-btn"
-            title="Trinkify this space 🪄"
-            aria-label="Trinkify this space"
-          >
-            <span class="material-symbols-outlined" style="font-size:22px; font-variation-settings: 'FILL' 1;">auto_awesome</span>
+          <button id="btn-trinkify" type="button" class="icon-btn shrink-0 mb-1 accessory-btn"
+            title="Trinkify this space 🪄" aria-label="Trinkify this space">
+            <span class="material-symbols-outlined"
+              style="font-size:22px; font-variation-settings: 'FILL' 1;">auto_awesome</span>
           </button>
 
           <!-- Scan Text (OCR) -->
-          <button
-            id="btn-ocr"
-            type="button"
-            class="icon-btn shrink-0 mb-1 accessory-btn"
-            title="Extract text from photo (OCR) 📝"
-            aria-label="Extract text from photo"
-          >
+          <button id="btn-ocr" type="button" class="icon-btn shrink-0 mb-1 accessory-btn"
+            title="Extract text from photo (OCR) 📝" aria-label="Extract text from photo">
             <span class="material-symbols-outlined" style="font-size:22px;">document_scanner</span>
           </button>
 
           <!-- Voice Record -->
-          <button
-            id="btn-mic"
-            type="button"
-            class="icon-btn shrink-0 mb-1 accessory-btn"
-            title="Record voice note"
-            aria-label="Record voice note"
-          >
+          <button id="btn-mic" type="button" class="icon-btn shrink-0 mb-1 accessory-btn" title="Record voice note"
+            aria-label="Record voice note">
             <span class="material-symbols-outlined" style="font-size:22px;">mic</span>
           </button>
 
           <!-- Model Choice Selector (Beside Mic Button) -->
           <div class="relative shrink-0 mb-1">
-            <button
-              id="btn-gemini-model-selector"
-              type="button"
-              class="icon-btn shrink-0 accessory-btn"
-              title="Select AI Engine (Speedy Isla, Daily Queen, Brainiac Isla)"
-              aria-label="Select AI Engine"
-            >
+            <button id="btn-gemini-model-selector" type="button" class="icon-btn shrink-0 accessory-btn"
+              title="Select AI Engine (Speedy Isla, Daily Queen, Brainiac Isla)" aria-label="Select AI Engine">
               <span id="gemini-model-icon" class="material-symbols-outlined" style="font-size:22px;">bolt</span>
             </button>
 
             <!-- Gemini Floating Popover Menu -->
-            <div
-              id="gemini-model-menu"
+            <div id="gemini-model-menu"
               class="hidden fixed bottom-24 right-4 w-72 rounded-2xl p-2 z-[9999] shadow-2xl transition-all"
-              style="background: rgba(252,249,248,0.98); backdrop-filter: blur(24px); border: 1px solid rgba(172,36,113,0.25); box-shadow: 0 12px 36px rgba(0,0,0,0.22);"
-            >
-              <div class="px-3 py-1.5 text-[11px] font-bold uppercase tracking-wider text-on-surface-variant/60">Select AI Engine</div>
-              
+              style="background: rgba(252,249,248,0.98); backdrop-filter: blur(24px); border: 1px solid rgba(172,36,113,0.25); box-shadow: 0 12px 36px rgba(0,0,0,0.22);">
+              <div class="px-3 py-1.5 text-[11px] font-bold uppercase tracking-wider text-on-surface-variant/60">Select
+                AI Engine</div>
+
               <!-- Option 1: 3.1 Flash Lite -->
-              <button
-                type="button"
-                data-model="3.1-lite"
-                class="gemini-model-option w-full flex items-start gap-3 p-2.5 rounded-xl hover:bg-[#ac2471]/10 text-left transition-all"
-              >
-                <div class="w-8 h-8 rounded-lg flex items-center justify-center shrink-0" style="background: rgba(114,18,255,0.1); color: #7212ff;">
+              <button type="button" data-model="3.1-lite"
+                class="gemini-model-option w-full flex items-start gap-3 p-2.5 rounded-xl hover:bg-[#ac2471]/10 text-left transition-all">
+                <div class="w-8 h-8 rounded-lg flex items-center justify-center shrink-0"
+                  style="background: rgba(114,18,255,0.1); color: #7212ff;">
                   <span class="material-symbols-outlined text-sm">speed</span>
                 </div>
                 <div class="flex flex-col">
-                  <span class="text-xs font-bold text-on-surface">⚡ Speedy Isla <span class="font-normal opacity-60">(3.1 Lite)</span></span>
-                  <span class="text-[10px] text-on-surface-variant">Micro model (~0.3s) · Lowest tokens & instant speed</span>
+                  <span class="text-xs font-bold text-on-surface">⚡ Stupid <span class="font-normal opacity-60">(3.1
+                      Lite)</span></span>
+                  <span class="text-[10px] text-on-surface-variant">Micro model (~0.3s) · Fast and simple</span>
                 </div>
               </button>
 
               <!-- Option 2: 3.5 Flash -->
-              <button
-                type="button"
-                data-model="3.5-standard"
-                class="gemini-model-option w-full flex items-start gap-3 p-2.5 rounded-xl hover:bg-[#ac2471]/10 text-left transition-all bg-[#ac2471]/10"
-              >
-                <div class="w-8 h-8 rounded-lg flex items-center justify-center shrink-0" style="background: rgba(172,36,113,0.12); color: #ac2471;">
+              <button type="button" data-model="3.5-standard"
+                class="gemini-model-option w-full flex items-start gap-3 p-2.5 rounded-xl hover:bg-[#ac2471]/10 text-left transition-all bg-[#ac2471]/10">
+                <div class="w-8 h-8 rounded-lg flex items-center justify-center shrink-0"
+                  style="background: rgba(172,36,113,0.12); color: #ac2471;">
                   <span class="material-symbols-outlined text-sm">bolt</span>
                 </div>
                 <div class="flex flex-col">
-                  <span class="text-xs font-bold text-on-surface">🚀 Daily Queen <span class="font-normal opacity-60">(3.5 Flash)</span></span>
+                  <span class="text-xs font-bold text-on-surface">🚀 Silly <span class="font-normal opacity-60">(3.5
+                      Flash)</span></span>
                   <span class="text-[10px] text-on-surface-variant">Standard model (~0.6s) · Ideal for daily chat</span>
                 </div>
               </button>
 
               <!-- Option 3: 3.6 Extended Thinking -->
-              <button
-                type="button"
-                data-model="3.6-extended"
-                class="gemini-model-option w-full flex items-start gap-3 p-2.5 rounded-xl hover:bg-[#ac2471]/10 text-left transition-all"
-              >
-                <div class="w-8 h-8 rounded-lg flex items-center justify-center shrink-0" style="background: rgba(245,158,11,0.12); color: #d97706;">
+              <button type="button" data-model="3.6-extended"
+                class="gemini-model-option w-full flex items-start gap-3 p-2.5 rounded-xl hover:bg-[#ac2471]/10 text-left transition-all">
+                <div class="w-8 h-8 rounded-lg flex items-center justify-center shrink-0"
+                  style="background: rgba(245,158,11,0.12); color: #d97706;">
                   <span class="material-symbols-outlined text-sm">psychology</span>
                 </div>
                 <div class="flex flex-col">
-                  <span class="text-xs font-bold text-on-surface">🧠 Brainiac Isla <span class="font-normal opacity-60">(3.6 Extended)</span></span>
-                  <span class="text-[10px] text-on-surface-variant">Pro reasoning (~2.0s) · Deep hallmark & antique analysis</span>
+                  <span class="text-xs font-bold text-on-surface">🧠 Stinky-Pro <span
+                      class="font-normal opacity-60">(3.6 Extended)</span></span>
+                  <span class="text-[10px] text-on-surface-variant">Deep reasoning (~2.0s) · Complex Maths and
+                    Antiques</span>
                 </div>
               </button>
             </div>
           </div>
 
           <!-- Hidden file input -->
-          <input
-            type="file"
-            id="input-file"
-            accept="image/*, audio/*, video/*"
-            class="hidden"
-            aria-label="File input"
-            multiple
-          />
+          <input type="file" id="input-file" accept="image/*, audio/*, video/*" class="hidden" aria-label="File input"
+            multiple />
 
           <!-- Hidden camera input for Trinkify -->
-          <input
-            type="file"
-            id="input-trinkify"
-            accept="image/*"
-            capture="environment"
-            class="hidden"
-            aria-label="Trinkify camera input"
-          />
+          <input type="file" id="input-trinkify" accept="image/*" capture="environment" class="hidden"
+            aria-label="Trinkify camera input" />
 
           <!-- Hidden camera input for OCR -->
-          <input
-            type="file"
-            id="input-ocr"
-            accept="image/*"
-            capture="environment"
-            class="hidden"
-            aria-label="OCR camera input"
-          />
+          <input type="file" id="input-ocr" accept="image/*" capture="environment" class="hidden"
+            aria-label="OCR camera input" />
 
           <!-- Message textarea -->
-          <textarea
-            id="input-message"
-            placeholder="Message…"
-            rows="1"
+          <textarea id="input-message" placeholder="Message…" rows="1"
             class="flex-1 bg-transparent border-none focus:ring-0 py-2 px-1 text-on-surface placeholder-outline-variant"
-            aria-label="Message input"
-            aria-multiline="true"
-          ></textarea>
+            aria-label="Message input" aria-multiline="true"></textarea>
 
           <!-- Send button -->
-          <button
-            id="btn-send"
-            type="button"
+          <button id="btn-send" type="button"
             class="shrink-0 mb-1 w-10 h-10 rounded-xl flex items-center justify-center text-white transition-all"
             style="background: linear-gradient(135deg, #ac2471, #7212ff); box-shadow: 0 4px 14px rgba(172,36,113,0.35);"
-            title="Send message"
-            aria-label="Send message"
-          >
-            <span class="material-symbols-outlined" style="font-size:20px; font-variation-settings:'FILL' 1;">send</span>
+            title="Send message" aria-label="Send message">
+            <span class="material-symbols-outlined"
+              style="font-size:20px; font-variation-settings:'FILL' 1;">send</span>
           </button>
         </div>
       </div>
@@ -613,8 +586,10 @@
   </div>
 
   <!-- ── OCR RESULT DRAWER ── -->
-  <div id="ocr-drawer" style="display:none;" class="fixed inset-0 z-50 flex items-end justify-center bg-black/40 backdrop-blur-sm transition-opacity duration-300 opacity-0">
-    <div id="ocr-drawer-content" class="w-full max-w-lg bg-surface rounded-t-3xl p-6 shadow-card flex flex-col gap-4 transform translate-y-full transition-transform duration-300 max-h-[85vh]">
+  <div id="ocr-drawer" style="display:none;"
+    class="fixed inset-0 z-50 flex items-end justify-center bg-black/40 backdrop-blur-sm transition-opacity duration-300 opacity-0">
+    <div id="ocr-drawer-content"
+      class="w-full max-w-lg bg-surface rounded-t-3xl p-6 shadow-card flex flex-col gap-4 transform translate-y-full transition-transform duration-300 max-h-[85vh]">
       <!-- Header -->
       <div class="flex items-center justify-between border-b border-outline-variant pb-3 select-none">
         <div class="flex items-center gap-2">
@@ -627,21 +602,23 @@
       </div>
 
       <!-- Textarea containing extracted text -->
-      <textarea id="ocr-drawer-text" class="flex-1 w-full bg-surface-variant/50 text-on-surface text-xs rounded-xl p-3 border border-outline-variant focus:ring-1 focus:ring-[#7212ff] resize-none outline-none overflow-y-auto max-h-[40vh] min-h-[200px]" placeholder="Extracted text will appear here..."></textarea>
+      <textarea id="ocr-drawer-text"
+        class="flex-1 w-full bg-surface-variant/50 text-on-surface text-xs rounded-xl p-3 border border-outline-variant focus:ring-1 focus:ring-[#7212ff] resize-none outline-none overflow-y-auto max-h-[40vh] min-h-[200px]"
+        placeholder="Extracted text will appear here..."></textarea>
 
       <!-- Quick Action Buttons -->
       <div class="flex flex-col gap-2">
         <!-- Default Actions Container -->
         <div id="ocr-default-actions" class="flex flex-col gap-2">
           <span class="text-[10px] font-label-sm text-on-surface-variant uppercase tracking-wider">Quick Actions</span>
-          
+
           <div class="grid grid-cols-2 gap-2">
             <!-- Copy to Clipboard -->
             <button id="btn-ocr-copy" class="btn-secondary py-2 flex items-center justify-center gap-1.5 text-xs">
               <span class="material-symbols-outlined text-[16px]">content_copy</span>
               <span id="ocr-copy-text">Copy Text</span>
             </button>
-            
+
             <!-- Insert into message input -->
             <button id="btn-ocr-insert" class="btn-secondary py-2 flex items-center justify-center gap-1.5 text-xs">
               <span class="material-symbols-outlined text-[16px]">edit_note</span>
@@ -651,13 +628,15 @@
 
           <div class="grid grid-cols-2 gap-2 mt-1">
             <!-- Summarize -->
-            <button id="btn-ocr-summarize" class="btn-primary py-2.5 flex items-center justify-center gap-1.5 text-xs" style="background: #7212ff;">
+            <button id="btn-ocr-summarize" class="btn-primary py-2.5 flex items-center justify-center gap-1.5 text-xs"
+              style="background: #7212ff;">
               <span class="material-symbols-outlined text-[16px]">summarize</span>
               <span>Summarize</span>
             </button>
 
             <!-- Reword -->
-            <button id="btn-ocr-reword" class="btn-primary py-2.5 flex items-center justify-center gap-1.5 text-xs" style="background: #ac2471;">
+            <button id="btn-ocr-reword" class="btn-primary py-2.5 flex items-center justify-center gap-1.5 text-xs"
+              style="background: #ac2471;">
               <span class="material-symbols-outlined text-[16px]">transform</span>
               <span>Reword</span>
             </button>
@@ -665,11 +644,13 @@
         </div>
 
         <!-- Reword Options Container (Hidden by default) -->
-        <div id="ocr-reword-actions" class="hidden flex flex-col gap-2 select-none border-t border-outline-variant/10 pt-1">
+        <div id="ocr-reword-actions"
+          class="hidden flex flex-col gap-2 select-none border-t border-outline-variant/10 pt-1">
           <span class="text-[10px] font-label-sm text-[#ac2471] uppercase tracking-wider">Reword Tone Options</span>
-          
+
           <div class="grid grid-cols-2 gap-2">
-            <button data-ocr-tone="professional" class="btn-secondary py-2 text-xs flex items-center justify-center gap-1.5">
+            <button data-ocr-tone="professional"
+              class="btn-secondary py-2 text-xs flex items-center justify-center gap-1.5">
               <span class="material-symbols-outlined text-[16px]">work</span>
               <span>Professional</span>
             </button>
@@ -687,7 +668,8 @@
             </button>
           </div>
 
-          <button id="btn-ocr-reword-back" type="button" class="text-xs text-on-surface-variant hover:text-[#ac2471] mt-1 text-center py-1 font-semibold flex items-center justify-center gap-1 select-none">
+          <button id="btn-ocr-reword-back" type="button"
+            class="text-xs text-on-surface-variant hover:text-[#ac2471] mt-1 text-center py-1 font-semibold flex items-center justify-center gap-1 select-none">
             <span class="material-symbols-outlined text-[14px]">arrow_back</span>
             <span>Back to Actions</span>
           </button>
@@ -706,7 +688,8 @@
         <span class="material-symbols-outlined text-primary" style="font-size:22px;">auto_stories</span>
         <h2 class="text-lg font-display font-semibold text-on-surface">Isla's Memory Shelf</h2>
       </div>
-      <button id="btn-close-drawer" class="icon-btn" aria-label="Close Drawer" style="border:none; background:none; cursor:pointer;">
+      <button id="btn-close-drawer" class="icon-btn" aria-label="Close Drawer"
+        style="border:none; background:none; cursor:pointer;">
         <span class="material-symbols-outlined" style="font-size:20px; color:#564149;">close</span>
       </button>
     </div>
@@ -715,8 +698,9 @@
       <!-- Section 1: Trinkets Shelf -->
       <div id="drawer-trinkets-section" class="flex flex-col gap-3">
         <h3 class="text-xs font-semibold uppercase tracking-wider text-primary opacity-80">Collected Trinkets</h3>
-        <p class="text-xs text-on-surface-variant opacity-80 leading-relaxed">Items Isla has recommended or collected for you from visual space scans and layouts.</p>
-        
+        <p class="text-xs text-on-surface-variant opacity-80 leading-relaxed">Items Isla has recommended or collected
+          for you from visual space scans and layouts.</p>
+
         <div class="shelf-container">
           <div id="trinket-shelf-list" class="shelf-trinkets-grid">
             <!-- Trinkets dynamically loaded here -->
@@ -731,22 +715,19 @@
       <!-- Section 2: Memory Bank facts list -->
       <div class="flex flex-col gap-3">
         <h3 class="text-xs font-semibold uppercase tracking-wider text-primary opacity-80">Isla's Profile of You</h3>
-        <p class="text-xs text-on-surface-variant opacity-80 leading-relaxed">Preferences and facts Isla remembers. Tap delete to clear anything incorrect.</p>
-        
+        <p class="text-xs text-on-surface-variant opacity-80 leading-relaxed">Preferences and facts Isla remembers. Tap
+          delete to clear anything incorrect.</p>
+
         <div id="drawer-fact-list" class="flex flex-col gap-2">
           <!-- Dynamic facts list loaded here -->
         </div>
 
         <div class="flex gap-2 mt-2">
-          <input
-            id="drawer-add-input"
-            type="text"
-            placeholder="Tell Isla something about you..."
+          <input id="drawer-add-input" type="text" placeholder="Tell Isla something about you..."
             class="flex-1 px-3 py-2 rounded-xl text-sm bg-surface-variant border border-on-surface/10 focus:outline-none focus:border-primary"
-            maxlength="200"
-            style="background:#f5f0f2; border:1px solid rgba(172,36,113,0.15); color:#564149;"
-          />
-          <button id="drawer-add-btn" class="btn-primary px-4 py-2 text-xs rounded-xl" style="background: linear-gradient(135deg, #ac2471, #7212ff); color:#fff; border:none; cursor:pointer; font-weight:600;">Add</button>
+            maxlength="200" style="background:#f5f0f2; border:1px solid rgba(172,36,113,0.15); color:#564149;" />
+          <button id="drawer-add-btn" class="btn-primary px-4 py-2 text-xs rounded-xl"
+            style="background: linear-gradient(135deg, #ac2471, #7212ff); color:#fff; border:none; cursor:pointer; font-weight:600;">Add</button>
         </div>
       </div>
     </div>
@@ -761,7 +742,8 @@
         <span class="material-symbols-outlined text-primary" style="font-size:22px;">wb_sunny</span>
         <h2 class="text-lg font-display font-semibold text-on-surface">UV Sunshine Index</h2>
       </div>
-      <button id="btn-close-uv-drawer" class="icon-btn" aria-label="Close UV Drawer" style="border:none; background:none; cursor:pointer;">
+      <button id="btn-close-uv-drawer" class="icon-btn" aria-label="Close UV Drawer"
+        style="border:none; background:none; cursor:pointer;">
         <span class="material-symbols-outlined" style="font-size:20px; color:#564149;">close</span>
       </button>
     </div>
@@ -775,12 +757,15 @@
 
       <!-- Loading State -->
       <div id="uv-loading" class="flex flex-col items-center justify-center gap-2 py-12">
-        <div style="width:32px;height:32px;border:3px solid rgba(172,36,113,0.15);border-top-color:#ac2471;border-radius:50%;animation:spin 0.9s linear infinite;"></div>
+        <div
+          style="width:32px;height:32px;border:3px solid rgba(172,36,113,0.15);border-top-color:#ac2471;border-radius:50%;animation:spin 0.9s linear infinite;">
+        </div>
         <p class="text-sm text-on-surface-variant">Fetching live UV data...</p>
       </div>
 
       <!-- Error State -->
-      <div id="uv-error" class="hidden flex flex-col items-center justify-center text-center p-6 bg-red-50 border border-red-100 rounded-2xl gap-3">
+      <div id="uv-error"
+        class="hidden flex flex-col items-center justify-center text-center p-6 bg-red-50 border border-red-100 rounded-2xl gap-3">
         <span class="material-symbols-outlined text-red-500" style="font-size:36px;">cloud_off</span>
         <p class="text-base font-semibold text-red-700">Could not fetch UV data.</p>
         <button id="btn-retry-uv" class="btn-primary py-2 px-4 text-xs">Retry</button>
@@ -789,26 +774,35 @@
       <!-- Dashboard Contents (Hidden during load) -->
       <div id="uv-dashboard-content" class="hidden flex flex-col gap-5">
         <!-- Current UV Rating Circle -->
-        <div class="glass-surface-strong p-6 rounded-2xl flex flex-col items-center text-center shadow-card relative overflow-hidden" style="border: 1px solid rgba(172, 36, 113, 0.15);">
-          <div class="absolute -right-10 -top-10 w-28 h-28 rounded-full bg-gradient-to-br from-yellow-300/20 to-orange-400/20 blur-xl"></div>
-          
+        <div
+          class="glass-surface-strong p-6 rounded-2xl flex flex-col items-center text-center shadow-card relative overflow-hidden"
+          style="border: 1px solid rgba(172, 36, 113, 0.15);">
+          <div
+            class="absolute -right-10 -top-10 w-28 h-28 rounded-full bg-gradient-to-br from-yellow-300/20 to-orange-400/20 blur-xl">
+          </div>
+
           <!-- Outer circle -->
-          <div class="relative w-32 h-32 flex items-center justify-center rounded-full border-4 border-outline-variant/10 shadow-inner bg-white/40 mb-3">
+          <div
+            class="relative w-32 h-32 flex items-center justify-center rounded-full border-4 border-outline-variant/10 shadow-inner bg-white/40 mb-3">
             <div class="flex flex-col items-center">
               <span id="uv-value" class="text-4xl font-black text-primary leading-none">0.0</span>
-              <span class="text-[11px] font-bold uppercase tracking-wider text-on-surface-variant opacity-60 mt-1.5">UV Index</span>
+              <span class="text-[11px] font-bold uppercase tracking-wider text-on-surface-variant opacity-60 mt-1.5">UV
+                Index</span>
             </div>
           </div>
 
-          <div id="uv-level-pill" class="px-3.5 py-1.5 rounded-full text-sm font-bold uppercase tracking-wider mb-2" style="background: rgba(172,36,113,0.08); color: #ac2471;">Low</div>
-          
+          <div id="uv-level-pill" class="px-3.5 py-1.5 rounded-full text-sm font-bold uppercase tracking-wider mb-2"
+            style="background: rgba(172,36,113,0.08); color: #ac2471;">Low</div>
+
           <!-- Cloud Cover row -->
-          <div id="uv-cloud-row" class="flex items-center gap-1.5 text-xs font-semibold text-on-surface-variant opacity-75 mb-3 hidden">
+          <div id="uv-cloud-row"
+            class="flex items-center gap-1.5 text-xs font-semibold text-on-surface-variant opacity-75 mb-3 hidden">
             <span class="material-symbols-outlined text-[17px]">cloud</span>
             <span id="uv-cloud-text">Cloud Cover: --%</span>
           </div>
 
-          <p id="uv-safety-advice" class="text-sm text-on-surface-variant leading-relaxed max-w-xs">No sun protection required. Safe to stay outside.</p>
+          <p id="uv-safety-advice" class="text-sm text-on-surface-variant leading-relaxed max-w-xs">No sun protection
+            required. Safe to stay outside.</p>
         </div>
 
         <!-- Tanning Optimizer Card -->
@@ -817,19 +811,24 @@
             <span class="material-symbols-outlined text-[#ac2471]" style="font-size:22px;">hourglass_top</span>
             <h3 class="text-sm font-semibold text-primary">Tanning Optimizer</h3>
           </div>
-          
+
           <!-- Highlighted Large Time Badge -->
-          <div class="bg-gradient-to-br from-[#ac2471]/5 to-[#7212ff]/5 p-4 rounded-xl border border-[#ac2471]/10 flex flex-col items-center text-center gap-1 shadow-sm">
-            <span class="text-[11px] font-bold uppercase tracking-wider text-[#ac2471] opacity-75">Recommended Tanning Time Today</span>
-            <span id="uv-tan-window" class="text-2xl font-extrabold text-[#ac2471] tracking-wide">Too low for tanning</span>
+          <div
+            class="bg-gradient-to-br from-[#ac2471]/5 to-[#7212ff]/5 p-4 rounded-xl border border-[#ac2471]/10 flex flex-col items-center text-center gap-1 shadow-sm">
+            <span class="text-[11px] font-bold uppercase tracking-wider text-[#ac2471] opacity-75">Recommended Tanning
+              Time Today</span>
+            <span id="uv-tan-window" class="text-2xl font-extrabold text-[#ac2471] tracking-wide">Too low for
+              tanning</span>
             <div class="flex items-center gap-1.5 mt-0.5">
               <span class="material-symbols-outlined text-xs text-on-surface-variant">timer</span>
-              <span id="uv-burn-time" class="text-xs font-semibold text-on-surface-variant">Safe Sunburn Limit: 60+ Minutes</span>
+              <span id="uv-burn-time" class="text-xs font-semibold text-on-surface-variant">Safe Sunburn Limit: 60+
+                Minutes</span>
             </div>
           </div>
 
           <div id="uv-tan-status" class="bg-white/45 p-3 rounded-xl border border-[#ac2471]/5 flex flex-col gap-2">
-            <p id="uv-tan-tip" class="text-xs text-on-surface-variant leading-relaxed italic opacity-85">Always use SPF protection and take breaks in the shade to prevent skin damage.</p>
+            <p id="uv-tan-tip" class="text-xs text-on-surface-variant leading-relaxed italic opacity-85">Always use SPF
+              protection and take breaks in the shade to prevent skin damage.</p>
           </div>
 
           <!-- Today's UV Index Curve Graph inside Optimizer -->
@@ -839,41 +838,57 @@
                 <span class="material-symbols-outlined text-[#ac2471]" style="font-size:16px;">query_stats</span>
                 <span class="text-xs font-semibold text-primary">UV Index Curve</span>
               </div>
-              <span id="uv-graph-day-label" class="text-[10px] font-bold uppercase tracking-wider text-on-surface-variant opacity-60">Today (6 AM - 8 PM)</span>
+              <span id="uv-graph-day-label"
+                class="text-[10px] font-bold uppercase tracking-wider text-on-surface-variant opacity-60">Today (6 AM -
+                8 PM)</span>
             </div>
             <!-- Container for dynamically generated SVG -->
-            <div id="uv-graph-container" class="w-full flex justify-center bg-white/30 rounded-xl p-2 border border-[#ac2471]/5">
+            <div id="uv-graph-container"
+              class="w-full flex justify-center bg-white/30 rounded-xl p-2 border border-[#ac2471]/5">
               <!-- SVG injected here -->
             </div>
           </div>
         </div>
 
         <!-- Tanning Oil Advice Card (Collapsible) -->
-        <div id="uv-tanning-oil-card" class="glass-surface rounded-2xl border border-[#ac2471]/10 flex flex-col hidden overflow-hidden">
-          <button id="btn-toggle-tanning-oil" class="w-full flex items-center justify-between p-4 bg-transparent border-none text-left cursor-pointer" style="outline:none;">
+        <div id="uv-tanning-oil-card"
+          class="glass-surface rounded-2xl border border-[#ac2471]/10 flex flex-col hidden overflow-hidden">
+          <button id="btn-toggle-tanning-oil"
+            class="w-full flex items-center justify-between p-4 bg-transparent border-none text-left cursor-pointer"
+            style="outline:none;">
             <div class="flex items-center gap-2">
               <span class="material-symbols-outlined text-[#ac2471]" style="font-size:22px;">opacity</span>
               <h3 class="text-sm font-semibold text-primary">Tanning Oil Advice</h3>
             </div>
-            <span id="chevron-tanning-oil" class="material-symbols-outlined text-on-surface-variant transition-transform" style="transition: transform 0.25s ease;">expand_more</span>
+            <span id="chevron-tanning-oil"
+              class="material-symbols-outlined text-on-surface-variant transition-transform"
+              style="transition: transform 0.25s ease;">expand_more</span>
           </button>
           <div id="content-tanning-oil" class="px-4 pb-4 hidden">
-            <p id="uv-tanning-oil-text" class="text-xs text-on-surface-variant leading-relaxed opacity-85">Calculating tanning oil suitability...</p>
+            <p id="uv-tanning-oil-text" class="text-xs text-on-surface-variant leading-relaxed opacity-85">Calculating
+              tanning oil suitability...</p>
           </div>
         </div>
 
         <!-- AI Weekly Tanning Summary Card (Collapsible) -->
-        <div id="uv-ai-summary-card" class="glass-surface rounded-2xl border border-[#ac2471]/10 flex flex-col hidden overflow-hidden">
-          <button id="btn-toggle-ai-summary" class="w-full flex items-center justify-between p-4 bg-transparent border-none text-left cursor-pointer" style="outline:none;">
+        <div id="uv-ai-summary-card"
+          class="glass-surface rounded-2xl border border-[#ac2471]/10 flex flex-col hidden overflow-hidden">
+          <button id="btn-toggle-ai-summary"
+            class="w-full flex items-center justify-between p-4 bg-transparent border-none text-left cursor-pointer"
+            style="outline:none;">
             <div class="flex items-center gap-2">
-              <span class="material-symbols-outlined text-[#ac2471] animate-pulse" style="font-size:22px;">psychology</span>
+              <span class="material-symbols-outlined text-[#ac2471] animate-pulse"
+                style="font-size:22px;">psychology</span>
               <h3 class="text-sm font-semibold text-primary">Isla's Tanning Forecast</h3>
             </div>
-            <span id="chevron-ai-summary" class="material-symbols-outlined text-on-surface-variant transition-transform" style="transition: transform 0.25s ease;">expand_more</span>
+            <span id="chevron-ai-summary" class="material-symbols-outlined text-on-surface-variant transition-transform"
+              style="transition: transform 0.25s ease;">expand_more</span>
           </button>
           <div id="content-ai-summary" class="px-4 pb-4 hidden flex flex-col gap-2">
             <div id="uv-ai-summary-loading" class="flex items-center gap-2 py-2">
-              <div style="width:16px;height:16px;border:2px solid rgba(172,36,113,0.15);border-top-color:#ac2471;border-radius:50%;animation:spin 0.9s linear infinite;"></div>
+              <div
+                style="width:16px;height:16px;border:2px solid rgba(172,36,113,0.15);border-top-color:#ac2471;border-radius:50%;animation:spin 0.9s linear infinite;">
+              </div>
               <p class="text-sm text-on-surface-variant">Isla is analyzing this week's sun...</p>
             </div>
             <p id="uv-ai-summary-text" class="text-xs text-on-surface-variant leading-relaxed hidden"></p>
@@ -882,7 +897,8 @@
 
         <!-- Weekly Forecast List -->
         <div class="flex flex-col gap-3">
-          <h3 class="text-xs font-semibold uppercase tracking-wider text-on-surface-variant opacity-75">Weekly UV Outlook</h3>
+          <h3 class="text-xs font-semibold uppercase tracking-wider text-on-surface-variant opacity-75">Weekly UV
+            Outlook</h3>
           <div id="uv-weekly-list" class="flex flex-col gap-2">
             <!-- Daily rows go here -->
           </div>
@@ -907,23 +923,31 @@
 
     <div class="drawer-content flex flex-col gap-5">
       <!-- Introduction Card -->
-      <div class="bg-white/15 rounded-xl p-3.5 border border-[#ac2471]/10 select-none text-[11px] text-on-surface-variant leading-relaxed shrink-0 flex-none">
-        Welcome to your <strong class="text-primary">Antique Feed</strong>! Create keyword filters below, and our agent will search eBay UK in real-time. Matches are gathered here so you can review them in a scrollable, full-screen reels player.
+      <div
+        class="bg-white/15 rounded-xl p-3.5 border border-[#ac2471]/10 select-none text-[11px] text-on-surface-variant leading-relaxed shrink-0 flex-none">
+        Welcome to your <strong class="text-primary">Antique Feed</strong>! Create keyword filters below, and our agent
+        will search eBay UK in real-time. Matches are gathered here so you can review them in a scrollable, full-screen
+        reels player.
       </div>
 
       <!-- Section 1: Matched Listings Feed (Feed & Likes) -->
-      <div id="ebay-feed-section" class="glass-surface p-5 rounded-2xl flex flex-col gap-4 border border-[#ac2471]/10 shrink-0 flex-none h-fit">
+      <div id="ebay-feed-section"
+        class="glass-surface p-5 rounded-2xl flex flex-col gap-4 border border-[#ac2471]/10 shrink-0 flex-none h-fit">
         <!-- Feed Header with Navigation -->
         <div class="flex items-center justify-between pb-2 border-b border-[#ac2471]/5">
           <div class="flex items-center gap-5 justify-center flex-1">
-            <button id="btn-show-feed" type="button" class="text-xs font-bold text-primary border-b-2 border-[#ac2471] pb-1 cursor-pointer focus:outline-none select-none bg-transparent">
+            <button id="btn-show-feed" type="button"
+              class="text-xs font-bold text-primary border-b-2 border-[#ac2471] pb-1 cursor-pointer focus:outline-none select-none bg-transparent">
               Alert Feed 🕰️
             </button>
-            <button id="btn-show-saved" type="button" class="text-xs font-bold text-on-surface-variant/75 hover:text-primary pb-1 cursor-pointer focus:outline-none select-none bg-transparent">
+            <button id="btn-show-saved" type="button"
+              class="text-xs font-bold text-on-surface-variant/75 hover:text-primary pb-1 cursor-pointer focus:outline-none select-none bg-transparent">
               Likes 💖
             </button>
           </div>
-          <button id="btn-refresh-ebay-feed" class="icon-btn hover:rotate-180 transition-transform duration-500" title="Refresh eBay Feed" aria-label="Refresh eBay feed" style="border:none; background:none; cursor:pointer; padding:2px;">
+          <button id="btn-refresh-ebay-feed" class="icon-btn hover:rotate-180 transition-transform duration-500"
+            title="Refresh eBay Feed" aria-label="Refresh eBay feed"
+            style="border:none; background:none; cursor:pointer; padding:2px;">
             <span class="material-symbols-outlined text-primary text-lg">refresh</span>
           </button>
         </div>
@@ -932,12 +956,9 @@
         <div id="ebay-feed-tab-content" class="flex flex-col gap-4">
 
           <!-- Prominent Reels Button -->
-          <button
-            id="btn-open-reels"
-            type="button"
+          <button id="btn-open-reels" type="button"
             class="w-full py-3 rounded-2xl flex items-center justify-center gap-2 text-xs font-extrabold shadow-lg hover:scale-[1.02] active:scale-[0.98] transition-all cursor-pointer select-none text-white border-0"
-            style="background: linear-gradient(135deg, #ac2471, #7212ff);"
-          >
+            style="background: linear-gradient(135deg, #ac2471, #7212ff);">
             <span class="material-symbols-outlined text-lg">play_circle</span>
             <span>Watch Antique Reels 🎬</span>
           </button>
@@ -945,10 +966,14 @@
           <!-- Section 2: Active Alerts List -->
           <div class="flex flex-col gap-3 mt-1">
             <div class="flex items-center justify-between">
-              <h3 class="text-xs font-semibold uppercase tracking-wider text-on-surface-variant opacity-75">Active Antique Trackers</h3>
-              <div class="flex items-center gap-1 bg-[#ac2471]/10 px-2 py-0.5 rounded-md border border-[#ac2471]/20 select-none shadow-sm" title="Auto-refresh timer">
+              <h3 class="text-xs font-semibold uppercase tracking-wider text-on-surface-variant opacity-75">Active
+                Antique Trackers</h3>
+              <div
+                class="flex items-center gap-1 bg-[#ac2471]/10 px-2 py-0.5 rounded-md border border-[#ac2471]/20 select-none shadow-sm"
+                title="Auto-refresh timer">
                 <span class="material-symbols-outlined text-[#ac2471]" style="font-size:12px;">update</span>
-                <span id="ebay-refresh-timer" class="text-[9px] font-bold text-[#ac2471] tracking-wide">Loading...</span>
+                <span id="ebay-refresh-timer"
+                  class="text-[9px] font-bold text-[#ac2471] tracking-wide">Loading...</span>
               </div>
             </div>
             <div id="ebay-trackers-list" class="flex flex-col gap-2 max-h-[220px] overflow-y-auto pr-1">
@@ -960,23 +985,23 @@
         <!-- Saved Items Container (Hidden by default) -->
         <div id="ebay-saved-container" class="hidden flex flex-col gap-3 max-h-[450px] overflow-y-auto pr-1">
           <!-- Likes Search Bar (Visible when 3+ liked items exist) -->
-          <div id="likes-search-wrapper" class="hidden sticky -top-1 z-20 bg-[#fcf9f8] pt-2 pb-3 -mx-1 px-1 border-b border-[#ac2471]/10">
+          <div id="likes-search-wrapper"
+            class="hidden sticky -top-1 z-20 bg-[#fcf9f8] pt-2 pb-3 -mx-1 px-1 border-b border-[#ac2471]/10">
             <div class="relative flex items-center w-full">
-              <span class="material-symbols-outlined absolute left-2.5 text-on-surface-variant text-base pointer-events-none">search</span>
-              <input
-                type="text"
-                id="likes-search-input"
-                placeholder="Search liked trinkets..."
-                class="w-full text-xs pl-8 pr-8 py-2 bg-white border border-[#ac2471]/20 rounded-xl outline-none focus:border-[#ac2471] shadow-sm transition-all"
-              />
-              <button id="btn-clear-likes-search" type="button" class="hidden absolute right-2.5 text-on-surface-variant hover:text-primary cursor-pointer">
+              <span
+                class="material-symbols-outlined absolute left-2.5 text-on-surface-variant text-base pointer-events-none">search</span>
+              <input type="text" id="likes-search-input" placeholder="Search liked trinkets..."
+                class="w-full text-xs pl-8 pr-8 py-2 bg-white border border-[#ac2471]/20 rounded-xl outline-none focus:border-[#ac2471] shadow-sm transition-all" />
+              <button id="btn-clear-likes-search" type="button"
+                class="hidden absolute right-2.5 text-on-surface-variant hover:text-primary cursor-pointer">
                 <span class="material-symbols-outlined text-base">close</span>
               </button>
             </div>
           </div>
 
           <div id="likes-items-list" class="flex flex-col gap-4">
-            <div class="flex flex-col items-center justify-center py-12 text-center text-on-surface-variant gap-2 bg-white/10 rounded-xl p-4 border border-[#ac2471]/5">
+            <div
+              class="flex flex-col items-center justify-center py-12 text-center text-on-surface-variant gap-2 bg-white/10 rounded-xl p-4 border border-[#ac2471]/5">
               <span class="material-symbols-outlined text-2xl text-on-surface-variant opacity-60">favorite_border</span>
               <span class="text-xs font-medium">No liked items yet. Like items in the feed to save them here!</span>
             </div>
@@ -985,41 +1010,55 @@
       </div>
 
       <!-- Section 3: Manage Active Alerts (Filter your Feed) -->
-      <div class="glass-surface p-5 rounded-2xl flex flex-col gap-3 border border-[#ac2471]/10 shrink-0 flex-none h-fit">
+      <div
+        class="glass-surface p-5 rounded-2xl flex flex-col gap-3 border border-[#ac2471]/10 shrink-0 flex-none h-fit">
         <div class="flex items-center justify-between cursor-pointer" id="btn-toggle-create-alert">
           <div class="flex items-center gap-2">
             <span class="material-symbols-outlined text-[#ac2471]" style="font-size:22px;">notifications_active</span>
             <h3 class="text-sm font-semibold text-primary">Filter your Feed</h3>
           </div>
-          <span id="chevron-create-alert" class="material-symbols-outlined text-on-surface-variant transition-transform" style="transition: transform 0.25s ease;">expand_more</span>
+          <span id="chevron-create-alert" class="material-symbols-outlined text-on-surface-variant transition-transform"
+            style="transition: transform 0.25s ease;">expand_more</span>
         </div>
 
         <!-- Collapsible Alert Form -->
         <form id="ebay-alert-form" class="hidden flex flex-col gap-3 border-t border-[#ac2471]/5 pt-3">
           <div class="flex flex-col gap-1">
-            <label for="ebay-alert-query" class="text-[10px] font-bold uppercase tracking-wider text-on-surface-variant">Product Keywords</label>
-            <input type="text" id="ebay-alert-query" placeholder="e.g. Victorian brass watch" class="w-full text-xs bg-white/50 border border-outline-variant rounded-xl p-2.5 outline-none focus:border-[#ac2471]" required />
+            <label for="ebay-alert-query"
+              class="text-[10px] font-bold uppercase tracking-wider text-on-surface-variant">Product Keywords</label>
+            <input type="text" id="ebay-alert-query" placeholder="e.g. Victorian brass watch"
+              class="w-full text-xs bg-white/50 border border-outline-variant rounded-xl p-2.5 outline-none focus:border-[#ac2471]"
+              required />
           </div>
 
           <div class="grid grid-cols-2 gap-2">
             <div class="flex flex-col gap-1">
-              <label for="ebay-alert-min-price" class="text-[10px] font-bold uppercase tracking-wider text-on-surface-variant">Min Price (£)</label>
-              <input type="number" id="ebay-alert-min-price" placeholder="e.g. 10" class="w-full text-xs bg-white/50 border border-outline-variant rounded-xl p-2.5 outline-none focus:border-[#ac2471]" />
+              <label for="ebay-alert-min-price"
+                class="text-[10px] font-bold uppercase tracking-wider text-on-surface-variant">Min Price (£)</label>
+              <input type="number" id="ebay-alert-min-price" placeholder="e.g. 10"
+                class="w-full text-xs bg-white/50 border border-outline-variant rounded-xl p-2.5 outline-none focus:border-[#ac2471]" />
             </div>
             <div class="flex flex-col gap-1">
-              <label for="ebay-alert-max-price" class="text-[10px] font-bold uppercase tracking-wider text-on-surface-variant">Max Price (£)</label>
-              <input type="number" id="ebay-alert-max-price" placeholder="e.g. 50 (optional)" class="w-full text-xs bg-white/50 border border-outline-variant rounded-xl p-2.5 outline-none focus:border-[#ac2471]" />
+              <label for="ebay-alert-max-price"
+                class="text-[10px] font-bold uppercase tracking-wider text-on-surface-variant">Max Price (£)</label>
+              <input type="number" id="ebay-alert-max-price" placeholder="e.g. 50 (optional)"
+                class="w-full text-xs bg-white/50 border border-outline-variant rounded-xl p-2.5 outline-none focus:border-[#ac2471]" />
             </div>
           </div>
 
           <div class="flex flex-col gap-1">
-            <label for="ebay-alert-email" class="text-[10px] font-bold uppercase tracking-wider text-on-surface-variant">Recipient Email (optional)</label>
-            <input type="email" id="ebay-alert-email" placeholder="e.g. crush@gmail.com" class="w-full text-xs bg-white/50 border border-outline-variant rounded-xl p-2.5 outline-none focus:border-[#ac2471]" />
+            <label for="ebay-alert-email"
+              class="text-[10px] font-bold uppercase tracking-wider text-on-surface-variant">Recipient Email
+              (optional)</label>
+            <input type="email" id="ebay-alert-email" placeholder="e.g. crush@gmail.com"
+              class="w-full text-xs bg-white/50 border border-outline-variant rounded-xl p-2.5 outline-none focus:border-[#ac2471]" />
           </div>
 
           <div class="flex flex-col gap-1">
-            <label for="ebay-alert-frequency" class="text-[10px] font-bold uppercase tracking-wider text-on-surface-variant">Email Frequency</label>
-            <select id="ebay-alert-frequency" class="w-full text-xs bg-white/50 border border-outline-variant rounded-xl p-2.5 outline-none focus:border-[#ac2471] text-on-surface">
+            <label for="ebay-alert-frequency"
+              class="text-[10px] font-bold uppercase tracking-wider text-on-surface-variant">Email Frequency</label>
+            <select id="ebay-alert-frequency"
+              class="w-full text-xs bg-white/50 border border-outline-variant rounded-xl p-2.5 outline-none focus:border-[#ac2471] text-on-surface">
               <option value="never" selected>Never (Feed Only)</option>
               <option value="weekly">Weekly Summary</option>
               <option value="daily">Daily Digest</option>
@@ -1029,17 +1068,22 @@
 
           <!-- Advanced Options (Collapsible) -->
           <div class="flex flex-col gap-2 mt-1">
-            <button type="button" id="btn-toggle-advanced-filters" class="flex items-center gap-1 bg-transparent border-none text-[10px] font-bold uppercase tracking-wider text-[#ac2471]/80 hover:text-[#ac2471] cursor-pointer outline-none py-1 select-none">
+            <button type="button" id="btn-toggle-advanced-filters"
+              class="flex items-center gap-1 bg-transparent border-none text-[10px] font-bold uppercase tracking-wider text-[#ac2471]/80 hover:text-[#ac2471] cursor-pointer outline-none py-1 select-none">
               <span class="material-symbols-outlined text-[14px]">tune</span>
               <span>Advanced Search Filters</span>
-              <span id="chevron-advanced-filters" class="material-symbols-outlined text-xs transition-transform" style="font-size:14px; margin-left: 2px;">expand_more</span>
+              <span id="chevron-advanced-filters" class="material-symbols-outlined text-xs transition-transform"
+                style="font-size:14px; margin-left: 2px;">expand_more</span>
             </button>
-            
-            <div id="advanced-filters-content" class="hidden flex flex-col gap-3 bg-white/30 p-3 rounded-xl border border-[#ac2471]/5">
+
+            <div id="advanced-filters-content"
+              class="hidden flex flex-col gap-3 bg-white/30 p-3 rounded-xl border border-[#ac2471]/5">
               <!-- Condition -->
               <div class="flex flex-col gap-1">
-                <label for="ebay-alert-condition" class="text-[9px] font-bold uppercase tracking-wider text-on-surface-variant">Condition</label>
-                <select id="ebay-alert-condition" class="w-full text-xs bg-white/70 border border-outline-variant rounded-lg p-2 outline-none focus:border-[#ac2471] text-on-surface">
+                <label for="ebay-alert-condition"
+                  class="text-[9px] font-bold uppercase tracking-wider text-on-surface-variant">Condition</label>
+                <select id="ebay-alert-condition"
+                  class="w-full text-xs bg-white/70 border border-outline-variant rounded-lg p-2 outline-none focus:border-[#ac2471] text-on-surface">
                   <option value="">Any Condition</option>
                   <option value="NEW">New</option>
                   <option value="USED">Used</option>
@@ -1048,8 +1092,10 @@
 
               <!-- Buying Format -->
               <div class="flex flex-col gap-1">
-                <label for="ebay-alert-format" class="text-[9px] font-bold uppercase tracking-wider text-on-surface-variant">Buying Format</label>
-                <select id="ebay-alert-format" class="w-full text-xs bg-white/70 border border-outline-variant rounded-lg p-2 outline-none focus:border-[#ac2471] text-on-surface">
+                <label for="ebay-alert-format"
+                  class="text-[9px] font-bold uppercase tracking-wider text-on-surface-variant">Buying Format</label>
+                <select id="ebay-alert-format"
+                  class="w-full text-xs bg-white/70 border border-outline-variant rounded-lg p-2 outline-none focus:border-[#ac2471] text-on-surface">
                   <option value="">Any Format</option>
                   <option value="FIXED_PRICE">Buy It Now</option>
                   <option value="AUCTION">Auction</option>
@@ -1058,13 +1104,17 @@
 
               <!-- Free Shipping -->
               <div class="flex items-center gap-2 mt-1 select-none">
-                <input type="checkbox" id="ebay-alert-shipping" class="rounded border-outline-variant text-[#ac2471] focus:ring-[#ac2471]" style="width:14px; height:14px;" />
-                <label for="ebay-alert-shipping" class="text-[10px] font-semibold text-on-surface-variant">Free Shipping Only</label>
+                <input type="checkbox" id="ebay-alert-shipping"
+                  class="rounded border-outline-variant text-[#ac2471] focus:ring-[#ac2471]"
+                  style="width:14px; height:14px;" />
+                <label for="ebay-alert-shipping" class="text-[10px] font-semibold text-on-surface-variant">Free Shipping
+                  Only</label>
               </div>
             </div>
           </div>
 
-          <button type="submit" class="btn-primary py-2.5 text-xs font-bold w-full mt-1" style="background: linear-gradient(135deg, #ac2471, #7212ff);">
+          <button type="submit" class="btn-primary py-2.5 text-xs font-bold w-full mt-1"
+            style="background: linear-gradient(135deg, #ac2471, #7212ff);">
             Save Filter Alert
           </button>
         </form>
@@ -1077,15 +1127,18 @@
             <span class="material-symbols-outlined text-[#ac2471]" style="font-size:22px;">image_search</span>
             <h3 class="text-sm font-semibold text-primary">Filter from Image</h3>
           </div>
-          <span id="chevron-filter-image" class="material-symbols-outlined text-on-surface-variant transition-transform" style="transition: transform 0.25s ease;">expand_more</span>
+          <span id="chevron-filter-image" class="material-symbols-outlined text-on-surface-variant transition-transform"
+            style="transition: transform 0.25s ease;">expand_more</span>
         </div>
 
         <!-- Collapsible Content -->
         <div id="filter-image-content" class="hidden flex flex-col gap-3 border-t border-[#ac2471]/5 pt-3">
-          <p class="text-xs text-on-surface-variant leading-relaxed">Upload a screenshot from Instagram or Pinterest. Isla will identify the antique and find it on eBay!</p>
-          
+          <p class="text-xs text-on-surface-variant leading-relaxed">Upload a screenshot from Instagram or Pinterest.
+            Isla will identify the antique and find it on eBay!</p>
+
           <!-- Drag & Drop Zone -->
-          <div id="ebay-upload-zone" class="border-2 border-dashed border-[#ac2471]/25 hover:border-[#ac2471] rounded-xl p-6 flex flex-col items-center justify-center gap-2 cursor-pointer transition-colors bg-white/30 text-center">
+          <div id="ebay-upload-zone"
+            class="border-2 border-dashed border-[#ac2471]/25 hover:border-[#ac2471] rounded-xl p-6 flex flex-col items-center justify-center gap-2 cursor-pointer transition-colors bg-white/30 text-center">
             <span class="material-symbols-outlined text-[#ac2471] text-3xl">cloud_upload</span>
             <span class="text-xs font-semibold text-on-surface">Drag screenshot here or click to browse</span>
             <span class="text-[10px] text-on-surface-variant opacity-60">Supports PNG, JPG, WEBP</span>
@@ -1094,20 +1147,25 @@
 
           <!-- Identifying Loader -->
           <div id="ebay-identifying-loader" class="hidden flex items-center justify-center gap-2 py-4">
-            <div style="width:20px;height:20px;border:2px solid rgba(172,36,113,0.15);border-top-color:#ac2471;border-radius:50%;animation:spin 0.9s linear infinite;"></div>
+            <div
+              style="width:20px;height:20px;border:2px solid rgba(172,36,113,0.15);border-top-color:#ac2471;border-radius:50%;animation:spin 0.9s linear infinite;">
+            </div>
             <span class="text-xs font-medium text-on-surface-variant">Isla is analyzing your screenshot...</span>
           </div>
 
           <!-- Identification Result Display -->
-          <div id="ebay-id-result-card" class="hidden bg-[#ac2471]/5 p-3 rounded-xl border border-[#ac2471]/10 flex flex-col gap-1">
-            <span class="text-[10px] font-bold uppercase tracking-wider text-[#ac2471] opacity-75">Product Identified</span>
+          <div id="ebay-id-result-card"
+            class="hidden bg-[#ac2471]/5 p-3 rounded-xl border border-[#ac2471]/10 flex flex-col gap-1">
+            <span class="text-[10px] font-bold uppercase tracking-wider text-[#ac2471] opacity-75">Product
+              Identified</span>
             <span id="ebay-identified-name" class="text-xs font-bold text-on-surface">Antique Silver Teapot</span>
             <p id="ebay-identified-keywords" class="text-[10px] text-on-surface-variant opacity-75 italic"></p>
           </div>
 
           <!-- Similar Items Results Grid -->
           <div id="ebay-results-container" class="hidden flex flex-col gap-2">
-            <span class="text-[10px] font-bold uppercase tracking-wider text-on-surface-variant opacity-60">Similar Listings on eBay</span>
+            <span class="text-[10px] font-bold uppercase tracking-wider text-on-surface-variant opacity-60">Similar
+              Listings on eBay</span>
             <div id="ebay-results-grid" class="grid grid-cols-2 gap-2.5">
               <!-- Items injected dynamically -->
             </div>
@@ -1118,95 +1176,115 @@
   </div>
 
   <!-- ── FULLSCREEN DIAGRAM MODAL ── -->
-  <div
-    id="diagram-modal"
-    class="hidden fixed inset-0 z-[100] flex flex-col items-center justify-center select-none"
-    role="dialog"
-    aria-label="Fullscreen Diagram Viewer"
-    style="background: rgba(252, 249, 248, 0.96); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);"
-  >
+  <div id="diagram-modal" class="hidden fixed inset-0 z-[100] flex flex-col items-center justify-center select-none"
+    role="dialog" aria-label="Fullscreen Diagram Viewer"
+    style="background: rgba(252, 249, 248, 0.96); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);">
     <!-- Header with actions -->
     <div class="absolute top-4 left-4 right-4 flex items-center justify-between z-10">
-      <span class="text-xs font-medium px-3 py-1.5 rounded-full" style="color: rgba(172, 36, 113, 0.8); background: rgba(252, 249, 248, 0.8); border: 1px solid rgba(172, 36, 113, 0.15); box-shadow: 0 2px 8px rgba(172,36,113,0.05); backdrop-filter: blur(4px);">Drag to pan • Scroll / Pinch to zoom</span>
+      <span class="text-xs font-medium px-3 py-1.5 rounded-full"
+        style="color: rgba(172, 36, 113, 0.8); background: rgba(252, 249, 248, 0.8); border: 1px solid rgba(172, 36, 113, 0.15); box-shadow: 0 2px 8px rgba(172,36,113,0.05); backdrop-filter: blur(4px);">Drag
+        to pan • Scroll / Pinch to zoom</span>
       <div class="flex items-center gap-2">
-        <button id="btn-diagram-zoom-in" class="icon-btn p-2 rounded-full transition-colors" title="Zoom In" style="border:none; background: rgba(172, 36, 113, 0.08); width: 36px; height: 36px; display: flex; align-items: center; justify-content: center; cursor: pointer;">
+        <button id="btn-diagram-zoom-in" class="icon-btn p-2 rounded-full transition-colors" title="Zoom In"
+          style="border:none; background: rgba(172, 36, 113, 0.08); width: 36px; height: 36px; display: flex; align-items: center; justify-content: center; cursor: pointer;">
           <span class="material-symbols-outlined" style="font-size:20px; color:#ac2471;">zoom_in</span>
         </button>
-        <button id="btn-diagram-zoom-out" class="icon-btn p-2 rounded-full transition-colors" title="Zoom Out" style="border:none; background: rgba(172, 36, 113, 0.08); width: 36px; height: 36px; display: flex; align-items: center; justify-content: center; cursor: pointer;">
+        <button id="btn-diagram-zoom-out" class="icon-btn p-2 rounded-full transition-colors" title="Zoom Out"
+          style="border:none; background: rgba(172, 36, 113, 0.08); width: 36px; height: 36px; display: flex; align-items: center; justify-content: center; cursor: pointer;">
           <span class="material-symbols-outlined" style="font-size:20px; color:#ac2471;">zoom_out</span>
         </button>
-        <button id="btn-diagram-zoom-reset" class="icon-btn p-2 rounded-full transition-colors" title="Reset Zoom" style="border:none; background: rgba(172, 36, 113, 0.08); width: 36px; height: 36px; display: flex; align-items: center; justify-content: center; cursor: pointer;">
+        <button id="btn-diagram-zoom-reset" class="icon-btn p-2 rounded-full transition-colors" title="Reset Zoom"
+          style="border:none; background: rgba(172, 36, 113, 0.08); width: 36px; height: 36px; display: flex; align-items: center; justify-content: center; cursor: pointer;">
           <span class="material-symbols-outlined" style="font-size:20px; color:#ac2471;">restart_alt</span>
         </button>
-        <button id="btn-close-diagram-modal" class="icon-btn p-2 rounded-full transition-colors" title="Close" style="border:none; background: rgba(172, 36, 113, 0.15); width: 36px; height: 36px; display: flex; align-items: center; justify-content: center; cursor: pointer;">
+        <button id="btn-close-diagram-modal" class="icon-btn p-2 rounded-full transition-colors" title="Close"
+          style="border:none; background: rgba(172, 36, 113, 0.15); width: 36px; height: 36px; display: flex; align-items: center; justify-content: center; cursor: pointer;">
           <span class="material-symbols-outlined" style="font-size:20px; color:#ac2471;">close</span>
         </button>
       </div>
     </div>
 
     <!-- Viewport -->
-    <div id="diagram-modal-viewport" class="w-full h-full flex items-center justify-center overflow-hidden cursor-grab active:cursor-grabbing"></div>
+    <div id="diagram-modal-viewport"
+      class="w-full h-full flex items-center justify-center overflow-hidden cursor-grab active:cursor-grabbing"></div>
   </div>
 
   <!-- ── FULLSCREEN ANTIQUE REELS FEED MODAL ── -->
-  <div
-    id="antique-reels-modal"
+  <div id="antique-reels-modal"
     class="hidden fixed inset-0 z-[120] flex flex-col items-center justify-center select-none"
-    style="background: #09090b; color: white;"
-  >
+    style="background: #09090b; color: white;">
     <!-- Progress Indicator Bar & Counter at Top -->
-    <div id="reels-progress-container" class="pointer-events-auto absolute top-3.5 left-4 right-16 flex items-center gap-2.5 z-50">
-      <div class="flex-1 h-1.5 bg-white/20 rounded-full overflow-hidden backdrop-blur-md border border-white/10 shadow-inner">
-        <div id="reels-progress-fill" class="h-full rounded-full transition-all duration-300 ease-out" style="width: 0%; background: linear-gradient(135deg, #ac2471, #7212ff); box-shadow: 0 0 10px rgba(172, 36, 113, 0.6);"></div>
+    <div id="reels-progress-container"
+      class="pointer-events-auto absolute top-3.5 left-4 right-16 flex items-center gap-2.5 z-50">
+      <div
+        class="flex-1 h-1.5 bg-white/20 rounded-full overflow-hidden backdrop-blur-md border border-white/10 shadow-inner">
+        <div id="reels-progress-fill" class="h-full rounded-full transition-all duration-300 ease-out"
+          style="width: 0%; background: linear-gradient(135deg, #ac2471, #7212ff); box-shadow: 0 0 10px rgba(172, 36, 113, 0.6);">
+        </div>
       </div>
-      <span id="reels-counter-badge" class="text-[11px] font-extrabold text-white bg-black/60 backdrop-blur-md px-2.5 py-0.5 rounded-full border border-white/20 font-mono tracking-wider shadow-md shrink-0">
+      <span id="reels-counter-badge"
+        class="text-[11px] font-extrabold text-white bg-black/60 backdrop-blur-md px-2.5 py-0.5 rounded-full border border-white/20 font-mono tracking-wider shadow-md shrink-0">
         1 / 10
       </span>
     </div>
 
     <!-- Top control buttons -->
     <div class="absolute top-8 left-4 right-4 flex items-center justify-between z-50 pointer-events-none gap-2">
-      <div id="reels-header-title" class="pointer-events-auto text-xs sm:text-sm font-extrabold text-white px-3.5 py-1.5 rounded-full tracking-wide shadow-xl border border-white/20 truncate max-w-[84%]" style="background: linear-gradient(135deg, #ac2471, #7212ff);">
+      <div id="reels-header-title"
+        class="pointer-events-auto text-xs sm:text-sm font-extrabold text-white px-3.5 py-1.5 rounded-full tracking-wide shadow-xl border border-white/20 truncate max-w-[84%]"
+        style="background: linear-gradient(135deg, #ac2471, #7212ff);">
         Antique Reels 🎬
       </div>
-      <button id="btn-close-reels" type="button" class="pointer-events-auto bg-black/40 hover:bg-black/60 text-white rounded-full w-10 h-10 flex items-center justify-center backdrop-blur-md border border-white/10 transition-all text-xl shadow-lg cursor-pointer shrink-0">
+      <button id="btn-close-reels" type="button"
+        class="pointer-events-auto bg-black/40 hover:bg-black/60 text-white rounded-full w-10 h-10 flex items-center justify-center backdrop-blur-md border border-white/10 transition-all text-xl shadow-lg cursor-pointer shrink-0">
         <span class="material-symbols-outlined">close</span>
       </button>
     </div>
 
     <!-- Reels Container -->
     <div id="reels-cards-container" class="absolute inset-0 flex items-end justify-center z-10 p-0">
-      <div id="reels-active-card" class="date-card w-full max-w-md h-[88dvh] rounded-t-[32px] rounded-b-none overflow-hidden relative flex flex-col justify-end p-6 border-t border-l border-r border-white/10 shadow-2xl transition-all duration-300" style="background: rgba(255, 255, 255, 0.03); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px);">
+      <div id="reels-active-card"
+        class="date-card w-full max-w-md h-[88dvh] rounded-t-[32px] rounded-b-none overflow-hidden relative flex flex-col justify-end p-6 border-t border-l border-r border-white/10 shadow-2xl transition-all duration-300"
+        style="background: rgba(255, 255, 255, 0.03); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px);">
         <!-- Background/Main card image -->
         <div class="absolute inset-0 z-0" id="reels-media-container">
-          <img id="reels-card-img" src="" alt="Antique Media" class="w-full h-full object-cover transition-all duration-300 opacity-90" />
-          <div class="absolute inset-0 bg-gradient-to-t from-black via-black/20 to-transparent pointer-events-none"></div>
+          <img id="reels-card-img" src="" alt="Antique Media"
+            class="w-full h-full object-cover transition-all duration-300 opacity-90" />
+          <div class="absolute inset-0 bg-gradient-to-t from-black via-black/20 to-transparent pointer-events-none">
+          </div>
         </div>
 
         <!-- Multi-photo Counter Badge -->
-        <span id="reels-photo-counter" class="hidden absolute top-16 left-4 z-30 bg-black/60 backdrop-blur-md text-white text-[10px] font-bold px-2.5 py-1 rounded-full border border-white/10 shadow-lg pointer-events-none">
+        <span id="reels-photo-counter"
+          class="hidden absolute top-16 left-4 z-30 bg-black/60 backdrop-blur-md text-white text-[10px] font-bold px-2.5 py-1 rounded-full border border-white/10 shadow-lg pointer-events-none">
           📷 1 / 1
         </span>
 
         <!-- Horizontal Photo Navigation Chevrons -->
-        <button id="btn-reels-photo-prev" type="button" title="Previous Photo" class="hidden absolute left-3 top-1/2 -translate-y-1/2 z-30 w-10 h-10 rounded-full bg-black/60 hover:bg-black/80 active:scale-90 text-white flex items-center justify-center border border-white/20 backdrop-blur-md transition-all cursor-pointer shadow-xl pointer-events-auto">
+        <button id="btn-reels-photo-prev" type="button" title="Previous Photo"
+          class="hidden absolute left-3 top-1/2 -translate-y-1/2 z-30 w-10 h-10 rounded-full bg-black/60 hover:bg-black/80 active:scale-90 text-white flex items-center justify-center border border-white/20 backdrop-blur-md transition-all cursor-pointer shadow-xl pointer-events-auto">
           <span class="material-symbols-outlined text-xl">chevron_left</span>
         </button>
-        <button id="btn-reels-photo-next" type="button" title="Next Photo" class="hidden absolute right-3 top-1/2 -translate-y-1/2 z-30 w-10 h-10 rounded-full bg-black/60 hover:bg-black/80 active:scale-90 text-white flex items-center justify-center border border-white/20 backdrop-blur-md transition-all cursor-pointer shadow-xl pointer-events-auto">
+        <button id="btn-reels-photo-next" type="button" title="Next Photo"
+          class="hidden absolute right-3 top-1/2 -translate-y-1/2 z-30 w-10 h-10 rounded-full bg-black/60 hover:bg-black/80 active:scale-90 text-white flex items-center justify-center border border-white/20 backdrop-blur-md transition-all cursor-pointer shadow-xl pointer-events-auto">
           <span class="material-symbols-outlined text-xl">chevron_right</span>
         </button>
 
         <!-- Double Tap Heart Animation Overlay -->
-        <div id="reels-doubletap-heart" class="absolute inset-0 flex items-center justify-center z-30 pointer-events-none hidden">
-          <span class="material-symbols-outlined text-8xl filter drop-shadow-[0_4px_24px_rgba(255,43,109,0.7)]" style="font-variation-settings: 'FILL' 1; color: #ff2b6d;">favorite</span>
+        <div id="reels-doubletap-heart"
+          class="absolute inset-0 flex items-center justify-center z-30 pointer-events-none hidden">
+          <span class="material-symbols-outlined text-8xl filter drop-shadow-[0_4px_24px_rgba(255,43,109,0.7)]"
+            style="font-variation-settings: 'FILL' 1; color: #ff2b6d;">favorite</span>
         </div>
 
         <!-- Reels content card details -->
-        <div id="reels-details-container" class="relative z-10 w-full flex items-end justify-between gap-4 pointer-events-auto">
+        <div id="reels-details-container"
+          class="relative z-10 w-full flex items-end justify-between gap-4 pointer-events-auto">
           <!-- Left side: Text info -->
           <div class="flex-1 flex flex-col gap-2 min-w-0">
             <div class="flex items-center gap-2">
-              <span id="reels-card-source" class="text-[10px] font-bold text-white px-2.5 py-0.5 rounded-full uppercase tracking-wide bg-[#ac2471]/80 max-w-[150px] truncate">
+              <span id="reels-card-source"
+                class="text-[10px] font-bold text-white px-2.5 py-0.5 rounded-full uppercase tracking-wide bg-[#ac2471]/80 max-w-[150px] truncate">
                 #Source
               </span>
               <span id="reels-card-price" class="text-base font-extrabold text-green-400">
@@ -1238,36 +1316,44 @@
           <!-- Right side: Vertical action buttons stack -->
           <div class="flex flex-col items-center gap-2.5 shrink-0 select-none">
             <!-- Prev Button -->
-            <button id="btn-reels-prev" type="button" title="Previous Reel" class="w-10 h-10 rounded-full bg-black/60 border border-white/10 flex items-center justify-center text-white hover:scale-110 active:scale-90 transition-transform backdrop-blur-md cursor-pointer shadow-lg">
+            <button id="btn-reels-prev" type="button" title="Previous Reel"
+              class="w-10 h-10 rounded-full bg-black/60 border border-white/10 flex items-center justify-center text-white hover:scale-110 active:scale-90 transition-transform backdrop-blur-md cursor-pointer shadow-lg">
               <span class="material-symbols-outlined text-2xl">keyboard_arrow_up</span>
             </button>
 
             <!-- Image Fit Toggle -->
-            <button id="btn-reels-fit" type="button" title="Toggle Fit / Fill Screen" class="w-10 h-10 rounded-full bg-black/60 border border-white/10 flex items-center justify-center text-white hover:scale-110 active:scale-90 transition-transform backdrop-blur-md cursor-pointer shadow-lg">
+            <button id="btn-reels-fit" type="button" title="Toggle Fit / Fill Screen"
+              class="w-10 h-10 rounded-full bg-black/60 border border-white/10 flex items-center justify-center text-white hover:scale-110 active:scale-90 transition-transform backdrop-blur-md cursor-pointer shadow-lg">
               <span class="material-symbols-outlined text-xl">fit_screen</span>
             </button>
 
             <!-- Save/Like Button -->
-            <button id="btn-reels-like" type="button" title="Like / Save Item" class="w-12 h-12 rounded-full bg-black/60 border border-white/10 flex items-center justify-center text-white hover:scale-110 active:scale-90 transition-transform backdrop-blur-md cursor-pointer select-none shadow-lg">
-              <span class="material-symbols-outlined text-3xl" id="reels-like-icon" style="color: #ac2471;">favorite_border</span>
+            <button id="btn-reels-like" type="button" title="Like / Save Item"
+              class="w-12 h-12 rounded-full bg-black/60 border border-white/10 flex items-center justify-center text-white hover:scale-110 active:scale-90 transition-transform backdrop-blur-md cursor-pointer select-none shadow-lg">
+              <span class="material-symbols-outlined text-3xl" id="reels-like-icon"
+                style="color: #ac2471;">favorite_border</span>
             </button>
 
             <!-- Visit eBay Listing -->
-            <a id="btn-reels-visit" href="#" target="_blank" rel="noopener noreferrer" class="w-12 h-12 rounded-full bg-gradient-to-b from-[#ac2471] to-[#7212ff] flex flex-col items-center justify-center text-white hover:scale-105 active:scale-95 transition-transform shadow-lg text-decoration-transparent cursor-pointer gap-0.5">
+            <a id="btn-reels-visit" href="#" target="_blank" rel="noopener noreferrer"
+              class="w-12 h-12 rounded-full bg-gradient-to-b from-[#ac2471] to-[#7212ff] flex flex-col items-center justify-center text-white hover:scale-105 active:scale-95 transition-transform shadow-lg text-decoration-transparent cursor-pointer gap-0.5">
               <span class="material-symbols-outlined text-xl">shopping_bag</span>
               <span class="text-[8px] font-bold uppercase tracking-wider text-white">Shop</span>
             </a>
 
             <!-- Next Button -->
-            <button id="btn-reels-next" type="button" title="Next Reel" class="w-10 h-10 rounded-full bg-black/60 border border-white/10 flex items-center justify-center text-white hover:scale-110 active:scale-90 transition-transform backdrop-blur-md cursor-pointer shadow-lg">
+            <button id="btn-reels-next" type="button" title="Next Reel"
+              class="w-10 h-10 rounded-full bg-black/60 border border-white/10 flex items-center justify-center text-white hover:scale-110 active:scale-90 transition-transform backdrop-blur-md cursor-pointer shadow-lg">
               <span class="material-symbols-outlined text-2xl">keyboard_arrow_down</span>
             </button>
           </div>
         </div>
 
         <!-- Reels End Card Content (Hidden by default) -->
-        <div id="reels-end-container" class="absolute inset-0 z-20 flex flex-col items-center justify-center p-8 text-center bg-black/85 backdrop-blur-md hidden pointer-events-auto select-none">
-          <div class="w-16 h-16 rounded-full bg-green-500/10 text-green-500 flex items-center justify-center mb-4 border border-green-500/20">
+        <div id="reels-end-container"
+          class="absolute inset-0 z-20 flex flex-col items-center justify-center p-8 text-center bg-black/85 backdrop-blur-md hidden pointer-events-auto select-none">
+          <div
+            class="w-16 h-16 rounded-full bg-green-500/10 text-green-500 flex items-center justify-center mb-4 border border-green-500/20">
             <span class="material-symbols-outlined text-4xl">check_circle</span>
           </div>
           <h2 class="text-xl font-bold text-white mb-2">All Caught Up!</h2>
@@ -1275,10 +1361,12 @@
             You've reviewed all the matching listings found on eBay for your active alerts.
           </p>
           <div class="flex flex-col gap-2.5 w-full">
-            <button id="btn-reels-end-close" type="button" class="w-full py-2.5 rounded-xl bg-gradient-to-r from-[#ac2471] to-[#7212ff] text-white font-bold text-xs shadow-md hover:scale-[1.02] active:scale-[0.98] transition-transform cursor-pointer border-0">
+            <button id="btn-reels-end-close" type="button"
+              class="w-full py-2.5 rounded-xl bg-gradient-to-r from-[#ac2471] to-[#7212ff] text-white font-bold text-xs shadow-md hover:scale-[1.02] active:scale-[0.98] transition-transform cursor-pointer border-0">
               Return to eBay Drawer
             </button>
-            <button id="btn-reels-end-refresh" type="button" class="w-full py-2.5 rounded-xl bg-white/10 hover:bg-white/20 text-white font-semibold text-xs border border-white/10 transition-colors cursor-pointer">
+            <button id="btn-reels-end-refresh" type="button"
+              class="w-full py-2.5 rounded-xl bg-white/10 hover:bg-white/20 text-white font-semibold text-xs border border-white/10 transition-colors cursor-pointer">
               Refresh & Start Over
             </button>
           </div>
@@ -1287,8 +1375,10 @@
     </div>
 
     <!-- Empty/Loading State Overlay -->
-    <div id="reels-empty-state" class="absolute inset-0 z-30 flex flex-col items-center justify-center bg-black/80 backdrop-blur-md p-6 text-center select-none hidden">
-      <div class="w-12 h-12 border-4 border-[#ac2471]/20 border-t-[#ac2471] rounded-full animate-spin mb-4" id="reels-spinner"></div>
+    <div id="reels-empty-state"
+      class="absolute inset-0 z-30 flex flex-col items-center justify-center bg-black/80 backdrop-blur-md p-6 text-center select-none hidden">
+      <div class="w-12 h-12 border-4 border-[#ac2471]/20 border-t-[#ac2471] rounded-full animate-spin mb-4"
+        id="reels-spinner"></div>
       <h2 id="reels-empty-title" class="text-lg font-bold text-white mb-2">Sourcing Antiques</h2>
       <p id="reels-empty-desc" class="text-xs text-gray-400 max-w-xs leading-relaxed">
         Connecting to eBay to find matches for your active alert trackers...
@@ -1303,10 +1393,12 @@
     </div>
     <div id="isla-tour-card">
       <div class="flex items-center justify-between mb-2">
-        <span id="tour-step-badge" class="text-[10px] font-extrabold uppercase tracking-widest text-[#ac2471] bg-[#ac2471]/10 px-2.5 py-0.5 rounded-full border border-[#ac2471]/20">
+        <span id="tour-step-badge"
+          class="text-[10px] font-extrabold uppercase tracking-widest text-[#ac2471] bg-[#ac2471]/10 px-2.5 py-0.5 rounded-full border border-[#ac2471]/20">
           STEP 1 OF 5
         </span>
-        <button id="btn-tour-skip" type="button" class="text-xs font-bold text-on-surface-variant/60 hover:text-primary transition-colors cursor-pointer border-0 bg-transparent">
+        <button id="btn-tour-skip" type="button"
+          class="text-xs font-bold text-on-surface-variant/60 hover:text-primary transition-colors cursor-pointer border-0 bg-transparent">
           Skip
         </button>
       </div>
@@ -1320,11 +1412,13 @@
       </p>
 
       <div class="flex items-center justify-between pt-2 border-t border-[#ac2471]/10">
-        <button id="btn-tour-prev" type="button" class="text-xs font-semibold text-on-surface-variant hover:text-primary transition-colors cursor-pointer border-0 bg-transparent hidden">
+        <button id="btn-tour-prev" type="button"
+          class="text-xs font-semibold text-on-surface-variant hover:text-primary transition-colors cursor-pointer border-0 bg-transparent hidden">
           ← Back
         </button>
         <div class="flex-1"></div>
-        <button id="btn-tour-next" type="button" class="px-4 py-1.5 rounded-xl bg-gradient-to-r from-[#ac2471] to-[#7212ff] text-white font-bold text-xs shadow-md hover:scale-[1.03] active:scale-[0.97] transition-transform cursor-pointer border-0 flex items-center gap-1">
+        <button id="btn-tour-next" type="button"
+          class="px-4 py-1.5 rounded-xl bg-gradient-to-r from-[#ac2471] to-[#7212ff] text-white font-bold text-xs shadow-md hover:scale-[1.03] active:scale-[0.97] transition-transform cursor-pointer border-0 flex items-center gap-1">
           <span id="btn-tour-next-text">Next</span>
           <span class="material-symbols-outlined text-sm">arrow_forward</span>
         </button>
@@ -1335,4 +1429,5 @@
   <!-- App entry point -->
   <script type="module" src="/src/main.js"></script>
 </body>
+
 </html>

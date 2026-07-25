@@ -612,13 +612,26 @@ function setupEventListeners(user) {
     // Restores keyboard focus on desktop so users don't have to re-click.
     // On iOS, the keyboard won't auto-pop (requires user gesture), but
     // focus state is still restored correctly for the next interaction.
-    document.getElementById('btn-send')?.addEventListener('click', () => {
-      // Small timeout lets the send animation settle before refocusing
-      setTimeout(() => textarea?.focus(), 80);
-    });
+    const btnSend = document.getElementById('btn-send');
+    if (btnSend) {
+      btnSend.addEventListener('touchstart', () => {
+        if (window.innerWidth <= 768) {
+          document.activeElement?.blur();
+        }
+      }, { passive: true });
+
+      btnSend.addEventListener('click', () => {
+        if (window.innerWidth > 768) {
+          setTimeout(() => textarea?.focus(), 80);
+        }
+      });
+    }
+
     textarea?.addEventListener('keydown', (e) => {
       if (e.key === 'Enter' && !e.shiftKey) {
-        setTimeout(() => textarea?.focus(), 80);
+        if (window.innerWidth > 768) {
+          setTimeout(() => textarea?.focus(), 80);
+        }
       }
     });
 
@@ -952,7 +965,15 @@ async function handleSend(user, systemOverrideText = null) {
   if (systemOverrideText === null && textarea) {
     textarea.value = '';
     textarea.style.height = 'auto';
+
+    // Force Mobile Keyboard Dismissal via ReadOnly Trick
+    if (window.innerWidth <= 768) {
+      textarea.readOnly = true;
+      setTimeout(() => { textarea.readOnly = false; }, 150);
+    }
+
     textarea.blur(); // Dismiss mobile keyboard
+    document.activeElement?.blur();
     document.getElementById('input-bar-container')?.classList.remove('input-bar-typing');
   }
 
