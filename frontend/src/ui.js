@@ -1077,12 +1077,16 @@ export function addDebugInfoToBubble(bubble, { toneValue, createdAt, aiModel, la
   else if (toneValue <= 60) toneStr = 'Formal AI Mode';
   else if (toneValue <= 80) toneStr = 'Sooky Mode';
 
-  const modelStr = aiModel || 'gemini-3.6-flash';
+  let displayModel = aiModel || 'gemini-3.6-flash';
+  if (displayModel === 'gemini-3.1-flash-lite') displayModel = '⚡ Stupid (3.1 Lite)';
+  else if (displayModel === 'gemini-3.6-flash') displayModel = '🚀 Silly (3.6 Low Thinking)';
+  else if (displayModel === 'gemini-3.5-flash') displayModel = '🚀 Silly (3.6 Low Thinking)';
+
   const latencyStr = latencyMs ? `${(latencyMs / 1000).toFixed(2)}s (${latencyMs}ms)` : null;
 
   popup.innerHTML = `
     <div class="debug-row"><strong>Time:</strong> ${timeStr}</div>
-    <div class="debug-row"><strong>Model:</strong> ${DOMPurify.sanitize(modelStr)}</div>
+    <div class="debug-row"><strong>Model:</strong> ${DOMPurify.sanitize(displayModel)}</div>
     <div class="debug-row"><strong>Mode:</strong> ${toneStr} (${toneValue}/100)</div>
     ${latencyStr ? `<div class="debug-row"><strong>Response Time:</strong> ${latencyStr}</div>` : ''}
   `;

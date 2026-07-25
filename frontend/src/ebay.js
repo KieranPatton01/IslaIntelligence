@@ -737,6 +737,8 @@ function openEbayDrawer() {
   if (memoryDrawer) memoryDrawer.classList.remove('open');
 
   ebayDrawer.classList.add('open');
+  const themeMeta = document.querySelector('meta[name="theme-color"]');
+  if (themeMeta) themeMeta.content = '#000000';
   drawerBackdrop.classList.remove('hidden');
   drawerBackdrop.offsetWidth;
   drawerBackdrop.classList.add('show');
@@ -785,6 +787,8 @@ function closeEbayDrawer() {
   const ebayDrawer = document.getElementById('ebay-drawer');
   const drawerBackdrop = document.getElementById('drawer-backdrop');
   ebayDrawer.classList.remove('open');
+  const themeMeta = document.querySelector('meta[name="theme-color"]');
+  if (themeMeta) themeMeta.content = '#ffffff';
 
   const isMemoryOpen = document.getElementById('memory-drawer')?.classList.contains('open');
   const isUvOpen = document.getElementById('uv-drawer')?.classList.contains('open');

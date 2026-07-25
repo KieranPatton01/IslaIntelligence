@@ -857,18 +857,18 @@ Format your response strictly as valid JSON, with no other text, no markdown blo
     ...(tools.length > 0 ? { tools } : {})
   };
 
-  let PRIMARY_REQ_MODEL = 'gemini-3.5-flash';
-  let BACKUP_REQ_MODEL  = 'gemini-3.5-flash';
+  let PRIMARY_REQ_MODEL = 'gemini-3.6-flash';
+  let BACKUP_REQ_MODEL  = 'gemini-3.1-flash-lite';
 
   if (modelChoice === '3.1-lite') {
     PRIMARY_REQ_MODEL = 'gemini-3.1-flash-lite';
-    BACKUP_REQ_MODEL  = 'gemini-3.5-flash';
+    BACKUP_REQ_MODEL  = 'gemini-3.6-flash';
   } else if (modelChoice === '3.6-extended') {
     PRIMARY_REQ_MODEL = 'gemini-3.6-flash';
-    BACKUP_REQ_MODEL  = 'gemini-3.5-flash';
+    BACKUP_REQ_MODEL  = 'gemini-3.1-flash-lite';
   } else {
-    PRIMARY_REQ_MODEL = 'gemini-3.5-flash';
-    BACKUP_REQ_MODEL  = 'gemini-3.5-flash';
+    PRIMARY_REQ_MODEL = 'gemini-3.6-flash';
+    BACKUP_REQ_MODEL  = 'gemini-3.1-flash-lite';
   }
 
   const modelsToTry = [PRIMARY_REQ_MODEL, BACKUP_REQ_MODEL];
