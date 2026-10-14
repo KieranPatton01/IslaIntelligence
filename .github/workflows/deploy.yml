@@ -36,6 +36,8 @@ jobs:
       - name: Build
         run: npm run build
         working-directory: frontend
+        env:
+          VITE_ISLA_SECRET: ${{ secrets.VITE_ISLA_SECRET }}
 
       - name: Upload Pages artifact
         uses: actions/upload-pages-artifact@v3

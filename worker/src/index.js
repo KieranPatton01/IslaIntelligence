@@ -73,63 +73,221 @@ const ALLOWED_EMAILS = new Set([
   'developer@ii.com',
 ]);
 
-// ── Firebase ID token verifier ──────────────────────────────
-// Verifies a Firebase ID token and checks the email against the allowlist.
-// Uses fast JWT payload parsing with Google REST API fallback.
-async function verifyFirebaseToken(idToken, firebaseApiKey) {
-  if (!idToken) return null;
+// ── Constant-Time String Comparison ─────────────────────────
+// Compares two strings in constant time using SHA-256 to prevent timing attacks.
+async function timingSafeEqual(a, b) {
+  if (typeof a !== 'string' || typeof b !== 'string') return false;
+  const enc = new TextEncoder();
+  const hashA = new Uint8Array(await crypto.subtle.digest('SHA-256', enc.encode(a)));
+  const hashB = new Uint8Array(await crypto.subtle.digest('SHA-256', enc.encode(b)));
+  let diff = 0;
+  for (let i = 0; i < hashA.length; i++) {
+    diff |= hashA[i] ^ hashB[i];
+  }
+  return diff === 0 && a.length === b.length;
+}
 
-  // 1. Fast JWT payload decoding & email allowlist check
-  try {
-    const parts = idToken.split('.');
-    if (parts.length === 3) {
-      const base64Url = parts[1];
-      const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
-      const jsonPayload = decodeURIComponent(
-        atob(base64)
-          .split('')
-          .map(c => '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2))
-          .join('')
-      );
-      const decoded = JSON.parse(jsonPayload);
-      const nowSec = Math.floor(Date.now() / 1000);
+// ── Google Public JWKS Cache for Firebase Auth ───────────────
+let cachedJwks = null;
+let jwksExpiresAt = 0;
+const cryptoKeyCache = new Map(); // kid -> CryptoKey
 
-      // Check token expiration (exp is in seconds)
-      if (decoded.exp && decoded.exp > nowSec) {
-        const email = (decoded.email || '').toLowerCase().trim();
-        if (ALLOWED_EMAILS.has(email)) {
-          return decoded.user_id || decoded.sub || 'authenticated-user';
-        } else {
-          return null; // Non-allowlisted email -> DENIED
-        }
-      }
-    }
-  } catch (_) {
-    // Fall through to API check if JWT parse fails
+async function getGoogleJwks(forceRefresh = false) {
+  const now = Date.now();
+  if (!forceRefresh && cachedJwks && now < jwksExpiresAt) {
+    return cachedJwks;
   }
 
-  // 2. Fallback: Google Identity Toolkit REST API
-  if (!firebaseApiKey) return null;
+  const res = await fetch(
+    'https://www.googleapis.com/service_accounts/v1/jwk/securetoken@system.gserviceaccount.com'
+  );
+  if (!res.ok) {
+    throw new Error(`Failed to fetch Google JWKS: ${res.status}`);
+  }
+
+  let maxAgeSec = 3600; // default 1 hour
+  const cacheControl = res.headers.get('cache-control') || '';
+  const match = cacheControl.match(/max-age=(\d+)/i);
+  if (match) {
+    maxAgeSec = Math.max(60, parseInt(match[1], 10));
+  }
+
+  const data = await res.json();
+  if (!data || !Array.isArray(data.keys)) {
+    throw new Error('Invalid JWKS response from Google');
+  }
+
+  cachedJwks = data.keys;
+  jwksExpiresAt = now + maxAgeSec * 1000;
+  return cachedJwks;
+}
+
+async function getVerificationKey(kid) {
+  if (cryptoKeyCache.has(kid)) {
+    return cryptoKeyCache.get(kid);
+  }
+
+  let keys = await getGoogleJwks();
+  let keyData = keys.find(k => k.kid === kid && k.kty === 'RSA' && (!k.alg || k.alg === 'RS256'));
+
+  // If key not found, refresh JWKS once in case of key rotation
+  if (!keyData) {
+    keys = await getGoogleJwks(true);
+    keyData = keys.find(k => k.kid === kid && k.kty === 'RSA' && (!k.alg || k.alg === 'RS256'));
+  }
+
+  if (!keyData) return null;
+
+  const cryptoKey = await crypto.subtle.importKey(
+    'jwk',
+    {
+      kty: 'RSA',
+      n: keyData.n,
+      e: keyData.e,
+      alg: 'RS256',
+      ext: true,
+    },
+    {
+      name: 'RSASSA-PKCS1-v1_5',
+      hash: { name: 'SHA-256' },
+    },
+    false,
+    ['verify']
+  );
+
+  cryptoKeyCache.set(kid, cryptoKey);
+  return cryptoKey;
+}
+
+function base64UrlDecode(str) {
+  let b64 = str.replace(/-/g, '+').replace(/_/g, '/');
+  while (b64.length % 4 !== 0) {
+    b64 += '=';
+  }
+  const binary = atob(b64);
+  const bytes = new Uint8Array(binary.length);
+  for (let i = 0; i < binary.length; i++) {
+    bytes[i] = binary.charCodeAt(i);
+  }
+  return bytes;
+}
+
+function parseJwtPart(b64Url) {
+  const bytes = base64UrlDecode(b64Url);
+  const text = new TextDecoder('utf-8').decode(bytes);
+  return JSON.parse(text);
+}
+
+// ── Firebase ID token verifier (RS256 JWKS + claims check) ──
+// Verifies cryptographic signature using Google's public JWKS certificates and validates
+// all required claims (exp, iss, aud, email allowlist).
+async function verifyFirebaseToken(idToken, projectId, firebaseApiKey) {
+  if (!idToken || typeof idToken !== 'string') return null;
+
+  const parts = idToken.split('.');
+  if (parts.length !== 3) return null;
+
+  const [headerB64, payloadB64, signatureB64] = parts;
+
+  // 1. Decode header and payload
+  let header;
+  let payload;
   try {
-    const res = await fetch(
-      `https://www.googleapis.com/identitytoolkit/v3/relyingparty/getAccountInfo?key=${firebaseApiKey}`,
-      {
-        method: 'POST',
-        headers: { 
-          'Content-Type': 'application/json',
-          'Referer': 'https://kieranpatton01.github.io/'
-        },
-        body: JSON.stringify({ idToken }),
-      }
+    header = parseJwtPart(headerB64);
+    payload = parseJwtPart(payloadB64);
+  } catch (_) {
+    return null;
+  }
+
+  // Header validation: MUST be RS256 with key ID
+  if (!header || header.alg !== 'RS256' || !header.kid) {
+    return null;
+  }
+
+  // 2. Validate token claims
+  const nowSec = Math.floor(Date.now() / 1000);
+
+  // Check expiration (allow 60s clock skew)
+  if (typeof payload.exp !== 'number' || payload.exp <= nowSec - 60) {
+    return null;
+  }
+
+  // Check auth_time
+  if (typeof payload.auth_time === 'number' && payload.auth_time > nowSec + 60) {
+    return null;
+  }
+
+  // Validate issuer and audience against Firebase project ID
+  const expectedIssuer = `https://securetoken.google.com/${projectId}`;
+  if (payload.iss !== expectedIssuer) {
+    return null;
+  }
+  if (payload.aud !== projectId) {
+    return null;
+  }
+
+  // Validate subject
+  const sub = payload.sub || payload.user_id;
+  if (!sub || typeof sub !== 'string') {
+    return null;
+  }
+
+  // Check email allowlist
+  const email = (payload.email || '').toLowerCase().trim();
+  if (!ALLOWED_EMAILS.has(email)) {
+    return null;
+  }
+
+  // 3. Cryptographic signature check via WebCrypto
+  try {
+    const cryptoKey = await getVerificationKey(header.kid);
+    if (!cryptoKey) {
+      throw new Error('Key not found in JWKS');
+    }
+
+    const encoder = new TextEncoder();
+    const dataBytes = encoder.encode(`${headerB64}.${payloadB64}`);
+    const signatureBytes = base64UrlDecode(signatureB64);
+
+    const isValid = await crypto.subtle.verify(
+      'RSASSA-PKCS1-v1_5',
+      cryptoKey,
+      signatureBytes,
+      dataBytes
     );
-    if (!res.ok) return null;
-    const data = await res.json();
-    const user = data?.users?.[0];
-    if (!user?.localId) return null;
-    const email = (user.email || '').toLowerCase().trim();
-    if (!ALLOWED_EMAILS.has(email)) return null;
-    return user.localId;
-  } catch {
+
+    if (isValid) {
+      return sub;
+    }
+    // Cryptographic signature invalid -> DENIED
+    return null;
+  } catch (jwksErr) {
+    // If JWKS fetch failed (e.g. Google network timeout), fall back to Identity Toolkit REST API
+    if (firebaseApiKey) {
+      try {
+        const res = await fetch(
+          `https://www.googleapis.com/identitytoolkit/v3/relyingparty/getAccountInfo?key=${firebaseApiKey}`,
+          {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+              'Referer': 'https://kieranpatton01.github.io/'
+            },
+            body: JSON.stringify({ idToken }),
+          }
+        );
+        if (res.ok) {
+          const data = await res.json();
+          const user = data?.users?.[0];
+          if (user?.localId) {
+            const apiEmail = (user.email || '').toLowerCase().trim();
+            if (ALLOWED_EMAILS.has(apiEmail)) {
+              return user.localId;
+            }
+          }
+        }
+      } catch (_) {}
+    }
     return null;
   }
 }
@@ -380,6 +538,17 @@ export default {
         });
       }
 
+      // ── VULN-01: Shared secret verification (constant-time) ──
+      // Enforce the shared secret (X-Isla-Token) before processing any request.
+      const clientSecret = request.headers.get('X-Isla-Token') || '';
+      const expectedSecret = env.ISLA_SECRET || '';
+      const isSecretValid = expectedSecret ? await timingSafeEqual(clientSecret, expectedSecret) : false;
+      if (!isSecretValid) {
+        return new Response(JSON.stringify({ error: 'Unauthorized: Invalid or missing X-Isla-Token' }), {
+          status: 401, headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+        });
+      }
+
       // ── VULN-02: IP-based rate limiting ─────────────────────
       const clientIp = request.headers.get('CF-Connecting-IP')
                     || request.headers.get('X-Forwarded-For')
@@ -395,19 +564,14 @@ export default {
         });
       }
 
-      // ── VULN-03: Firebase UID verification (fail-closed + email allowlist) ──
-      // If FIREBASE_API_KEY is not configured, all requests are rejected.
+      // ── VULN-03: Firebase UID verification (RS256 JWKS + email allowlist) ──
+      const projectId = env.FIREBASE_PROJECT_ID || 'islaintelligence-78abb';
       const firebaseApiKey = env.VITE_FIREBASE_API_KEY || env.FIREBASE_API_KEY || '';
-      if (!firebaseApiKey) {
-        return new Response(JSON.stringify({ error: 'Service unavailable' }), {
-          status: 503, headers: { ...corsHeaders, 'Content-Type': 'application/json' },
-        });
-      }
       const authHeader = request.headers.get('Authorization') || '';
       const idToken = authHeader.startsWith('Bearer ') ? authHeader.slice(7) : '';
-      const verifiedUid = await verifyFirebaseToken(idToken, firebaseApiKey);
+      const verifiedUid = await verifyFirebaseToken(idToken, projectId, firebaseApiKey);
       if (!verifiedUid) {
-        return new Response(JSON.stringify({ error: 'Unauthorized' }), {
+        return new Response(JSON.stringify({ error: 'Unauthorized: Invalid or expired token' }), {
           status: 401, headers: { ...corsHeaders, 'Content-Type': 'application/json' },
         });
       }
@@ -469,7 +633,6 @@ AI reply snippet: ${modelSnippet}`;
 
   for (const model of [PRIMARY_MODEL, BACKUP_MODEL]) {
     const geminiUrl = new URL(`${GEMINI_BASE}/v1beta/models/${model}:generateContent`);
-    geminiUrl.searchParams.set('key', env.GEMINI_API_KEY);
 
     const isModel36 = model.includes('3.6');
     const generationConfig = isModel36 ? {
@@ -483,7 +646,10 @@ AI reply snippet: ${modelSnippet}`;
     try {
       const res = await fetch(geminiUrl.toString(), {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: {
+          'Content-Type': 'application/json',
+          'x-goog-api-key': env.GEMINI_API_KEY,
+        },
         body: JSON.stringify({
           contents: [{ role: 'user', parts: [{ text: prompt }] }],
           generationConfig
@@ -619,11 +785,13 @@ async function executeToolCallAndStream(geminiResponse, geminiPayload, model, en
 
     const geminiUrl = new URL(`${GEMINI_BASE}/v1beta/models/${model}:streamGenerateContent`);
     geminiUrl.searchParams.set('alt', 'sse');
-    geminiUrl.searchParams.set('key', env.GEMINI_API_KEY);
 
     const secondaryResponse = await fetch(geminiUrl.toString(), {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
+      headers: {
+        'Content-Type': 'application/json',
+        'x-goog-api-key': env.GEMINI_API_KEY,
+      },
       body: JSON.stringify(secondaryPayload),
     });
 
@@ -742,12 +910,14 @@ Format your response strictly as valid JSON, with no other text, no markdown blo
     };
 
     const step1Url = new URL(`${GEMINI_BASE}/v1beta/models/${GEMINI_MODEL}:generateContent`);
-    step1Url.searchParams.set('key', env.GEMINI_API_KEY);
 
     try {
       const step1Res = await fetch(step1Url.toString(), {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: {
+          'Content-Type': 'application/json',
+          'x-goog-api-key': env.GEMINI_API_KEY,
+        },
         body: JSON.stringify(step1Payload)
       });
       if (step1Res.ok) {
@@ -902,12 +1072,14 @@ Format your response strictly as valid JSON, with no other text, no markdown blo
 
     const geminiUrl = new URL(`${GEMINI_BASE}/v1beta/models/${model}:streamGenerateContent`);
     geminiUrl.searchParams.set('alt', 'sse');
-    geminiUrl.searchParams.set('key', env.GEMINI_API_KEY);
 
     try {
       geminiResponse = await fetch(geminiUrl.toString(), {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: {
+          'Content-Type': 'application/json',
+          'x-goog-api-key': env.GEMINI_API_KEY,
+        },
         body: JSON.stringify(modelPayload),
       });
 
@@ -1128,7 +1300,6 @@ Output ONLY a clean JSON object containing "itemName" and "searchKeywords" (sear
 Format example: {"itemName": "Victorian Brass Telescope", "searchKeywords": "victorian brass telescope antique"}`;
 
   const geminiUrl = new URL(`${GEMINI_BASE}/v1beta/models/${GEMINI_MODEL}:generateContent`);
-  geminiUrl.searchParams.set('key', env.GEMINI_API_KEY);
 
   const payload = {
     contents: [
@@ -1149,7 +1320,10 @@ Format example: {"itemName": "Victorian Brass Telescope", "searchKeywords": "vic
   try {
     const res = await fetch(geminiUrl.toString(), {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
+      headers: {
+        'Content-Type': 'application/json',
+        'x-goog-api-key': env.GEMINI_API_KEY,
+      },
       body: JSON.stringify(payload),
     });
 
