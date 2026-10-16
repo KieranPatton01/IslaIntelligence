@@ -2,25 +2,31 @@ rules_version = '2';
 service cloud.firestore {
   match /databases/{database}/documents {
 
+    function isAuthorized() {
+      return request.auth != null
+        && request.auth.token.email != null
+        && request.auth.token.email.lower() in ['isingingbanana@gmail.com', 'iscowper@icloud.com', 'developer@ii.com'];
+    }
+
     // ── User-scoped data (user doc itself + sessions, messages, memory bank, trinkets) ──
     match /users/{userId} {
-      allow read, write: if request.auth != null && request.auth.uid == userId;
+      allow read, write: if isAuthorized() && request.auth.uid == userId;
 
       match /{allPaths=**} {
-        allow read, write: if request.auth != null && request.auth.uid == userId;
+        allow read, write: if isAuthorized() && request.auth.uid == userId;
       }
     }
 
     // ── eBay Tracker alerts ──
     match /trackers/{trackerId} {
-      allow read, update, delete: if request.auth != null && resource.data.userId == request.auth.uid;
-      allow create: if request.auth != null && request.resource.data.userId == request.auth.uid;
+      allow read, update, delete: if isAuthorized() && resource.data.userId == request.auth.uid;
+      allow create: if isAuthorized() && request.resource.data.userId == request.auth.uid;
     }
 
     // ── eBay Favorites ──
     match /favorites/{favoriteId} {
-      allow read, update, delete: if request.auth != null && resource.data.userId == request.auth.uid;
-      allow create: if request.auth != null && request.resource.data.userId == request.auth.uid;
+      allow read, update, delete: if isAuthorized() && resource.data.userId == request.auth.uid;
+      allow create: if isAuthorized() && request.resource.data.userId == request.auth.uid;
     }
 
     // ── Default deny for all other paths ──
