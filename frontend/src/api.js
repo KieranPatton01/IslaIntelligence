@@ -25,8 +25,13 @@ function getWorkerUrl() {
   return url;
 }
 
+function safeEnv(val, fallback) {
+  if (!val || typeof val !== 'string' || val.startsWith('VITE_') || val.includes('PLACEHOLDER')) return fallback;
+  return val;
+}
+
 const WORKER_URL  = getWorkerUrl();
-const ISLA_SECRET = import.meta.env.VITE_ISLA_SECRET || '';
+const ISLA_SECRET = safeEnv(import.meta.env.VITE_ISLA_SECRET, 'HjzPEvB6GWRhlcn79aXuLy0C4i5Jt3ZdeAFM8IxSTUQYpDkO');
 
 // Regex to match [[MEMORY: ...]] and [[TRINKET: ...]] at the end of a completed response
 const MEMORY_TAG_RE = /\[\[MEMORY:\s*(.+?)\]\]/gi;

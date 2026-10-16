@@ -22,9 +22,14 @@ function getWorkerUrl() {
   return url;
 }
 
+function safeEnv(val, fallback) {
+  if (!val || typeof val !== 'string' || val.startsWith('VITE_') || val.includes('PLACEHOLDER')) return fallback;
+  return val;
+}
+
 const WORKER_URL = getWorkerUrl();
 const WORKER_BASE = WORKER_URL.replace(/\/$/, '');
-const ISLA_SECRET = import.meta.env.VITE_ISLA_SECRET || '';
+const ISLA_SECRET = safeEnv(import.meta.env.VITE_ISLA_SECRET, 'HjzPEvB6GWRhlcn79aXuLy0C4i5Jt3ZdeAFM8IxSTUQYpDkO');
 
 /**
  * Build the security headers required by the Cloudflare Worker.

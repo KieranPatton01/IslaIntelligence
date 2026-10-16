@@ -565,7 +565,13 @@ if ('serviceWorker' in navigator && import.meta.env.PROD) {
         '/IslaIntelligence/sw.js',
         { scope: '/IslaIntelligence/' },
       );
-
+      // Immediately check for a fresh service worker
+      registration.update().catch(() => {});
+      document.addEventListener('visibilitychange', () => {
+        if (document.visibilityState === 'visible') {
+          registration.update().catch(() => {});
+        }
+      });
     } catch (err) {
 
     }

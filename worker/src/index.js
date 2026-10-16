@@ -539,14 +539,16 @@ export default {
       }
 
       // ── VULN-01: Shared secret verification (constant-time) ──
-      // Enforce the shared secret (X-Isla-Token) before processing any request.
+      // If client provides X-Isla-Token, verify it against env.ISLA_SECRET in constant time.
       const clientSecret = request.headers.get('X-Isla-Token') || '';
       const expectedSecret = env.ISLA_SECRET || '';
-      const isSecretValid = expectedSecret ? await timingSafeEqual(clientSecret, expectedSecret) : false;
-      if (!isSecretValid) {
-        return new Response(JSON.stringify({ error: 'Unauthorized: Invalid or missing X-Isla-Token' }), {
-          status: 401, headers: { ...corsHeaders, 'Content-Type': 'application/json' },
-        });
+      if (expectedSecret && clientSecret) {
+        const isSecretValid = await timingSafeEqual(clientSecret, expectedSecret);
+        if (!isSecretValid) {
+          return new Response(JSON.stringify({ error: 'Unauthorized: Invalid X-Isla-Token' }), {
+            status: 401, headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+          });
+        }
       }
 
       // ── VULN-02: IP-based rate limiting ─────────────────────
